@@ -1,0 +1,36 @@
+java.lang.IllegalStateException: Shutdown in progress
+	at java.lang.ApplicationShutdownHooks.remove(Unknown Source)
+	at java.lang.Runtime.removeShutdownHook(Unknown Source)
+	at org.lwjgl.opengl.Display$3.run(Display.java:709)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.lwjgl.opengl.Display.removeShutdownHook(Display.java:707)
+	at org.lwjgl.opengl.Display.access$800(Display.java:62)
+	at org.lwjgl.opengl.Display$5.destroy(Display.java:836)
+	at org.lwjgl.opengl.Display.destroy(Display.java:1083)
+	at at.jumpandjan.JumpAndJan.main(JumpAndJan.java:137)
+at.freschmushroom.Intro                            07.11.12
+at.jumpandjan.EntityFlag                           22.10.12
+at.jumpandjan.level.Floor                          23.10.12
+at.jumpandjan.EntityMeatball                       22.10.11
+at.jumpandjan.level.Level                          23.10.12
+at.jumpandjan.EntityWaitrose                       23.10.12
+at.jumpandjan.level.LevelBuilder                   23.10.12
+at.freschmushroom.audio.SoundContainer             23.08.12
+at.jumpandjan.Wall                                 23.10.12
+at.jumpandjan.EntityHaarfarbe                      22.10.12
+at.jumpandjan.JumpAndJan                           22.10.12
+at.jumpandjan.EntityStartFlag                      23.10.12
+at.jumpandjan.EntityFinishFlag                     22.10.12
+at.jumpandjan.level.Wall                           23.10.12
+at.freschmushroom.TextureManager                   29.08.12
+at.jumpandjan.EntityPedobaer                       23.10.12
+at.jumpandjan.EntityPlayer                         23.10.12
+at.jumpandjan.Floor                                23.10.12
+at.jumpandjan.level.Point                          23.10.12
+at.jumpandjan.EntityPsy                            23.10.12
+at.jumpandjan.Constants                            22.10.12
+at.jumpandjan.EntityUnicorn                        04.12.11
+at.freschmushroom.Out                              27.09.12
+at.jumpandjan.level.Spawn                          23.10.12
+at.jumpandjan.Entity                               22.10.12
+at.freschmushroom.Errorhandling                    06.11.12

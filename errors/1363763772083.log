@@ -1,0 +1,21 @@
+java.io.IOException: Die Syntax für den Dateinamen, Verzeichnisnamen oder die Datenträgerbezeichnung ist falsch
+	at java.io.WinNTFileSystem.createFileExclusively(Native Method)
+	at java.io.File.createNewFile(Unknown Source)
+	at at.freschmushroom.xml.XMLFile.readBuffer(XMLFile.java:48)
+	at at.freschmushroom.xml.XMLFile.<init>(XMLFile.java:30)
+	at at.jumpandjan.level.LevelBuilder.load(LevelBuilder.java:27)
+	at at.jumpandjan.gui.GuiLevelChooser$CompLevelButton.<init>(GuiLevelChooser.java:36)
+	at at.jumpandjan.gui.GuiLevelChooser.initLevels(GuiLevelChooser.java:23)
+	at at.jumpandjan.gui.GuiLevelChooser.<init>(GuiLevelChooser.java:10)
+	at at.jumpandjan.gui.GuiUserSaveStates$UserButtonListener.onPressed(GuiUserSaveStates.java:106)
+	at at.jumpandjan.gui.CompButton.onReleased(CompButton.java:136)
+	at at.jumpandjan.gui.Component.fireMouseEvent(Component.java:73)
+	at at.jumpandjan.gui.Gui.fireMouseEvent(Gui.java:155)
+	at at.jumpandjan.JumpAndJan.main(JumpAndJan.java:148)
+at.freschmushroom.Out                              27.09.12
+at.freschmushroom.Intro                            07.11.12
+at.freschmushroom.Errorhandling                    06.11.12
+at.freschmushroom.audio.SoundContainer             23.08.12
+at.jumpandjan.level.Level                          23.10.12
+at.jumpandjan.level.LevelBuilder                   23.10.12
+at.jumpandjan.Constants                            22.10.12

@@ -1,0 +1,69 @@
+class at.jumpandjan.Constants:
+	Version: 22.10.12
+	Auhor: Felix
+class at.fclass at.jumpandjan.TextureManager:
+	Version: 29.08.2012
+	Auhor: Michael
+s at.freschmushroom.Intro:
+	Version: 07.11.12
+	Auhor: Felix
+class at.jumpandjan.level.Level:
+	Version: 23.10.12
+	Auhor: Felix, Michi
+class at.jumpandjan.level.LevelBuilder:
+	Version: 23.10.12
+	Auhor: Felix
+class at.jumpandjan.level.Floor:
+	Version: 23.10.12
+	Auhor: Felix
+class at.jumpandjan.level.Wall:
+	Version: 23.10.12
+	Auhor: Felix
+class at.jumpandjan.level.Spawn:
+	Version: 23.10.12
+	Auhor: Felix
+class at.jumpandjan.level.Point:
+	Version: 23.10.12
+	Auhor: Felix
+class at.jumpandjan.Entity:
+	Version: 22.10.12
+	Auhor: Felix, Michael
+class at.jumpandjan.EntityUnicorn:
+	Version: 04.12.11
+	Auhor: Michael
+class at.jumpandjan.EntityFlag:
+	Version: 22.10.12
+	Auhor: Michael
+class at.jumpandjan.EntityFinishFlag:
+	Version: 22.10.12
+	Auhor: Felix
+class at.jumpandjan.Floor:
+	Version: 23.10.12
+	Auhor: Felix
+class at.jumpandjan.Wall:
+	Version: 23.10.12
+	Auhor: Michi
+class at.jumpandjan.EntityPedobaer:
+	Version: 23.10.12
+	Auhor: Felix
+class at.jumpandjan.EntityWaitrose:
+	Version: 23.10.12
+	Auhor: Felix
+class at.jumpandjan.EntityPsy:
+	Version: 23.10.12
+	Auhor: Felix
+class at.jumpandjan.EntityMeatball:
+	Version: 22.10.11
+	Auhor: Felix, Michael
+class at.jumpandjan.EntityHaarfarbe:
+	Version: 22.10.12
+	Auhor: Felix
+class at.jumpandjan.EntityStartFlag:
+	Version: 23.10.12
+	Auhor: Felix
+class at.jumpandjan.EntityPlayer:
+	Version: 23.10.12
+	Auhor: Michi
+class at.freschmushroom.TextureManager:
+	Version: 29.08.12
+	Auhor: Michael

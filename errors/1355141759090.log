@@ -1,0 +1,21 @@
+java.lang.NullPointerException
+	at at.freschmushroom.Intro.renderFresch(Intro.java:118)
+	at at.freschmushroom.Intro.renderIntro(Intro.java:100)
+	at at.freschmushroom.Intro.showIntroFullScreen(Intro.java:63)
+	at at.jumpandjan.JumpAndJan.main(JumpAndJan.java:64)
+at.jumpandjan.Entity                               22.10.12
+at.jumpandjan.level.Level                          23.10.12
+at.jumpandjan.JumpAndJan                           22.10.12
+at.jumpandjan.Floor                                23.10.12
+at.jumpandjan.Constants                            22.10.12
+at.jumpandjan.Wall                                 23.10.12
+at.jumpandjan.EntityPlayer                         23.10.12
+at.jumpandjan.level.LevelBuilder                   23.10.12
+at.jumpandjan.level.Spawn                          23.10.12
+at.jumpandjan.level.Floor                          23.10.12
+at.jumpandjan.level.Point                          23.10.12
+at.freschmushroom.Errorhandling                    06.11.12
+at.freschmushroom.Intro                            07.11.12
+at.jumpandjan.EntityUnicorn                        04.12.11
+at.freschmushroom.Out                              27.09.12
+at.jumpandjan.level.Wall                           23.10.12

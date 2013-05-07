@@ -1,0 +1,10 @@
+java.lang.ClassCastException: at.freschmushroom.xml.XMLNode cannot be cast to at.freschmushroom.xml.XMLTag
+	at at.jumpandjan.level.LevelBuilder.load(LevelBuilder.java:37)
+	at at.jumpandjan.Constants.load(Constants.java:58)
+	at at.jumpandjan.JumpAndJan.main(JumpAndJan.java:61)
+at.jumpandjan.level.LevelBuilder                   23.10.12
+at.jumpandjan.level.Level                          23.10.12
+at.jumpandjan.JumpAndJan                           22.10.12
+at.freschmushroom.Out                              27.09.12
+at.freschmushroom.Errorhandling                    06.11.12
+at.jumpandjan.Constants                            22.10.12
