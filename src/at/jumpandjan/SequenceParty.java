@@ -76,11 +76,11 @@ public class SequenceParty implements Sequence {
 			glEnable(GL_TEXTURE_2D);
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			SoundContainer.party_music.playAsMusic(1.0f, 1.0f, false);
+			SoundContainer.play("party_music");
 			int counter = 0;
 			int color = 0;
 			boolean black = false;
-			while (SoundContainer.party_music.isPlaying()) {
+			while (SoundContainer.isPlaying("party_music")) {
 				Display.isCloseRequested();
 				Constants.update();
 				GL11.glClearColor(0, 0, 0, 0);
@@ -130,11 +130,11 @@ public class SequenceParty implements Sequence {
 				Display.sync(60);
 				counter++;
 			}
-			SoundContainer.explosion.playAsMusic(1.0f, 1.0f, false);
-			SoundContainer.party_music.playAsSoundEffect(1.0f, 1.0f, false);
-			while (SoundContainer.explosion.isPlaying()) {
-				if (SoundContainer.explosion.getPosition() >= 6) {
-					SoundContainer.party_music.stop();
+			SoundContainer.play("explosion");
+			SoundContainer.play("party_music");
+			while (SoundContainer.isPlaying("explosion")) {
+				if (SoundContainer.getPosition("explosion") >= 6) {
+					SoundContainer.stop("party_music");
 					break;
 				}
 				Color c;
@@ -196,7 +196,7 @@ public class SequenceParty implements Sequence {
 				Display.update();
 				Display.sync(60);
 			}
-			while(SoundContainer.explosion.isPlaying());
+			while(SoundContainer.isPlaying("explosition"));
 			Display.destroy();
 			TextureManager.instance.clearMaps();
 		}

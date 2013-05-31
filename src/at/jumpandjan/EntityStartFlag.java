@@ -17,6 +17,10 @@ public class EntityStartFlag extends EntityFlag {
 	public void update() {
 		super.update();
 	}
+	
+	public boolean hasCollision() {
+		return false;
+	}
 
 	static {
 		Out.inf(EntityStartFlag.class, "23.10.12", "Felix", null);

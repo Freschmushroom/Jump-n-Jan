@@ -14,8 +14,6 @@ import static org.lwjgl.opengl.GL11.glTranslated;
 import static org.lwjgl.opengl.GL11.glVertex2d;
 
 import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.lwjgl.util.vector.Vector2f;
 
@@ -30,11 +28,6 @@ import at.jumpandjan.level.Level;
  * @author Michael
  */
 public class Object {
-
-	/**
-	 * An ArrayList of Objects which should be checked for collisions.
-	 */
-	public List<Object> collision = new ArrayList<Object>();
 
 	public Rectangle bounds = new Rectangle();
 
@@ -205,5 +198,13 @@ public class Object {
 			throw new NullPointerException("Bounds may not be null");
 		}
 		this.bounds = bounds;
+	}
+	
+	public boolean hasCollision() {
+		return true;
+	}
+	
+	public void collide(at.jumpandjan.Object withObject) {
+		
 	}
 }

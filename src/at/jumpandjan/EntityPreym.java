@@ -17,9 +17,6 @@ public class EntityPreym extends Entity {
 	public void update() {
 		super.update();
 		motion.x = 0;
-		if (collisions.contains(JumpAndJan.getPlayer())) {
-			JumpAndJan.getPlayer().hurt(2);
-		}
 		turned = bounds.x > Constants.getActualLevel().getPlayer().bounds.x;
 		motion.x = (float) ((JumpAndJan.getPlayer().getPivotX() - this.getPivotX())
 				/ Math.abs(JumpAndJan.getPlayer().getPivotX()
@@ -42,6 +39,10 @@ public class EntityPreym extends Entity {
 		} else if (cdAttack > 0) {
 			cdAttack--;
 		}
+	}
+	
+	public void collide(at.jumpandjan.Object withObject) {
+		JumpAndJan.getPlayer().hurt(2);
 	}
 
 	@Override

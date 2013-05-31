@@ -16,9 +16,6 @@ public class EntityUnicorn extends Entity {
 	public void update() {
 		super.update();
 		motion.x = 0;
-		if (collisions.contains(JumpAndJan.getPlayer())) {
-			JumpAndJan.getPlayer().hurt(1);
-		}
 		if (cdAttack > 0) {
 			if (Math.abs(level.getPlayer().getPivotX() - this.getPivotX()) < 320
 					&& Math.abs(JumpAndJan.getPlayer().getPivotX()
@@ -52,14 +49,20 @@ public class EntityUnicorn extends Entity {
 						.getPlayer().bounds.x) / (double) dur;
 				double vecY = (this.bounds.y - Constants.getActualLevel()
 						.getPlayer().bounds.y) / (double) dur;
-				bounds.x -= vecX;
-				bounds.y -= vecY;
+				motion.x -= vecX;
+				motion.y -= vecY;
 			}
 			attackct++;
 			if (attackct == 120) {
 				cdAttack = 300;
 				attackct = 0;
 			}
+		}
+	}
+
+	public void collide(at.jumpandjan.Object withObject) {
+		if (withObject instanceof EntityPlayer) {
+			JumpAndJan.getPlayer().hurt(1);
 		}
 	}
 

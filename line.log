@@ -1,4 +1,7 @@
-Tue May 07 13:07:38 CEST 2013 INFO:- Saving sDestroying Console
- 13:07:38 CEST 2013 INFO:- Saved stats.txt
-Tue May 07 13:07:38 CEST 2013 INFO:- Saving stats.txt
-Tue May 07 13:07:38 CEST 2013 INFO:- Saved stats.txt
+Listeners started
+Done creating new screen
+Loading sound game_music from C:\Users\michi\Documents\GitHub\Jump-n-Jan/main.ogg in OGG format
+Loading sound game_over from C:\Users\michi\Documents\GitHub\Jump-n-Jan/gameOver.ogg in OGG format
+Loading sound opp_psy_attack from C:\Users\michi\Documents\GitHub\Jump-n-Jan/opp_psy_attack.ogg in OGG format
+Loading sound party_music from C:\Users\michi\Documents\GitHub\Jump-n-Jan/party.ogg in OGG format
+Loading sound explosion from C:\Users\michi\Documents\GitHub\Jump-n-Jan/explosion.ogg in OGG format

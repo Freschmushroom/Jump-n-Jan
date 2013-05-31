@@ -5,11 +5,7 @@
 	<classpathentry kind="lib" path="jar/jinput.jar"/>
 	<classpathentry kind="lib" path="jar/lwjgl_test.jar"/>
 	<classpathentry kind="lib" path="jar/lwjgl_util.jar"/>
-	<classpathentry kind="lib" path="jar/lwjgl.jar">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Jump&apos;n&apos;Jan/native/windows"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="lib" path="jar/lwjgl.jar"/>
 	<classpathentry kind="lib" path="jar/slick-util.jar"/>
 	<classpathentry kind="lib" path="C:/Users/michi/workspace/jcommon-1.0.17.jar"/>
 	<classpathentry kind="lib" path="C:/Users/michi/workspace/jfreechart-1.0.14.jar"/>

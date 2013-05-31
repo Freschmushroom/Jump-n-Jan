@@ -10,10 +10,8 @@ public class EntityHaarfarbe extends Entity {
 		isGravityApplied = false;
 	}
 
-	@Override
-	public void update() {
-		super.update();
-		if (collisions.contains(level.getPlayer())) {
+	public void collide(at.jumpandjan.Object withObject) {
+		if (withObject instanceof EntityPlayer) {
 			level.getPlayer().addPoint();
 			this.kill(level.getPlayer());
 		}

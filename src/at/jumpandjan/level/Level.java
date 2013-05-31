@@ -6,7 +6,6 @@ import java.util.List;
 
 import at.freschmushroom.Out;
 import at.jumpandjan.Entity;
-import at.jumpandjan.EntityFinishFlag;
 import at.jumpandjan.EntityPlayer;
 import at.jumpandjan.EntityStartFlag;
 import at.jumpandjan.InterruptUpdateException;
@@ -25,6 +24,8 @@ public class Level {
 	private ArrayList<at.jumpandjan.Object> deadObjects = new ArrayList<at.jumpandjan.Object>();
 	private ArrayList<at.jumpandjan.Object> spawnObjects = new ArrayList<at.jumpandjan.Object>();
 	private List<String> unlocks = new ArrayList<String>();
+	
+	public ArrayList<at.jumpandjan.Object> collisionPool = new ArrayList<at.jumpandjan.Object>();
 	
 	public Level(LevelBuilder lb) {
 		start = lb.getStart();
@@ -45,29 +46,24 @@ public class Level {
 		third.add(player = new EntityPlayer(start.getPosX(), start.getPosY()
 				+ start.getHeight() - 64, 32, 64, this));
 		player.addEntityListener(new PlayerListener());
-		for (at.jumpandjan.Object o : second) {
-			for (at.jumpandjan.Object w : first) {
-				o.collision.add(w);
-			}
-		}
 		for (at.jumpandjan.Object o : first) {
-			for (at.jumpandjan.Object w : third) {
-				if (o instanceof EntityFinishFlag
-						|| o instanceof EntityStartFlag) {
-					o.collision.add(w);
-				} else {
-					w.collision.add(o);
-				}
+			if (o.hasCollision()) {
+				collisionPool.add(o);
 			}
 		}
 		for (at.jumpandjan.Object o : second) {
-			for (at.jumpandjan.Object w : third) {
-				o.collision.add(w);
+			if (o.hasCollision()) {
+				collisionPool.add(o);
 			}
 		}
 		for (at.jumpandjan.Object o : second_point) {
-			for (at.jumpandjan.Object w : third) {
-				o.collision.add(w);
+			if (o.hasCollision()) {
+				collisionPool.add(o);
+			}
+		}
+		for (at.jumpandjan.Object o : third) {
+			if (o.hasCollision()) {
+				collisionPool.add(o);
 			}
 		}
 	}
@@ -151,15 +147,13 @@ public class Level {
 			first.remove(o);
 			second.remove(o);
 			third.remove(o);
+			collisionPool.remove(o);
 		}
 		deadObjects.clear();
 		for (at.jumpandjan.Object o : spawnObjects) {
 			second.add(o);
-			for (at.jumpandjan.Object oo : first) {
-				o.collision.add(oo);
-			}
-			for (at.jumpandjan.Object oo : third) {
-				o.collision.add(oo);
+			if (o.hasCollision()) {
+				collisionPool.add(o);
 			}
 		}
 		spawnObjects.clear();

@@ -13,6 +13,7 @@ public class CompLabel extends Component {
 			Font.BOLD, 20), false);
 	private int align = TrueTypeFont.ALIGN_LEFT;
 	private boolean drawBackground;
+	public String color = "ffffff";
 
 	public CompLabel(int x, int y, int width, int height, String text) {
 		super(x, y, width, height);
@@ -48,7 +49,7 @@ public class CompLabel extends Component {
 
 			end();
 		}
-		color(255, 255, 255);
+		color("0x" + color);
 
 		glMatrixMode(GL_PROJECTION);
 		glPushMatrix();

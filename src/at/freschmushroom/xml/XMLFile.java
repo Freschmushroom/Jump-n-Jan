@@ -24,7 +24,7 @@ public class XMLFile
 	public XMLFile(File f) {
 		this.f = f;
 		if(!f.exists())
-			f.mkdir();
+			f.getAbsoluteFile().getParentFile().mkdirs();
 		this.name = f.getName();
 		this.path = f.getPath();
 		readBuffer();
@@ -45,6 +45,7 @@ public class XMLFile
 			if(f == null)
 				f = new File(path + "\\" + name + ".xml");
 			if(!f.exists()) {
+				f.getAbsoluteFile().getParentFile().mkdirs();
 				f.createNewFile();
 				return;
 			}
@@ -69,8 +70,9 @@ public class XMLFile
 			XMLParser p = new XMLParser(this);
 			p.parse();
 		} catch(IOException e) {
-			Errorhandling.handle(e);
-			Out.err("Failed to read from file " + path + "/" + name);
+			throw new RuntimeException(e);
+//			Errorhandling.handle(e);
+//			Out.err("Failed to read from file " + path + "/" + name);
 		}
 	}
 	

@@ -28,22 +28,10 @@ public class EntityHildegard extends Entity {
 	public void update() {
 		super.update();
 		motion.x = 0;
-		if (cdAttack == 0) {
-			if (collisions.contains(JumpAndJan.getPlayer())) {
-				attackct++;
-				cdAttack = 25;
-				state = 2;
-				cdAnimation = 12;
-				if (attackct > heartAttackIn) {
-					JumpAndJan.getPlayer().hurt(25);
-					level.addSpawnable(new EntityGhost(bounds.x, bounds.y,
-							level));
-					this.kill(this);
-				}
-				return;
-			}
-		} else {
+		if (cdAttack > 0) {
 			cdAttack--;
+		} else {
+			cdAttack = 0;
 		}
 		turned = !(bounds.x > Constants.getActualLevel().getPlayer().bounds.x);
 		double distance = Math.abs(level.getPlayer().getPivotX()
@@ -76,6 +64,20 @@ public class EntityHildegard extends Entity {
 				cdJump = 10;
 			} else
 				cdJump--;
+		}
+	}
+
+	public void collide(at.jumpandjan.Object withObject) {
+		if (cdAttack <= 0) {
+			attackct++;
+			cdAttack = 25;
+			state = 2;
+			cdAnimation = 12;
+			if (attackct > heartAttackIn) {
+				JumpAndJan.getPlayer().hurt(25);
+				level.addSpawnable(new EntityGhost(bounds.x, bounds.y, level));
+				this.kill(this);
+			}
 		}
 	}
 

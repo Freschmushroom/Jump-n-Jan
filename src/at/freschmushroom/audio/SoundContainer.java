@@ -3,112 +3,101 @@ package at.freschmushroom.audio;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayDeque;
+import java.util.HashMap;
+import java.util.Queue;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JProgressBar;
 
 import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.openal.AudioLoader;
 
 import at.freschmushroom.Errorhandling;
-import at.freschmushroom.Out;
+import at.jumpandjan.Constants;
+import at.jumpandjan.Out;
 
-/*
- * Neues layout
- * eventuell Musikaufruf
- * SoundContainer.play(Sound:String)
- */
+
 public class SoundContainer {
-	/**
-	 * NOT YET IMPLEMENTED
-	 */
-	public static Audio gameOver;
-	/**
-	 * The actual gameMusic which is always played in the background
-	 */
-	private static Audio gameMusic;
-	/**
-	 * The sound when psy attacks
-	 */
-	public static Audio opp_psy_attack;
-	public static Audio explosion;
-	public static Audio party_music;
+	public static final SoundLoadingThread mainLoadingThread = new SoundLoadingThread();
+	
+	private static HashMap<String, Audio> sounds = new HashMap<>();
 
-	/**
-	 * Initializes all sound sources Must call before starting any sounds
-	 */
+	private static void loadSound(String path, String format, String name) {
+		Out.line("Loading sound " + name + " from " + path + " in " + format
+				+ " format");
+		try {
+			sounds.put(name,
+					AudioLoader.getAudio(format, new FileInputStream(path)));
+		} catch (FileNotFoundException e) {
+			Out.err("Audio " + name + "@" + path
+					+ " not loadable: FileNotFound");
+			Errorhandling.handle(e);
+		} catch (IOException e) {
+			Out.err("Audio " + name + "@" + path
+					+ " not loadable: Other mistake");
+			Errorhandling.handle(e);
+		}
+	}
+
 	public static void init() {
-		try {
-			gameMusic = AudioLoader.getAudio("OGG",
-					new FileInputStream(System.getProperty("user.dir")
-							+ "\\main.ogg"));
-		} catch (FileNotFoundException e) {
-			Out.err("Audio System not loadable: FileNotFound");
-			Errorhandling.handle(e);
-		} catch (IOException e) {
-			Out.err("Audio System not loadable: Other mistake");
-			Errorhandling.handle(e);
-		}
-		try {
-			gameOver = AudioLoader.getAudio("OGG",
-					new FileInputStream(System.getProperty("user.dir")
-							+ "\\gameOver.ogg"));
-		} catch (FileNotFoundException e) {
-			Out.err("Audio System not loadable: FileNotFound");
-			Errorhandling.handle(e);
-		} catch (IOException e) {
-			Out.err("Audio System not loadable: Other mistake");
-			Errorhandling.handle(e);
-		}
-		try {
-			opp_psy_attack = AudioLoader.getAudio("OGG", new FileInputStream(
-					System.getProperty("user.dir") + "\\opp_psy_attack.ogg"));
-		} catch (FileNotFoundException e) {
-			Out.err("Audio System not loadable: FileNotFound");
-			Errorhandling.handle(e);
-		} catch (IOException e) {
-			Out.err("Audio System not loadable: Other mistake");
-			Errorhandling.handle(e);
-		}
-		try {
-			party_music = AudioLoader.getAudio("OGG", new FileInputStream(
-					System.getProperty("user.dir") + "\\party.ogg"));
-		} catch (FileNotFoundException e) {
-			Out.err("Audio System not loadable: FileNotFound");
-			Errorhandling.handle(e);
-		} catch (IOException e) {
-			Out.err("Audio System not loadable: Other mistake");
-			Errorhandling.handle(e);
-		}
-		try {
-			explosion = AudioLoader.getAudio("OGG",
-					new FileInputStream(System.getProperty("user.dir")
-							+ "\\explosion.ogg"));
-		} catch (FileNotFoundException e) {
-			Out.err("Audio System not loadable: FileNotFound");
-			Errorhandling.handle(e);
-		} catch (IOException e) {
-			Out.err("Audio System not loadable: Other mistake");
-			Errorhandling.handle(e);
-		}
+		new Thread(mainLoadingThread).start();
 	}
 
-	static {
-		Out.inf(SoundContainer.class, "23.08.12", "Felix", null);
+	public static void play(String sound) {
+		if (sounds.containsKey(sound))
+			sounds.get(sound).playAsMusic(1, 1, true);
 	}
 
-	/**
-	 * Starts the game music
-	 */
-	public static void startGameMusic() {
-		gameMusic.playAsMusic(1, 1, true);
+	public static void stop(String sound) {
+		if (sounds.containsKey(sound))
+			sounds.get(sound).stop();
 	}
-
-	/**
-	 * Stops the game music
-	 */
-	public static void stopGameMusic() {
-		try {
-			gameMusic.stop();
-		} catch (Error e) {
-			Errorhandling.handle(e);
+	
+	public static void stopAll() {
+		for (String s : sounds.keySet()) {
+			play(s);
+		}
+	}
+	
+	public static boolean isPlaying(String sound) {
+		if(sounds.containsKey(sound))
+			return sounds.get(sound).isPlaying();
+		return false;
+	}
+	
+	public static float getPosition(String sound) {
+		if(sounds.containsKey(sound))
+			return sounds.get(sound).getPosition();
+		return -1f;
+	}
+	
+	public static class SoundLoadingThread implements Runnable {
+		private Queue<String[]> loadingQueue = new ArrayDeque<String[]>();
+		public String currentSound;
+		
+		public void run() {
+			while (Constants.isRunning()) {
+				if (!loadingQueue.isEmpty()) {
+					String[] sound = loadingQueue.element();
+					loadingQueue.remove();
+					currentSound = sound[2];
+					try {
+						SoundContainer.loadSound(sound[0], sound[1], sound[2]);
+					} catch (Exception e) {
+						System.err.println("Error occured while loading " + currentSound);
+					}
+				}
+			}
+		}
+		
+		public int elementsInQueue() {
+			return loadingQueue.size();
+		}
+		
+		public void loadSound(String path, String format, String name) {
+			loadingQueue.add(new String[] {path, format, name});
 		}
 	}
 }

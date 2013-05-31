@@ -18,13 +18,11 @@ public class EntityMeatball extends Entity {
 	public void update() {
 		super.update();
 		motion.x = 0;
-		if (collisions.contains(JumpAndJan.getPlayer())) {
-			JumpAndJan.getPlayer().hurt(1);
-		}
 		if (Math.abs(level.getPlayer().getPivotX() - this.getPivotX()) < 320
 				&& Math.abs(JumpAndJan.getPlayer().getPivotX()
 						- this.getPivotX()) > 1) {
-			motion.x = (float) ((JumpAndJan.getPlayer().getPivotX() - this.getPivotX())
+			motion.x = (float) ((JumpAndJan.getPlayer().getPivotX() - this
+					.getPivotX())
 					/ Math.abs(JumpAndJan.getPlayer().getPivotX()
 							- this.getPivotX()) * 1.5f);
 		}
@@ -40,6 +38,12 @@ public class EntityMeatball extends Entity {
 		}
 	}
 
+	public void collide(at.jumpandjan.Object withObject) {
+		if (withObject instanceof EntityPlayer) {
+			JumpAndJan.getPlayer().hurt(1);
+		}
+	}
+
 	public void render() {
 		super.renderHealthbar();
 		super.render("/Opp_Meatball.png", bounds.width, bounds.height,
@@ -47,8 +51,8 @@ public class EntityMeatball extends Entity {
 	}
 
 	public void renderIcon() {
-		render("/Opp_Meatball.png", bounds.width - 4, bounds.height - 4, bounds.x + 2,
-				bounds.y + 2, 28, 26, 32, 32, false);
+		render("/Opp_Meatball.png", bounds.width - 4, bounds.height - 4,
+				bounds.x + 2, bounds.y + 2, 28, 26, 32, 32, false);
 	}
 
 	public double getDefaultWidth() {

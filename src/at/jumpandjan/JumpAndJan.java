@@ -25,7 +25,6 @@ public class JumpAndJan implements Constants.RAMListener {
 	public static final java.util.ArrayList<Gui> openGuis = new java.util.ArrayList<Gui>();
 
 	public static void main(String[] args) {
-		System.out.println(User.getUniqueName());
 		// System.exit(1);
 		try {
 			Constants.load();
@@ -70,11 +69,11 @@ public class JumpAndJan implements Constants.RAMListener {
 			Constants.setPaused(false);
 			Constants.setRunning(true);
 			if (Constants.isMusic())
-				SoundContainer.startGameMusic();
+				SoundContainer.play("game_music");
 
 			Constants.update();
 
-			openGuis.add(new GuiMainMenu());
+			openGuis.add(new GuiLoadingScreen());
 			long startTime = System.nanoTime();
 			long frameCount = 0;
 			while (!Display.isCloseRequested() && Constants.isRunning()) {
@@ -210,47 +209,7 @@ public class JumpAndJan implements Constants.RAMListener {
 		return Constants.getActualLevel() == null ? null : Constants
 				.getActualLevel().getPlayer();
 	}
-
-	public static void wooon() {
-		Constants.setRunning(false);
-		SoundContainer.stopGameMusic();
-		while (true) {
-			Constants.update();
-			glClearColor(0, 0, 1, 1);
-			glClear(GL_COLOR_BUFFER_BIT);
-			glLoadIdentity();
-			glEnable(GL_TEXTURE_2D);
-			FontRenderer.instance.drawStringAt("WON", 10, 10, 240, 160,
-					new float[] { 0, 1, 0 });
-			FontRenderer.instance.drawStringAt("Punkte", 10, 180, 240, 200,
-					new float[] { 0, 1, 0 });
-			FontRenderer.instance.drawStringAt(""
-					+ Constants.getActualLevel().getPlayer().getPoints(), 10,
-					220, 240, 240, new float[] { 0, 1, 0 });
-			glDisable(GL_TEXTURE_2D);
-			if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-				break;
-			}
-			Display.update();
-			Display.sync(60);
-		}
-		try {
-			AL.destroy();
-		} catch (Exception e) {
-			Errorhandling.handle(e);
-		}
-		try {
-			Display.destroy();
-		} catch (Exception e) {
-			Errorhandling.handle(e);
-		}
-		Constants.showRenderUpdateTimes();
-		// Out.printAllVersions();
-		// Out.printAllMissingFiles();
-		Out.destroy();
-		System.exit(0);
-	}
-
+	
 	private static Frame initFrame() {
 		try {
 			Constants.load();

@@ -22,11 +22,13 @@ public class EntityPsy extends Entity {
 		if (Math.abs(JumpAndJan.getPlayer().getPivotX() - this.getPivotX()) < 320
 				&& Math.abs(JumpAndJan.getPlayer().getPivotX()
 						- this.getPivotX()) > 1) {
-			motion.x = (float) ((JumpAndJan.getPlayer().getPivotX() - this.getPivotX())
+			motion.x = (float) ((JumpAndJan.getPlayer().getPivotX() - this
+					.getPivotX())
 					/ Math.abs(JumpAndJan.getPlayer().getPivotX()
 							- this.getPivotX()) * 1.5f);
 		}
-		if (JumpAndJan.getPlayer().bounds.y + JumpAndJan.getPlayer().bounds.height < this.bounds.y
+		if (JumpAndJan.getPlayer().bounds.y
+				+ JumpAndJan.getPlayer().bounds.height < this.bounds.y
 				&& onGround && JumpAndJan.getPlayer().onGround) {
 			if (cdJump <= 0) {
 				motion.y = -20;
@@ -34,18 +36,22 @@ public class EntityPsy extends Entity {
 			} else
 				cdJump--;
 		}
-		if (collisions.contains(JumpAndJan.getPlayer()) && cdAttack <= 0) {
+		cdAttack--;
+	}
+
+	public void collide(at.jumpandjan.Object withObject) {
+		if (withObject instanceof EntityPlayer && cdAttack <= 0) {
 			JumpAndJan.getPlayer().hurt(10);
 			cdAttack = 120;
-			SoundContainer.opp_psy_attack.playAsSoundEffect(1, 1, false);
+			SoundContainer.play("opp_psy_attack");
 		}
-		cdAttack--;
 	}
 
 	@Override
 	public void render() {
 		super.renderHealthbar();
-		super.render("/Opp_Psy.png", bounds.width, bounds.height, bounds.x, bounds.y, 32, 64, state ^ animState);
+		super.render("/Opp_Psy.png", bounds.width, bounds.height, bounds.x,
+				bounds.y, 32, 64, state ^ animState);
 		if (cdAnimation == 0) {
 			animState = !animState;
 			cdAnimation = 10;

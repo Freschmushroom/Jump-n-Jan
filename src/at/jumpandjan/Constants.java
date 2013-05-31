@@ -43,8 +43,9 @@ public class Constants {
 	private static String DEFAULT_LVL_FILE;
 	private static User CURRENT_USER;
 	public static final java.util.Random random = new java.util.Random();
-	
+
 	public static void load() {
+		loadNatives();
 		if (Display.isCreated()) {
 			CAMERA_BOUNDS.width = Display.getWidth();
 			CAMERA_BOUNDS.height = Display.getHeight();
@@ -58,8 +59,8 @@ public class Constants {
 		DEFAULT_LVL_FILE = levelName.getValue();
 		XMLTag seq1 = (XMLTag) r.getChild("seq1", false);
 		Constants.music = music.getValue().equals("true");
-//		actualLevel = new Level(
-//				LevelBuilder.load(Constants.levelName = levelName.getValue()));
+		// actualLevel = new Level(
+		// LevelBuilder.load(Constants.levelName = levelName.getValue()));
 		Constants.seq1 = seq1.getValue().equals("true");
 		Runtime rt = Runtime.getRuntime();
 		rt.runFinalization();
@@ -83,6 +84,36 @@ public class Constants {
 			}
 		}
 		setCores(rt.availableProcessors());
+	}
+
+	private static void loadNatives() {
+		String os = System.getProperty("os.name", "unknown").toLowerCase();
+		if (os.equals("unknown")) {
+			System.err
+					.println("Your Java Virtual Machine is likely damaged. Please check your OS settings");
+			System.exit(1);
+		}
+		if (os.contains("windows")) {
+			System.setProperty("org.lwjgl.librarypath", 
+					System.getProperty("user.dir") + File.separator + "native"
+							+ File.separator + "windows");
+		} else if (os.contains("linux")) {
+			System.setProperty("org.lwjgl.librarypath", 
+					System.getProperty("user.dir") + File.separator + "native"
+							+ File.separator + "linux");
+		} else if (os.contains("mac")) {
+			System.setProperty("org.lwjgl.librarypath", 
+					System.getProperty("user.dir") + File.separator + "native"
+							+ File.separator + "macosx");
+		} else if (os.contains("solaris")) {
+			System.setProperty("org.lwjgl.librarypath", 
+					System.getProperty("user.dir") + File.separator + "native"
+							+ File.separator + "solaris");
+		} else {
+			System.err.println("UNSUPPORTED PLATFORM: " + os
+					+ " ´. ABORTING...");
+			System.exit(1);
+		}
 	}
 
 	public static String getDEFAULT_LVL_FILE() {
@@ -332,7 +363,8 @@ public class Constants {
 	}
 
 	public static void setCameraY(int cameraY) {
-		CAMERA_BOUNDS.y = cameraY;;
+		CAMERA_BOUNDS.y = cameraY;
+		;
 	}
 
 	public static User getCURRENT_USER() {

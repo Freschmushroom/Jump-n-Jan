@@ -2,12 +2,7 @@ class at.jumpandjan.Constants:
 	Version: 22.10.12
 	Auhor: Felix
 class at.fclass at.jumpandjan.TextureManager:
-	Version: 29.08.2012
-	Auhor: Michael
-s at.freschmushroom.Intro:
-	Version: 07.11.12
-	Auhor: Felix
-class at.jumpandjan.level.Level:
+	Version: 29.08.2012class at.jumpandjan.level.Level:
 	Version: 23.10.12
 	Auhor: Felix, Michi
 class at.jumpandjan.level.LevelBuilder:
@@ -67,3 +62,6 @@ class at.jumpandjan.EntityPlayer:
 class at.freschmushroom.TextureManager:
 	Version: 29.08.12
 	Auhor: Michael
+class at.freschmushroom.Errorhandling:
+	Version: 06.11.12
+	Auhor: Felix

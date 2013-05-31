@@ -31,14 +31,17 @@ public class EntitySpaghetti extends Entity {
 					cdJump--;
 
 			}
-			if (collisions.contains(JumpAndJan.getPlayer())) {
-				this.hurt(2);
-			}
 			if (cdSpawn <= 0) {
 				level.addSpawnable(new EntityMeatball(bounds.x, bounds.y - 32, level));
 				cdSpawn = 60 * 3;
 			} else
 				cdSpawn--;
+		}
+	}
+	
+	public void collide(at.jumpandjan.Object withObject) {
+		if (withObject instanceof EntityPlayer) {
+			this.hurt(2);
 		}
 	}
 

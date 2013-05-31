@@ -22,9 +22,6 @@ public class EntityPedobaer extends Entity {
 	@Override
 	public void update() {
 		super.update();
-		if (collisions.contains(level.getPlayer()) && attack) {
-			level.getPlayer().hurt(10);
-		}
 		motion.x = 0;
 		if (Math.abs(level.getPlayer().getPivotX() - this.getPivotX()) < 640) {
 			if (Math.abs(level.getPlayer().getPivotX() - this.getPivotX()) > 290) {
@@ -52,6 +49,12 @@ public class EntityPedobaer extends Entity {
 				isGravityApplied = true;
 			}
 			cdAttack--;
+		}
+	}
+	
+	public void collide(at.jumpandjan.Object withObject) {
+		if (withObject instanceof EntityPlayer && attack) {
+			level.getPlayer().hurt(10);
 		}
 	}
 

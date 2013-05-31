@@ -23,7 +23,6 @@ import at.jumpandjan.level.Level;
 
 public class Entity extends Object {
 	protected boolean state;
-	protected HashSet<Object> collisions;
 	protected boolean alive = true;
 	protected boolean isGravityApplied = true;
 	protected boolean isInfluencedByCollision = true;
@@ -36,7 +35,6 @@ public class Entity extends Object {
 
 	public Entity(double x, double y, double width, double height, Level level) {
 		super(x, y, width, height, level);
-		collisions = new HashSet<Object>();
 		entityListener = new ArrayList<EntityListener>();
 	}
 
@@ -48,14 +46,10 @@ public class Entity extends Object {
 		if (isGravityApplied) {
 			if (!onGround) {
 				motion.y += 1;
-				if (this instanceof EntityPlayer) {
-					System.out.println(motion.y);
-				}
 			} else if (motion.y == 0) {
 				motion.y = 1;
 			}
 		}
-		collisions.clear();
 		if (motion.length() != 0) {
 			if (motion.x != 0) {
 				int startX = bounds.x;
@@ -63,9 +57,13 @@ public class Entity extends Object {
 				int direction = (motion.x < 0) ? -1 : 1;
 				boolean arrived = false;
 				while (!arrived) {
-					for (at.jumpandjan.Object o : collision) {
+					for (at.jumpandjan.Object o : level.collisionPool) {
+						if (this == o) {
+							continue;
+						}
 						if (o.bounds.intersects(tempBounds)) {
-							collisions.add(o);
+							collide(o);
+							o.collide(this);
 							arrived = true;
 						}
 					}
@@ -78,12 +76,12 @@ public class Entity extends Object {
 					}
 				}
 			} else {
-				for (at.jumpandjan.Object o : collision) {
+				for (at.jumpandjan.Object o : level.collisionPool) {
 					if (!o.shouldRender()) {
 						continue;
 					}
 					if (o.bounds.intersects(bounds)) {
-						collisions.add(o);
+						
 					}
 				}
 			}
@@ -94,9 +92,13 @@ public class Entity extends Object {
 				int direction = (motion.y < 0) ? -1 : 1;
 				boolean arrived = false;
 				while (!arrived) {
-					for (at.jumpandjan.Object o : collision) {
+					for (at.jumpandjan.Object o : level.collisionPool) {
+						if (this == o) {
+							continue;
+						}
 						if (o.bounds.intersects(tempBounds)) {
-							collisions.add(o);
+							collide(o);
+							o.collide(this);
 							arrived = true;
 							if (direction == 1) {
 								onGround = true;
@@ -113,9 +115,10 @@ public class Entity extends Object {
 					}
 				}
 			} else {
-				for (at.jumpandjan.Object o : collision) {
+				for (at.jumpandjan.Object o : level.collisionPool) {
 					if (o.bounds.intersects(bounds)) {
-						collisions.add(o);
+						collide(o);
+						o.collide(this);
 					}
 				}
 			}

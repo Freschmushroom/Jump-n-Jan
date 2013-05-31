@@ -36,9 +36,6 @@ public class EntityWaitrose extends Entity {
 			} else
 				cdJump--;
 		}
-		if (collisions.contains(JumpAndJan.getPlayer())) {
-			JumpAndJan.getPlayer().hurt(2);
-		}
 	}
 
 	@Override
@@ -52,6 +49,12 @@ public class EntityWaitrose extends Entity {
 		super.render("/Opp_Cactus.png", 2 * bounds.width / 3, bounds.height,
 				bounds.x + bounds.width / 6, bounds.y, 128, 256, 128, 256,
 				false);
+	}
+	
+	public void collide(at.jumpandjan.Object withObject) {
+		if (withObject instanceof EntityPlayer) {
+			JumpAndJan.getPlayer().hurt(2);
+		}
 	}
 
 	static {

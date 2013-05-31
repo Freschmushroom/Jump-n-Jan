@@ -263,8 +263,6 @@ public class EntityPlayer extends Entity {
 				else
 					x = (int) (this.bounds.x + this.bounds.width);
 				sword = new EntitySword(x, bounds.y, 30, bounds.height, level, 20, this);
-				sword.collision = (List<Object>) level.getSecond().clone();
-				sword.collision.remove(sword);
 				level.getSecond().add(sword);
 			} else if (attackState == END_ATTACK_ANIMATION) {
 				if (sword != null) {

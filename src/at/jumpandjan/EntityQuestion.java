@@ -25,10 +25,6 @@ public class EntityQuestion extends Entity {
 	@Override
 	public void update() {
 		super.update();
-		if (collisions.contains(Constants.getActualLevel().getPlayer())) {
-			Constants.getActualLevel().getPlayer().hurt(10);
-			this.kill(this);
-		}
 		bounds.x -= vecX;
 		bounds.y -= vecY;
 		// if(x >= Constants.getActualLevel().getFinish() || x <
@@ -36,6 +32,13 @@ public class EntityQuestion extends Entity {
 		// Intro.vertMvmt) {
 		// this.kill(this);
 		// }
+	}
+
+	public void collide(at.jumpandjan.Object withObject) {
+		if (withObject instanceof EntityPlayer) {
+			Constants.getActualLevel().getPlayer().hurt(10);
+			this.kill(this);
+		}
 	}
 
 	@Override
