@@ -93,18 +93,4 @@ public class GuiMainMenu extends Gui {
 		end();
 		popMatrix();
 	}
-	
-	public void resized() {
-		loadGame.setCenter(
-				Constants.getCameraWidth() / 2, 100);
-		newGame.setCenter(
-				Constants.getCameraWidth() / 2, loadGame.getY()
-				+ (int) (loadGame.getHeight() * 2));
-		options.setCenter(
-				Constants.getCameraWidth() / 2, newGame.getY()
-				+ (int) (newGame.getHeight() * 2));
-		quit.setCenter(
-				Constants.getCameraWidth() / 2, options.getY()
-				+ (int) (options.getHeight() * 2));
-	}
 }

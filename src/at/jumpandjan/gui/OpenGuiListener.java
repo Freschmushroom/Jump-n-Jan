@@ -29,7 +29,6 @@ public class OpenGuiListener implements ActionListener {
 		if (closeCurrentGui) {
 			JumpAndJan.closeCurrentGui();
 		}
-		Constants.setActualLevel(null);
 		JumpAndJan.openGui(gui);
 	}
 }

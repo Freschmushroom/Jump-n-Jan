@@ -60,10 +60,18 @@ public class EntitySword extends at.jumpandjan.Entity {
 			Entity e = (Entity) withObject;
 			e.hurt(damage, wielder);
 		}
-		System.err.println("WOOLOOLOO");
 	}
 
 	public boolean hasCollision() {
 		return false;
+	}
+	
+	public void update() {
+		super.update();
+		for (at.jumpandjan.Object o : level.collisionPool) {
+			if (o instanceof Entity && o != wielder && o.bounds.intersects(bounds)) {
+				collide(o);
+			}
+		}
 	}
 }

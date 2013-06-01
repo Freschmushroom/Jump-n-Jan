@@ -1,7 +1,7 @@
 package at.jumpandjan.gui;
 
 
-public abstract class Component extends Gui {
+public abstract class Component extends Gui implements Cloneable {
 	private int x, y, width, height;
 
 	public Component(int x, int y, int width, int height) {
@@ -93,5 +93,14 @@ public abstract class Component extends Gui {
 	}
 
 	public void drawComponent() {
+	}
+	
+	public Object copy() {
+		try {
+			return clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

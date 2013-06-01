@@ -75,7 +75,11 @@ public abstract class Gui {
 	}
 	
 	public void clip(int x, int y, int width, int height) {
-		glScissor(x, y, width, height);
+		int realX = (int) (x / 640f * Constants.getCameraWidth());
+		int realY = (int) ((480 - height) / 480f * Constants.getCameraHeight());
+		int realWidth = (int) (width / 640f * Constants.getCameraWidth());
+		int realHeight = (int) ((480 - y - realY) / 480f * Constants.getCameraHeight());
+		glScissor(realX, realY, realWidth, realHeight);
 	}
 
 	public void addVertexUV(int x, int y, int u, int v) {

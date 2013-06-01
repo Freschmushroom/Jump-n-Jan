@@ -43,7 +43,7 @@ public class EntityPsy extends Entity {
 		if (withObject instanceof EntityPlayer && cdAttack <= 0) {
 			JumpAndJan.getPlayer().hurt(10);
 			cdAttack = 120;
-			SoundContainer.play("opp_psy_attack");
+			SoundContainer.play_once("opp_psy_attack");
 		}
 	}
 

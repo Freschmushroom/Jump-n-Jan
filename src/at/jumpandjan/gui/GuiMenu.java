@@ -26,7 +26,24 @@ public class GuiMenu extends Gui {
 						+ (int) (options.getHeight() * 2));
 
 		mainMenu.addButtonListener(new OpenGuiListener(new GuiMainMenu()));
+		mainMenu.addButtonListener(new ActionListener() {
 
+			public void onClicked(CompButton source) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void onReleased(CompButton source) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void onPressed(CompButton source) {
+				Constants.setActualLevel(null);
+			}
+			
+		});
+		
 		saveGame.addButtonListener(new ActionListener() {
 
 			public void onClicked(CompButton source) {
@@ -44,6 +61,8 @@ public class GuiMenu extends Gui {
 
 		});
 
+		options.addButtonListener(new OpenGuiListener(new GuiOptions(), false));
+		
 		quit.addButtonListener(new GameQuitListener());
 
 		components.add(mainMenu);

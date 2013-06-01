@@ -113,12 +113,12 @@
   </Point>
   <EntityUnicorn>
     posX=400
-    posY=0
+    posY=100
     width=32
     height=32
   </EntityUnicorn>
   <EntityHildegard>
-    posX=380
+    posX=368
     posY=100
     width=32
     height=64

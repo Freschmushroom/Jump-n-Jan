@@ -59,7 +59,7 @@ public class GuiLoadingScreen extends Gui {
 			soundLabel.setText("Loading " + soundName + " . . .");
 			progressBar.value++;
 		}
-		if (progressBar.value == progressBar.max) {
+		if (progressBar.value == progressBar.max || SoundContainer.mainLoadingThread.elementsInQueue() == 0) {
 			JumpAndJan.closeAllGuis();
 			JumpAndJan.openGui(new GuiMainMenu());
 			return;
@@ -77,12 +77,5 @@ public class GuiLoadingScreen extends Gui {
 
 		end();
 		popMatrix();
-	}
-
-	public void resized() {
-		progressBar.setX((Constants.getCameraWidth() - 400) / 2);
-		progressBar.setY((Constants.getCameraHeight() - 20) / 2);
-		soundLabel.setX((Constants.getCameraWidth() - 400) / 2);
-		soundLabel.setY((Constants.getCameraHeight() - 20) / 2 - 75);
 	}
 }

@@ -55,6 +55,7 @@ public class LevelBuilder implements Serializable {
 					width = Double.parseDouble(((XMLAttribut) n.getChild("width", false)).getValue());
 					height = Double.parseDouble(((XMLAttribut) n.getChild("height", false)).getValue());
 					b.start = new FlexibleElement(posX, posY, width, height, EntityStartFlag.class);
+					continue;
 				}
 				// if(n.getName().equalsIgnoreCase("wall")) {
 				// int pos, length, height;

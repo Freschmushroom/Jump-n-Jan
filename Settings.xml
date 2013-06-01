@@ -1,9 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Settings>
-  <music>true</music>
-  <audio>
-    volume=100.0
-  </audio>
-  <level>Level0.xml</level>
-  <seq1>false</seq1>
+  <music>
+    text=Play music on startup
+    type=bool
+    value=false
+  </music>
+  <level>
+    text=Default level
+    type=label
+    value=Level0.xml 
+  </level>
+  <seq1>
+    text=Show Party Sequence
+    type=bool
+    value=false
+  </seq1>
 </Settings>

@@ -1,11 +1,9 @@
 package at.jumpandjan.gui;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
+import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.ObjectInputStream;
-import java.io.StringWriter;
 import java.util.ArrayList;
 
 import at.jumpandjan.Constants;
@@ -57,27 +55,16 @@ public class GuiUserSaveStates extends Gui {
 				continue;
 			}
 			try {
-				StringWriter stringWriter = new StringWriter();
-				BufferedReader reader = new BufferedReader(new FileReader(f));
-				for (int i; (i = reader.read()) != -1; ) {
-					stringWriter.write((char) i);
-				}
-				String file = stringWriter.toString();
-				System.out.println(file);
-				if (!file.isEmpty()) {
-					ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(file.getBytes("UTF-8")));
-					users.add((User) ois.readObject());
-					ois.close();
-				}
+				ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(f)));
+				
+				User user = (User) ois.readObject();
+				users.add(user);
+				
+				ois.close();
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.err.println(f.getName() + " could not be read.");
 			}
 		}
-	}
-
-	public void resized() {
-		title.autoDesign(Constants.getCameraWidth() / 2, 10);
-		back.setCenter(100, Constants.getCameraHeight() - 75);
 	}
 
 	class UserButtonListener implements ActionListener {

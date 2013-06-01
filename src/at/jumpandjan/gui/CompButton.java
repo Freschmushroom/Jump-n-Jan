@@ -67,6 +67,7 @@ public class CompButton extends Component {
 	public void setWidth(int width) {
 		if (width < 20)
 			width = 20;
+		super.setWidth(width);
 	}
 
 	// @Deprecated

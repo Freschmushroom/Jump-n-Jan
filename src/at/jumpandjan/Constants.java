@@ -13,6 +13,7 @@ import org.lwjgl.opengl.Display;
 import at.freschmushroom.Errorhandling;
 import at.freschmushroom.Out;
 import at.freschmushroom.ServiceProvider;
+import at.freschmushroom.xml.XMLAttribut;
 import at.freschmushroom.xml.XMLDeclaration;
 import at.freschmushroom.xml.XMLFile;
 import at.freschmushroom.xml.XMLNode;
@@ -55,14 +56,14 @@ public class Constants {
 		running = true;
 		XMLFile f = new XMLFile(new File("settings.xml"));
 		XMLNode r = (XMLNode) f.getRoot();
-		XMLTag music = (XMLTag) r.getChild("music", false);
-		XMLTag levelName = (XMLTag) r.getChild("level", false);
-		DEFAULT_LVL_FILE = levelName.getValue();
-		XMLTag seq1 = (XMLTag) r.getChild("seq1", false);
-		Constants.music = music.getValue().equals("true");
+		XMLNode music = (XMLNode) r.getChild("music", false);
+		XMLNode level = (XMLNode) r.getChild("level", false);
+		DEFAULT_LVL_FILE = ((XMLAttribut) level.getChild("value", false)).getValue();
+		XMLNode seq1 = (XMLNode) r.getChild("seq1", false);
+		Constants.music = ((XMLAttribut) music.getChild("value", false)).getValue().equals("true");
 		// actualLevel = new Level(
 		// LevelBuilder.load(Constants.levelName = levelName.getValue()));
-		Constants.seq1 = seq1.getValue().equals("true");
+		Constants.seq1 = ((XMLAttribut) seq1.getChild("value", false)).getValue().equals("true");
 		Runtime rt = Runtime.getRuntime();
 		rt.runFinalization();
 		rt.gc();

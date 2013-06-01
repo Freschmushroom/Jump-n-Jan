@@ -7,10 +7,7 @@ import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Queue;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JProgressBar;
-
+import org.lwjgl.openal.AL10;
 import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.openal.AudioLoader;
 
@@ -48,6 +45,11 @@ public class SoundContainer {
 	public static void play(String sound) {
 		if (sounds.containsKey(sound))
 			sounds.get(sound).playAsMusic(1, 1, true);
+	}
+	
+	public static void play_once(String sound) {
+		if (sounds.containsKey(sound))
+			sounds.get(sound).playAsMusic(1, 1, false);
 	}
 
 	public static void stop(String sound) {

@@ -126,7 +126,8 @@ public class User implements Serializable {
 				try {
 					ObjectInputStream ois = new ObjectInputStream(
 							new BufferedInputStream(new FileInputStream(f)));
-					while (ois.readObject() != null);
+					User user = (User) ois.readObject();
+					userMap.put(user.name.toLowerCase(), user);
 					ois.close();
 				} catch (Exception e) {
 					e.printStackTrace();
