@@ -21,8 +21,9 @@ public class GuiUserSaveStates extends Gui {
 
 	public GuiUserSaveStates() {
 		title = new CompLabel(0, 0, 0, 0, "Choose User");
-		title.autoDesign(Constants.getCameraWidth() / 2, 10);
-
+		title.autoDesign(320, 10);
+		title.color = "000000";
+		
 		addUser = new CompButton(0, 0, 150, 40, "Create User");
 		addUser.setCenter(100, Constants.getCameraHeight() - 150);
 		addUser.addButtonListener(new UserAddListener());

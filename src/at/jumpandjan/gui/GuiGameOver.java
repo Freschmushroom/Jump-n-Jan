@@ -14,8 +14,8 @@ public class GuiGameOver extends Gui {
 
 	public GuiGameOver(float r, float g, float b, String message) {
 		setBackground(r, g, b);
-		label = new CompLabel(0, 0, 0, 0, "[color=0,0,0]" + message
-				+ "[/color]").autoDesign(Constants.getCameraWidth() / 2, 100);
+		label = new CompLabel(0, 0, 0, 0, message).autoDesign(
+				Constants.getCameraWidth() / 2, 100);
 		mainMenu = new CompButton(0, 0, 400, 40, "Go to Main Menu").setCenter(
 				Constants.getCameraWidth() / 2, 250);
 		levels = new CompButton(0, 0, 200, 40, "Choose level").setCenter(
@@ -27,9 +27,15 @@ public class GuiGameOver extends Gui {
 		TrueTypeFont font = new TrueTypeFont(new Font("monospaced", Font.PLAIN,
 				40), true);
 		label.setFont(font);
+		String color = String.format("%02x%02x%02x", new Object[] {
+				((int) (r * 255)), ((int) (g * 255)), ((int) (b * 255)) });
+		label.color = color;
+		System.out.println(color);
 
 		mainMenu.addButtonListener(new OpenGuiListener(new GuiMainMenu()));
-		levels.addButtonListener(new OpenGuiListener(new GuiLevelChooser()));
+		levels.addButtonListener(new OpenGuiListener(new GuiMainMenu(), false));
+		levels.addButtonListener(new OpenGuiListener(new GuiUserSaveStates(), false));
+		levels.addButtonListener(new OpenGuiListener(new GuiLevelChooser(), false));
 
 		components.add(label);
 		components.add(mainMenu);

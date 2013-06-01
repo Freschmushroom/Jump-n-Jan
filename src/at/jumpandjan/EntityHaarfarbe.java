@@ -22,6 +22,10 @@ public class EntityHaarfarbe extends Entity {
 		super.render("/Janny_Farbe.png", bounds.width, bounds.height, bounds.x,
 				bounds.y, 16, 16, state);
 	}
+	
+	public boolean checkCollisionWith(at.jumpandjan.Object withObject) {
+		return super.checkCollisionWith(withObject) && withObject instanceof EntityPlayer;
+	}
 
 	static {
 		Out.inf(EntityHaarfarbe.class, "22.10.12", "Felix", null);

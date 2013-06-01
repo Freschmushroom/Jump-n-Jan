@@ -25,4 +25,7 @@ public class EntityGhost extends Entity {
 				bounds.x, bounds.y, 32, 64, true);
 	}
 
+	public boolean hasCollision() {
+		return false;
+	}
 }

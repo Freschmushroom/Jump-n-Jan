@@ -52,8 +52,8 @@ public class EntitySword extends at.jumpandjan.Entity {
 	 * rendered.<br />
 	 * It is solely logical.
 	 */
-//	public void render() {
-//	}
+	public void render() {
+	}
 
 	public void collide(at.jumpandjan.Object withObject) {
 		if (withObject instanceof Entity) {

@@ -58,7 +58,7 @@ public class Entity extends Object {
 				boolean arrived = false;
 				while (!arrived) {
 					for (at.jumpandjan.Object o : level.collisionPool) {
-						if (this == o) {
+						if (!o.checkCollisionWith(this) || !this.checkCollisionWith(o)) {
 							continue;
 						}
 						if (o.bounds.intersects(tempBounds)) {
@@ -75,15 +75,6 @@ public class Entity extends Object {
 								tempBounds.y);
 					}
 				}
-			} else {
-				for (at.jumpandjan.Object o : level.collisionPool) {
-					if (!o.shouldRender()) {
-						continue;
-					}
-					if (o.bounds.intersects(bounds)) {
-						
-					}
-				}
 			}
 			if (motion.y != 0) {
 				int startY = bounds.y;
@@ -93,7 +84,7 @@ public class Entity extends Object {
 				boolean arrived = false;
 				while (!arrived) {
 					for (at.jumpandjan.Object o : level.collisionPool) {
-						if (this == o) {
+						if (!o.checkCollisionWith(this) || !this.checkCollisionWith(o)) {
 							continue;
 						}
 						if (o.bounds.intersects(tempBounds)) {
@@ -112,13 +103,6 @@ public class Entity extends Object {
 						bounds = (Rectangle) tempBounds.clone();
 						tempBounds.setLocation(tempBounds.x, tempBounds.y
 								+ direction);
-					}
-				}
-			} else {
-				for (at.jumpandjan.Object o : level.collisionPool) {
-					if (o.bounds.intersects(bounds)) {
-						collide(o);
-						o.collide(this);
 					}
 				}
 			}

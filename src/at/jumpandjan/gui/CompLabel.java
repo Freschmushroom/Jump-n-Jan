@@ -93,7 +93,7 @@ public class CompLabel extends Component {
 	}
 
 	public CompLabel autoDesign(int centerX, int posY) {
-		setTextAlignment(TrueTypeFont.ALIGN_LEFT);
+		setTextAlignment(TrueTypeFont.ALIGN_CENTER);
 		setWidth(font.getWidth(text));
 		setHeight(font.getHeight(text));
 		setX(centerX - getWidth() / 2);

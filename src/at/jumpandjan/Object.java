@@ -204,6 +204,10 @@ public class Object {
 		return true;
 	}
 	
+	public boolean checkCollisionWith(at.jumpandjan.Object withObject) {
+		return this != withObject && hasCollision();
+	}
+	
 	public void collide(at.jumpandjan.Object withObject) {
 		
 	}
