@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Settings>
   <music>true</music>
+  <audio>
+    volume=100.0
+  </audio>
   <level>Level0.xml</level>
   <seq1>false</seq1>
 </Settings>

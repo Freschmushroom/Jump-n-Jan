@@ -75,6 +75,8 @@ public class CompButton extends Component {
 	// }
 
 	public void drawComponent() {
+		color(255, 255, 255, 255);
+		
 		int yOffset = (enabled ? (mouseClicked ? 2 : (mouseHover ? 1 : 0)) : 3) * 32;
 
 		bindTexture("/button.png");

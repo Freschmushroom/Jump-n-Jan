@@ -1,6 +1,6 @@
 package at.jumpandjan.gui;
 
-import static org.lwjgl.opengl.GL11.GL_LINES;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
 import static org.lwjgl.opengl.GL11.GL_POINTS;
 import static org.lwjgl.opengl.GL11.GL_PROJECTION;
@@ -32,20 +32,26 @@ import at.jumpandjan.Constants;
 import at.jumpandjan.TextureManager;
 
 public abstract class Gui {
+
 	private BufferedImage boundImage;
 
 	public static final int POINTS = GL_POINTS, QUADS = GL_QUADS,
 			TRIANGLES = GL_TRIANGLES, LINES = GL_LINES;
 
 	protected java.util.ArrayList<Component> components = new java.util.ArrayList<Component>();
-	
+
 	public void addVertex(int x, int y) {
 		glVertex2f(x, y);
 	}
 
 	public void bindTexture(String texture) {
-		boundImage = TextureManager.instance.getImage(texture);
-		TextureManager.instance.bindTexture(texture);
+		if (texture == null) {
+			boundImage = null;
+			TextureManager.instance.unbind();
+		} else {
+			boundImage = TextureManager.instance.getImage(texture);
+			TextureManager.instance.bindTexture(texture);
+		}
 	}
 
 	public void begin(int mode) {
@@ -63,15 +69,19 @@ public abstract class Gui {
 	public void popMatrix() {
 		glPopMatrix();
 	}
-	
+
 	public void loadIdentity() {
 		glLoadIdentity();
+	}
+	
+	public void clip(int x, int y, int width, int height) {
+		glScissor(x, y, width, height);
 	}
 
 	public void addVertexUV(int x, int y, int u, int v) {
 		addVertexUV((double) x, (double) y, u, v);
 	}
-	
+
 	public void addVertexUV(double x, double y, int u, int v) {
 		if (boundImage == null)
 			throw new IllegalStateException(
@@ -119,50 +129,53 @@ public abstract class Gui {
 	public void paint() {
 
 	}
-	
+
 	public void color(String color) {
 		color(java.awt.Color.decode(color));
 	}
-	
+
 	public void color(java.awt.Color color) {
 		color(color.getRed(), color.getGreen(), color.getBlue());
 	}
-	
+
 	public void color(int red, int green, int blue) {
 		color(red, green, blue, 255);
 	}
-	
+
 	public void color(int red, int green, int blue, int alpha) {
 		color(red / 255f, green / 255f, blue / 255f, alpha / 255f);
 	}
-	
+
 	public void color(float red, float green, float blue) {
 		color(red, green, blue, 1);
 	}
-	
+
 	public void color(float red, float green, float blue, float alpha) {
 		glColor4f(red, green, blue, alpha);
 	}
 
-	public boolean fireKeyboardEvent(boolean eventKeyState, int eventKey, int mouseX, int mouseY) {
+	public boolean fireKeyboardEvent(boolean eventKeyState, int eventKey,
+			int mouseX, int mouseY) {
 		return false;
 	}
-	
-	public boolean fireMouseEvent(boolean eventButtonState, int eventButton, int mouseX, int mouseY, int dX, int dY) {
+
+	public boolean fireMouseEvent(boolean eventButtonState, int eventButton,
+			int mouseX, int mouseY, int dX, int dY) {
 		mouseX = (int) ((double) mouseX / (double) Constants.getCameraWidth() * 640);
 		mouseY = (int) ((double) mouseY / (double) Constants.getCameraHeight() * 480);
 		for (Component c : components) {
-			if (c.fireMouseEvent(eventButtonState, eventButton, mouseX, mouseY, dX, dY)) {
+			if (c.fireMouseEvent(eventButtonState, eventButton, mouseX, mouseY,
+					dX, dY)) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	public void resized() {
 	}
-	
+
 	public void updateWhileInactive() {
 		for (Component c : components) {
 			c.updateWhileInactive();

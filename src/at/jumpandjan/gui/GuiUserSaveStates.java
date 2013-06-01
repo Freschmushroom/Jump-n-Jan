@@ -1,9 +1,11 @@
 package at.jumpandjan.gui;
 
-import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.ObjectInputStream;
+import java.io.StringWriter;
 import java.util.ArrayList;
 
 import at.jumpandjan.Constants;
@@ -54,10 +56,18 @@ public class GuiUserSaveStates extends Gui {
 				continue;
 			}
 			try {
-				ObjectInputStream ois = new ObjectInputStream(
-						new BufferedInputStream(new FileInputStream(f)));
-				users.add((User) ois.readObject());
-				ois.close();
+				StringWriter stringWriter = new StringWriter();
+				BufferedReader reader = new BufferedReader(new FileReader(f));
+				for (int i; (i = reader.read()) != -1; ) {
+					stringWriter.write((char) i);
+				}
+				String file = stringWriter.toString();
+				System.out.println(file);
+				if (!file.isEmpty()) {
+					ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(file.getBytes("UTF-8")));
+					users.add((User) ois.readObject());
+					ois.close();
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -97,13 +107,13 @@ public class GuiUserSaveStates extends Gui {
 		}
 
 		public void onPressed(CompButton source) {
-//			Display.destroy();
-//			Mouse.destroy();
-//			Keyboard.destroy();
-//			JumpAndJan.parent.setVisible(false);
-//			System.out.println(JOptionPane.showInputDialog(JumpAndJan.parent,
-//					"Please enter a username", null));
-//			JumpAndJan.parent.setVisible(true);
+			// Display.destroy();
+			// Mouse.destroy();
+			// Keyboard.destroy();
+			// JumpAndJan.parent.setVisible(false);
+			// System.out.println(JOptionPane.showInputDialog(JumpAndJan.parent,
+			// "Please enter a username", null));
+			// JumpAndJan.parent.setVisible(true);
 		}
 	}
 }

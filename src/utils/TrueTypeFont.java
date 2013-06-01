@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
+import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
@@ -13,8 +15,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
-import java.awt.GraphicsEnvironment;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -32,6 +34,9 @@ import org.lwjgl.util.glu.GLU;
  * @new version edited by David Aaron Muhar (bobjob)
  */
 public class TrueTypeFont {
+	public static final Map<TextAttribute, Object> defaultStyle = new Hashtable<TextAttribute, Object>();
+	public static final Map<TextAttribute, Object> underlined = new Hashtable<TextAttribute, Object>();
+	
 	public final static int ALIGN_LEFT = 0, ALIGN_RIGHT = 1, ALIGN_CENTER = 2;
 	/** Array that holds necessary information about the font characters */
 	private IntObject[] charArray = new IntObject[256];
@@ -341,31 +346,22 @@ public class TrueTypeFont {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, fontTextureID);
 		GL11.glBegin(GL11.GL_QUADS);
 		
-		boolean inBB = false;
-		StringBuilder bb = new StringBuilder();
 		
 		while (i >= startIndex && i <= endIndex) {
 
 			charCurrent = whatchars.charAt(i);
-			if (charCurrent == '[') {
-				inBB = !inBB;
-				if (inBB) {
-					i++;
-					continue;
-				}
-			} else if (charCurrent == ']') {
-				if (inBB) {
-					executeBB(bb);
-					i++;
-					continue;
-				}
-			} else {
-				if (inBB) {
-					bb.append((char) i);
-					i++;
-					continue;
-				}
+			
+			if (charCurrent == '\\') {
+				i += d;
+				continue;
 			}
+			
+			if (i > startIndex && whatchars.charAt(i - 1) == '\\') {
+				executeSC(charCurrent);
+				i += d;
+				continue;
+			}
+			
 			if (charCurrent < 256) {
 				intObject = charArray[charCurrent];
 			} else {
@@ -493,6 +489,16 @@ public class TrueTypeFont {
 	public void executeBB(CharSequence bb) {
 		executeBB(bb.toString());
 	}
+	
+	public void executeSC(int sc) {
+		executeSC((char) sc);
+	}
+	
+	public void executeSC(char sc) {
+		if (sc == 'u') {
+			font = font.deriveFont(underlined);
+		}
+	}
 
 	public static boolean isSupported(String fontname) {
 		Font font[] = getFonts();
@@ -517,5 +523,10 @@ public class TrueTypeFont {
 		scratch.put(0, fontTextureID);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 		GL11.glDeleteTextures(scratch);
+	}
+	
+	static {
+		defaultStyle.put(TextAttribute.UNDERLINE, -1);
+		underlined.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 	}
 }

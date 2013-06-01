@@ -58,6 +58,8 @@ public class GuiMainMenu extends Gui {
 			}
 		});
 
+		options.addButtonListener(new OpenGuiListener(new GuiOptions(), false));
+		
 		quit.addButtonListener(new GameQuitListener());
 
 		components.add(loadGame);

@@ -22,6 +22,7 @@ public class JumpAndJan implements Constants.RAMListener {
 	public static Frame parent;
 	public static Canvas canvas;
 
+	
 	public static final java.util.ArrayList<Gui> openGuis = new java.util.ArrayList<Gui>();
 
 	public static void main(String[] args) {
@@ -61,6 +62,7 @@ public class JumpAndJan implements Constants.RAMListener {
 					glEnable(GL_TEXTURE_2D);
 					glEnable(GL_BLEND);
 					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					glEnable(GL_SCISSOR_TEST);
 				}
 			} catch (LWJGLException e) {
 				Errorhandling.handle(e);
@@ -91,7 +93,7 @@ public class JumpAndJan implements Constants.RAMListener {
 					Constants.setCameraX((int) (getPlayer().bounds.x - Display
 							.getWidth() / 2));
 				}
-
+				glScissor(0, 0, Display.getWidth(), Display.getHeight());
 				glClearColor(1, 1, 1, 1);
 				glClear(GL_COLOR_BUFFER_BIT);
 				glLoadIdentity();
