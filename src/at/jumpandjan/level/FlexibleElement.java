@@ -3,7 +3,17 @@ package at.jumpandjan.level;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 
+import at.freschmushroom.Out;
+
+/**
+ * An element used for building levels; takes a class and instanciates it with the default bounds and level as arguments
+ * @author Michael
+ *
+ */
 public class FlexibleElement extends LevelElement implements Serializable {
+	/**
+	 * The unknown class
+	 */
 	private Class<? extends at.jumpandjan.Object> c;
 	
 	public FlexibleElement(double posX, double posY, double width, double height, Class<? extends at.jumpandjan.Object> c) {
@@ -36,5 +46,9 @@ public class FlexibleElement extends LevelElement implements Serializable {
 		}
 		System.out.println("Failed to return object: " + c.getName());
 		return null;
+	}
+	
+	static {
+		Out.inf(FlexibleElement.class, "01.06.13", "Michael", null);
 	}
 }

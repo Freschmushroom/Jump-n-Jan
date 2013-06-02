@@ -1,5 +1,6 @@
 package at.jumpandjan;
 
+import at.freschmushroom.Out;
 import at.jumpandjan.level.Level;
 
 /**
@@ -52,9 +53,11 @@ public class EntitySword extends at.jumpandjan.Entity {
 	 * rendered.<br />
 	 * It is solely logical.
 	 */
+	@Override
 	public void render() {
 	}
 
+	@Override
 	public void collide(at.jumpandjan.Object withObject) {
 		if (withObject instanceof Entity) {
 			Entity e = (Entity) withObject;
@@ -62,10 +65,12 @@ public class EntitySword extends at.jumpandjan.Entity {
 		}
 	}
 
+	@Override
 	public boolean hasCollision() {
 		return false;
 	}
 	
+	@Override
 	public void update() {
 		super.update();
 		for (at.jumpandjan.Object o : level.collisionPool) {
@@ -73,5 +78,9 @@ public class EntitySword extends at.jumpandjan.Entity {
 				collide(o);
 			}
 		}
+	}
+	
+	static {
+		Out.inf(EntitySword.class, "01.06.2013", "Michael", null);
 	}
 }

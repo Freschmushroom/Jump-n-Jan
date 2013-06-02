@@ -1,28 +1,33 @@
 package at.jumpandjan.gui;
 
-import org.lwjgl.input.Keyboard;
-
-import utils.TrueTypeFont;
-
+import at.freschmushroom.Out;
 import at.jumpandjan.Constants;
 import at.jumpandjan.JumpAndJan;
 import at.jumpandjan.level.Level;
 import at.jumpandjan.level.LevelBuilder;
 
+/**
+ * Big MacMenu
+ * @author Michael
+ *
+ */
 public class GuiMainMenu extends Gui {
 	
+	/**
+	 * The buttons
+	 */
 	private CompButton loadGame, newGame, options, quit;
 	
 	public GuiMainMenu() {
-		loadGame = new CompButton(0, 0, 400, 40, "Load Game").setCenter(
+		loadGame = new CompButton(this, 0, 0, 400, 40, "Load Game").setCenter(
 				Constants.getCameraWidth() / 2, 100);
-		newGame = new CompButton(0, 0, 400, 40, "New Game").setCenter(
+		newGame = new CompButton(this, 0, 0, 400, 40, "New Game").setCenter(
 				Constants.getCameraWidth() / 2, loadGame.getY()
 				+ (int) (loadGame.getHeight() * 2));
-		options = new CompButton(0, 0, 400, 40, "Options").setCenter(
+		options = new CompButton(this, 0, 0, 400, 40, "Options").setCenter(
 				Constants.getCameraWidth() / 2, newGame.getY()
 				+ (int) (newGame.getHeight() * 2));
-		quit = new CompButton(0, 0, 400, 40, "Quit Game").setCenter(
+		quit = new CompButton(this, 0, 0, 400, 40, "Quit Game").setCenter(
 				Constants.getCameraWidth() / 2, options.getY()
 						+ (int) (options.getHeight() * 2));
 		
@@ -68,17 +73,7 @@ public class GuiMainMenu extends Gui {
 		components.add(quit);
 	}
 	
-	public boolean fireKeyboardEvent(boolean eventKeyState, int eventKey, int mouseX, int mouseY) {
-		if (!super.fireKeyboardEvent(eventKeyState, eventKey, mouseX, mouseY)) {
-			if (eventKeyState && eventKey == Keyboard.KEY_ESCAPE) {
-				JumpAndJan.closeCurrentGui();
-				return true;
-		}
-			return false;
-		}
-		return true;
-	}
-	
+	@Override
 	public void paint() {
 		pushMatrix();
 		loadIdentity();
@@ -92,5 +87,9 @@ public class GuiMainMenu extends Gui {
 		
 		end();
 		popMatrix();
+	}
+	
+	static {
+		Out.inf(GuiMainMenu.class, "01.06.2013", "Michael", null);
 	}
 }

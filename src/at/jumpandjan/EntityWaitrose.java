@@ -3,8 +3,16 @@ package at.jumpandjan;
 import at.freschmushroom.Out;
 import at.jumpandjan.level.Level;
 
+/**
+ * A waitrose
+ * 
+ * @author Felix
+ * 
+ */
 public class EntityWaitrose extends Entity {
-
+	/**
+	 * The cool down on the jump
+	 */
 	private int cdJump;
 
 	public EntityWaitrose(double x, double y, Level level) {
@@ -23,7 +31,8 @@ public class EntityWaitrose extends Entity {
 		if (Math.abs(JumpAndJan.getPlayer().getPivotX() - this.getPivotX()) < 100
 				&& Math.abs(JumpAndJan.getPlayer().getPivotX()
 						- this.getPivotX()) > 1) {
-			motion.x = (float) ((JumpAndJan.getPlayer().getPivotX() - this.getPivotX())
+			motion.x = (float) ((JumpAndJan.getPlayer().getPivotX() - this
+					.getPivotX())
 					/ Math.abs(JumpAndJan.getPlayer().getPivotX()
 							- this.getPivotX()) * 2.9f);
 		}
@@ -45,12 +54,14 @@ public class EntityWaitrose extends Entity {
 				bounds.y, 128, 256, 128, 256, state);
 	}
 
+	@Override
 	public void renderIcon() {
 		super.render("/Opp_Cactus.png", 2 * bounds.width / 3, bounds.height,
 				bounds.x + bounds.width / 6, bounds.y, 128, 256, 128, 256,
 				false);
 	}
-	
+
+	@Override
 	public void collide(at.jumpandjan.Object withObject) {
 		if (withObject instanceof EntityPlayer) {
 			JumpAndJan.getPlayer().hurt(2);

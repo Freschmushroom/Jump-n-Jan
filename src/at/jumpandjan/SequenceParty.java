@@ -16,11 +16,28 @@ import at.freschmushroom.TextureManager;
 import at.freschmushroom.Out;
 import at.freschmushroom.audio.SoundContainer;
 import at.jumpandjan.level.Level;
-
+/**
+ * The first Sequence in the game, should be a party with interruption but not working yet
+ * 
+ * @author Felix
+ *
+ */
 public class SequenceParty implements Sequence {
+	/**
+	 * The dancing Psy
+	 */
 	private EntityPsy psy;
+	/**
+	 * The Dancing Player
+	 */
 	private EntityPlayer p;
+	/**
+	 * The party Thread
+	 */
 	private PartyThread pt;
+	/**
+	 * An empty Level Container so update and render work easier
+	 */
 	private Level l;
 
 	public SequenceParty() {
@@ -52,7 +69,14 @@ public class SequenceParty implements Sequence {
 	public void join() throws InterruptedException {
 		pt.join();
 	}
-
+	/**
+	 * Thread to show the party
+	 * 
+	 * NOT YET WORKING!!!
+	 * 
+	 * @author Felix
+	 *
+	 */
 	private class PartyThread extends Thread {
 		public void run() {
 			try {

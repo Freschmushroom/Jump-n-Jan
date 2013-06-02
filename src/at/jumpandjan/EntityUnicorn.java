@@ -3,9 +3,26 @@ package at.jumpandjan;
 import at.freschmushroom.Out;
 import at.jumpandjan.level.Level;
 
+/**
+ * Unicoooorn
+ * 
+ * @author Felix
+ *
+ */
 public class EntityUnicorn extends Entity {
+	/**
+	 * The cool down on the jump
+	 */
 	private int cdJump;
+	
+	/**
+	 * The cool down on the attack
+	 */
 	private int cdAttack = 300;
+	
+	/**
+	 * The attack count
+	 */
 	private int attackct;
 
 	public EntityUnicorn(double x, double y, double width, double height,
@@ -13,6 +30,7 @@ public class EntityUnicorn extends Entity {
 		super(x, y, width, height, level);
 	}
 
+	@Override
 	public void update() {
 		super.update();
 		motion.x = 0;
@@ -60,32 +78,37 @@ public class EntityUnicorn extends Entity {
 		}
 	}
 
+	@Override
 	public void collide(at.jumpandjan.Object withObject) {
 		if (withObject instanceof EntityPlayer) {
 			JumpAndJan.getPlayer().hurt(1);
 		}
 	}
 
+	@Override
 	public void render() {
 		super.renderHealthbar();
 		super.render("/opp_unicorn.png", bounds.width, bounds.height, bounds.x,
 				bounds.y, 403, 420, 463, 420, state);
 	}
 
+	@Override
 	public void renderIcon() {
 		render("/opp_unicorn.png", bounds.width, bounds.height, bounds.x,
 				bounds.y, 128, 0, 246, 260, 463, 420, false);
 	}
 
+	@Override
 	public boolean hasDefaultWidth() {
 		return true;
 	}
 
+	@Override
 	public boolean hasDefaultHeight() {
 		return true;
 	}
 
 	static {
-		Out.inf(EntityUnicorn.class, "04.12.11", "Michael", null);
+		Out.inf(EntityUnicorn.class, "04.12.11", "Felix", null);
 	}
 }

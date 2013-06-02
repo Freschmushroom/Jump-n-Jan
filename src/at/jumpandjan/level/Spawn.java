@@ -12,12 +12,23 @@ import at.jumpandjan.EntitySpaghetti;
 import at.jumpandjan.EntityUnicorn;
 import at.jumpandjan.EntityWaitrose;
 
+/**
+ * The Element which spawns entities later
+ * @author Felix
+ *
+ */
 public class Spawn extends LevelElement implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6077068898560114829L;
+	/**
+	 * The type of entity
+	 */
 	private String type;
+	/**
+	 * The kind of entity
+	 */
 	private String kind;
 
 	@Override
@@ -44,10 +55,18 @@ public class Spawn extends LevelElement implements Serializable {
 		return new EntityMeatball(getPosX(), getPosY(), level);
 	}
 
+	/**
+	 * Returns the type of entity
+	 * @return The type of entity
+	 */
 	public String getType() {
 		return type;
 	}
 
+	/**
+	 * Returns the kind of entity
+	 * @return The kind of entity
+	 */
 	public String getKind() {
 		return kind;
 	}

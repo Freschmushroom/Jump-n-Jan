@@ -2,12 +2,27 @@ package at.jumpandjan;
 
 import at.freschmushroom.Out;
 import at.jumpandjan.level.Level;
-
+/**
+ * The first boss opponent in Jump'n'Jan. It runs away from the player and spawns Meatballs on its way.
+ * 
+ * @author Felix
+ *
+ */
 public class EntitySpaghetti extends Entity {
-
+	/**
+	 * The cooldown for the jump
+	 */
 	private int cdJump;
+	/**
+	 * The cooldown for the spawn
+	 */
 	private int cdSpawn;
-
+	/**
+	 * Constructs a new Spaghetti Monster using the default width and height
+	 * @param x the x coordinate of the top left corner
+	 * @param y the y coordiante of the top left corner
+	 * @param level the level the entity spawns in
+	 */
 	public EntitySpaghetti(double x, double y, Level level) {
 		super(x, y, 128, 64, level);
 	}
@@ -38,7 +53,7 @@ public class EntitySpaghetti extends Entity {
 				cdSpawn--;
 		}
 	}
-	
+	@Override
 	public void collide(at.jumpandjan.Object withObject) {
 		if (withObject instanceof EntityPlayer) {
 			this.hurt(2);

@@ -1,12 +1,27 @@
 package at.freschmushroom.xml;
 
-public class XMLParser {
-	XMLFile file;
+import at.freschmushroom.Out;
 
+/**
+ * Class to parse a simple XML File into an XMLFile 
+ * @author Felix
+ *
+ */
+public class XMLParser {
+	/**
+	 * The destination XMLFile
+	 */
+	private XMLFile file;
+	/**
+	 * Constructs a new XMLParser using the given XMLFile
+	 * @param file the XML File you want to parse
+	 */
 	public XMLParser(XMLFile file) {
 		this.file = file;
 	}
-
+	/**
+	 * Parses the XML File into an XMLFile using the given Reference to an XMLFile
+	 */
 	public void parse() {
 		String[] buffer = file.getLines();
 		XMLNode actual = null;
@@ -82,5 +97,8 @@ public class XMLParser {
 				}
 			}
 		}
+	}
+	static {
+		Out.inf(XMLParser.class, "01/06/13", "Felix", null);
 	}
 }

@@ -1,22 +1,33 @@
 package at.jumpandjan.gui;
 
-import org.lwjgl.opengl.GL11;
+import at.freschmushroom.Out;
 
+/**
+ * A panel
+ * @author Michael
+ *
+ */
 public class CompPanel extends Component {
 
-	public CompPanel(int x, int y, int width, int height) {
-		super(x, y, width, height);
+	public CompPanel(Gui parent, int x, int y, int width, int height) {
+		super(parent, x, y, width, height);
 		System.out.println(height);
 	}
 
+	/**
+	 * Adds the component
+	 * @param component The component
+	 */
 	public void add(Component component) {
 		components.add(component);
+		component.parent = this.parent;
 		// component.inputClipX = this.inputClipX + component.getX();
 		// component.inputClipY = this.inputClipY + component.getY();
 		// component.inputClipWidth = component.getWidth();
 		// component.inputClipHeight = component.getHeight();
 	}
 
+	@Override
 	public void drawComponent() {
 		pushMatrix();
 		clip(getX(), getY(), getWidth(), getHeight());
@@ -37,6 +48,7 @@ public class CompPanel extends Component {
 		popMatrix();
 	}
 
+	@Override
 	public void onClick(int mouseX, int mouseY, int mouseButton) {
 		if (mouseX < getX() || mouseX > getX() + getWidth() || mouseY < getY()
 				|| mouseY > getY() + getHeight()) {
@@ -50,6 +62,7 @@ public class CompPanel extends Component {
 		}
 	}
 
+	@Override
 	public void onReleased(int mouseX, int mouseY, int mouseButton) {
 		if (mouseX < getX() || mouseX > getX() + getWidth() || mouseY < getY()
 				|| mouseY > getY() + getHeight()) {
@@ -63,6 +76,7 @@ public class CompPanel extends Component {
 		}
 	}
 
+	@Override
 	public void onHovered(int mouseX, int mouseY) {
 		if (mouseX < getX() || mouseX > getX() + getWidth() || mouseY < getY()
 				|| mouseY > getY() + getHeight()) {
@@ -76,5 +90,9 @@ public class CompPanel extends Component {
 				c.onMouseExit(mouseX, mouseY);
 			}
 		}
+	}
+	
+	static {
+		Out.inf(CompPanel.class, "01.06.2013", "Michael", null);
 	}
 }

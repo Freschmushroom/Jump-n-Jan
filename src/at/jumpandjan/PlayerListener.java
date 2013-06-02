@@ -1,7 +1,13 @@
 package at.jumpandjan;
 
+import at.freschmushroom.Out;
 import at.jumpandjan.gui.GuiGameOver;
 
+/**
+ * Provides methods for listening to the player
+ * @author Michael
+ *
+ */
 public class PlayerListener implements EntityListener {
 
 	@Override
@@ -34,4 +40,7 @@ public class PlayerListener implements EntityListener {
 
 	}
 
+	static {
+		Out.inf(PlayerListener.class, "01.06.2013", "Michael", null);
+	}
 }

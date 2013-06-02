@@ -3,14 +3,37 @@ package at.jumpandjan;
 import at.freschmushroom.Out;
 import at.freschmushroom.audio.SoundContainer;
 import at.jumpandjan.level.Level;
-
+/**
+ * Funny Entity representing world famous Psy doing his gangnam style.
+ * 
+ * Everytime he hits you you hear the famous words 'Oppan Gangnam Style'
+ * 
+ * @author Felix
+ *
+ */
 public class EntityPsy extends Entity {
-
+	/**
+	 * The cooldown for the jump
+	 */
 	private int cdJump;
+	/**
+	 * The cooldown for the animation
+	 */
 	private int cdAnimation;
+	/**
+	 * The cooldown for the attack
+	 */
 	private int cdAttack;
+	/**
+	 * The state of the animation
+	 */
 	private boolean animState;
-
+	/**
+	 * Constructs a new Entity Psy with the deault width and height
+	 * @param x the x coordinate of the top left corner
+	 * @param y the y coordinate of the top right corner
+	 * @param level the level the entity should spawn in
+	 */
 	public EntityPsy(double x, double y, Level level) {
 		super(x, y, 32, 64, level);
 	}
@@ -38,7 +61,7 @@ public class EntityPsy extends Entity {
 		}
 		cdAttack--;
 	}
-
+	@Override
 	public void collide(at.jumpandjan.Object withObject) {
 		if (withObject instanceof EntityPlayer && cdAttack <= 0) {
 			JumpAndJan.getPlayer().hurt(10);

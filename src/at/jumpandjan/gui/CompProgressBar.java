@@ -2,14 +2,29 @@ package at.jumpandjan.gui;
 
 import org.lwjgl.opengl.GL11;
 
+import at.freschmushroom.Out;
+
+/**
+ * A progress bar
+ * @author Michael
+ *
+ */
 public class CompProgressBar extends Component {
+	/**
+	 * The value which should be displayed
+	 */
 	public int value = 1;
+	
+	/**
+	 * The maximum value
+	 */
 	public int max = 100;
 	
-	public CompProgressBar(int x, int y, int width, int height) {
-		super(x, y, width, height);
+	public CompProgressBar(Gui parent, int x, int y, int width, int height) {
+		super(parent, x, y, width, height);
 	}
 	
+	@Override
 	public void drawComponent() {
 		color("000000");
 		
@@ -50,5 +65,9 @@ public class CompProgressBar extends Component {
 		end();
 		
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
+	}
+	
+	static {
+		Out.inf(CompProgressBar.class, "01.06.2013", "Michael", null);
 	}
 }

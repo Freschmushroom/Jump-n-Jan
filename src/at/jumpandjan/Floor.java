@@ -5,12 +5,19 @@ import at.freschmushroom.TextureManager;
 import at.jumpandjan.level.Level;
 import at.freschmushroom.Out;
 
+/**
+ * The floor on the floor
+ * 
+ * @author Michael
+ *
+ */
 public class Floor extends Object {
 	public Floor(double x, double y, double width, double height, Level level) {
 		super(x, y, width, height, level);
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
 	public void render() {
 		glEnable(GL_TEXTURE_2D);
 		TextureManager.instance.bindTexture(TextureManager.instance
@@ -51,24 +58,28 @@ public class Floor extends Object {
 		glDisable(GL_TEXTURE_2D);
 	}
 
+	@Override
 	public void renderIcon() {
 		render("/Wall_M.png", bounds.width, 10, 0, bounds.height / 2 - 5, 32,
 				32, 32, 32, false);
 	}
 
+	@Override
 	public double getDefaultHeight() {
 		return 10;
 	}
 
+	@Override
 	public boolean hasDefaultWidth() {
 		return false;
 	}
 
+	@Override
 	public boolean hasDefaultHeight() {
 		return true;
 	}
 
 	static {
-		Out.inf(Floor.class, "23.10.12", "Felix", null);
+		Out.inf(Floor.class, "23.10.12", "Michael", null);
 	}
 }

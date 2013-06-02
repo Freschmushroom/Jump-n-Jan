@@ -4,8 +4,14 @@ import at.freschmushroom.Out;
 import at.jumpandjan.EntityHaarfarbe;
 import at.jumpandjan.Object;
 
+/**
+ * The building element for color
+ * 
+ * @author Felix
+ * 
+ */
 public class Point extends LevelElement {
-	
+
 	public Point(double x, double y) {
 		super(x, y, 0, 0);
 	}

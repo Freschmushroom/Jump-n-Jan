@@ -1,5 +1,10 @@
 package at.jumpandjan;
 
+/**
+ * Provides methods for listening to an entity
+ * @author Michael
+ *
+ */
 public interface EntityListener {
 	public void entityHit(Entity entityHit, DamageSource damageSource);
 	public void entityHitByEntity(Entity entityHit, DamageSourceEntity damageSource);

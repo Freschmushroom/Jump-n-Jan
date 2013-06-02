@@ -1,4 +1,7 @@
 package at.freschmushroom.xml;
+
+import at.freschmushroom.Out;
+
 /**
  * Einfache XML Deklaration
  * @author Felix Resch
@@ -53,5 +56,9 @@ public class XMLDeclaration implements XMLElement {
 	}
 	@Override
 	public void setParent(XMLElement parent) {
+	}
+	
+	static {
+		Out.inf(XMLDeclaration.class, "01/06/13/", "Felix", null);
 	}
 }

@@ -1,4 +1,7 @@
 package at.freschmushroom.xml;
+
+import at.freschmushroom.Out;
+
 /**
  * Stellt ein Attribut im XML Format dar
  * @author Felix Resch
@@ -54,5 +57,9 @@ public class XMLAttribut implements XMLElement {
 	 */
 	public String getValue() {
 		return value;
+	}
+	
+	static {
+		Out.inf(XMLAttribut.class, "01/06/13", "Felix", null);
 	}
 }

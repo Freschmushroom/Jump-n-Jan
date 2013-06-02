@@ -1,9 +1,12 @@
 package at.freschmushroom;
 
 import java.io.FileNotFoundException;
-
+/**
+ * Class used to capsule Errorhandling and work better with the FreschMushroom API
+ * @author Felix
+ *
+ */
 public class Errorhandling {
-	// private static PrintStream out = null;
 	/**
 	 * Handles the given Throwable and prints it to the output destinations
 	 * 

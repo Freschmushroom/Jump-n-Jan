@@ -3,7 +3,16 @@ package at.jumpandjan;
 import at.jumpandjan.level.Level;
 import at.freschmushroom.Out;
 
+/**
+ * The super class for all flags
+ * 
+ * @author Michael
+ *
+ */
 public class EntityFlag extends Entity {
+	/**
+	 * The texture name
+	 */
 	private String imgName = "";
 
 	public EntityFlag(double x, double y, String imgName, Level level) {
@@ -19,11 +28,15 @@ public class EntityFlag extends Entity {
 		this.imgName = imgName;
 	}
 
+	@Override
 	public void render() {
 		super.render(imgName, bounds.width, bounds.height, bounds.x, bounds.y,
 				32f, 64f, 32, 64, state);
 	}
 
+	/**
+	 * Teleports the player to this flag
+	 */
 	public void spawn() {
 		JumpAndJan.getPlayer().bounds.x = this.bounds.x;
 		JumpAndJan.getPlayer().bounds.y = this.bounds.y + this.bounds.height
@@ -35,24 +48,29 @@ public class EntityFlag extends Entity {
 		super.update();
 	}
 
+	@Override
 	public void renderIcon() {
 		double offsetX = (bounds.width - 16) / 2;
 		double offsetY = (bounds.height - 32) / 2;
 		super.render(imgName, 16, 32, offsetX, offsetY, 32, 64, 32, 64, state);
 	}
 
+	@Override
 	public double getDefaultWidth() {
 		return 32;
 	}
 
+	@Override
 	public double getDefaultHeight() {
 		return 64;
 	}
 
+	@Override
 	public boolean hasDefaultWidth() {
 		return true;
 	}
 
+	@Override
 	public boolean hasDefaultHeight() {
 		return true;
 	}

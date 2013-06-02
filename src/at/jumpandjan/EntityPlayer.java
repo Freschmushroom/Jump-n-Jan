@@ -11,7 +11,7 @@ import at.freschmushroom.Out;
 /**
  * The Player's Entity
  * 
- * @author Michael P.
+ * @author Michael
  * 
  */
 public class EntityPlayer extends Entity {
@@ -245,14 +245,26 @@ public class EntityPlayer extends Entity {
 		return points;
 	}
 
+	/**
+	 * Sets the points for the player
+	 * @param points The points
+	 */
 	public void setPoints(int points) {
 		this.points = points;
 	}
 
+	/**
+	 * Adds a point.
+	 * Convenience method
+	 */
 	public void addPoint() {
 		points++;
 	}
 
+	/**
+	 * Sets the attack state
+	 * @param attackState The attack state
+	 */
 	public void setAttackState(byte attackState) {
 		if (this.attackState != attackState) {
 			this.attackState = attackState;
@@ -272,12 +284,13 @@ public class EntityPlayer extends Entity {
 			}
 		}
 	}
-
+ 
+	@Override
 	public double getDefaultHeight() {
 		return 64;
 	}
 
 	static {
-		Out.inf(EntityPlayer.class, "23.10.12", "Michi", null);
+		Out.inf(EntityPlayer.class, "23.10.12", "Michael", null);
 	}
 }

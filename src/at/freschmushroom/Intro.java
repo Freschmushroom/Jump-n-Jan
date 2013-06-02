@@ -21,19 +21,41 @@ import static org.lwjgl.opengl.GL11.glVertex2f;
 import static org.lwjgl.opengl.GL11.glViewport;
 
 import java.awt.Canvas;
+import java.awt.Font;
 import java.io.IOException;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
+import utils.TrueTypeFont;
+
 import at.jumpandjan.Constants;
-
+/**
+ * 
+ * Class formerly used to startup the GL Thing and show an Intro
+ * 
+ * @author Felix
+ *
+ */
 public class Intro {
+	/**
+	 * The vertical difference between the 640*480 0,0 and the used 0,0
+	 */
 	public static int vertMvmt = 0;
+	/**
+	 * The horizontal difference between the 640*480 0,0 and the used 0,0
+	 */
 	public static int horiMvmt = 0;
+	/**
+	 * If the Display is already created
+	 */
 	public static boolean init = false;
-
+	/**
+	 * Finds the largest possible DisplayMode available
+	 * @return the largest DisplayMode
+	 * @throws LWJGLException if no DisplayMode was found
+	 */
 	public static DisplayMode getLargest() throws LWJGLException {
 		DisplayMode[] modes = Display.getAvailableDisplayModes();
 		int index = 0;
@@ -54,15 +76,23 @@ public class Intro {
 		horiMvmt = modes[index].getHeight() - 480;
 		return modes[index];
 	}
-
+	/**
+	 * Shows the Intro in FullScreenMode
+	 * 
+	 * 
+	 * @throws LWJGLException if FullScreen makes problems
+	 */
 	public static void showIntroFullScreen() throws LWJGLException {
 		Display.setTitle("FreshMushroom");
 		Display.setDisplayModeAndFullscreen(getLargest());
 		Display.create();
-//		Display.setVSyncEnabled(true);
 		renderIntro();
 	}
-
+	/**
+	 * Shows the Intro in a Window 
+	 * 
+	 * @throws LWJGLException if showing the Intro in a window is Problematic
+	 */
 	public static void showIntroWindowed() throws LWJGLException {
 		Display.setTitle("FreshMushroom");
 		Display.setDisplayMode(new DisplayMode(640, 480));
@@ -70,7 +100,12 @@ public class Intro {
 		Display.setVSyncEnabled(true);
 		renderIntro();
 	}
-
+	/**
+	 * Shows the Intro into a custom Canvas
+	 * 
+	 * @param parent the canvas the Intro should be shown on
+	 * @throws LWJGLException if you shall not show your Intro in this Canvas
+	 */
 	public static void showIntroInControl(Canvas parent) throws LWJGLException {
 		Display.setTitle("FreshMushroom");
 		Display.setDisplayMode(Display.getAvailableDisplayModes()[0]);
@@ -79,7 +114,11 @@ public class Intro {
 		Display.setParent(parent);
 		renderIntro();
 	}
-
+	/**
+	 * Renders the Intro
+	 * 
+	 * @throws LWJGLException if the Intro fails
+	 */
 	public static void renderIntro() throws LWJGLException {
 		init = true;
 		glMatrixMode(GL_PROJECTION);
@@ -102,31 +141,19 @@ public class Intro {
 			Errorhandling.handle(e);
 		}
 	}
-
+	/**
+	 * Renders the FM to the Screen
+	 * 
+	 * @throws IOException if some font files could not be found
+	 */
 	private static void renderFresch() throws IOException {
-		FontParser.init();
-		float[][] vertices_a = FontParser.getCharVertices('A');
-		float[][] vertices_b = FontParser.getCharVertices('B');
-		float[][] vertices_f = FontParser.getCharVertices('F');
-		int counter = 0;
-		counter = 200;
+		int counter = 200;
+		TrueTypeFont ttf = new TrueTypeFont(new Font(Font.MONOSPACED, Font.BOLD, 42), true);
 		while (counter >= 0) {
 			glClearColor(0f, 0f, 0f, 0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 			glLoadIdentity();
-			glBegin(GL_TRIANGLES);
-			for (float[] fl : vertices_a) {
-				glColor3f(1, 1, 1);
-				glVertex2f(fl[0], fl[1]);
-			}
-			for (float[] fl : vertices_b) {
-				glColor3f(1, 1, 1);
-				glVertex2f(fl[0] + 100, fl[1]);
-			}
-			for (float[] fl : vertices_f) {
-				glColor3f(1, 1, 1);
-				glVertex2f(fl[0] + 600, fl[1]);
-			}
+			ttf.drawString(0, 0, "FM", 8, 8);
 			glEnd();
 			Display.update();
 			Display.sync(60);
@@ -140,6 +167,7 @@ public class Intro {
 
 	public static void main(String args[]) {
 		try {
+			ServiceProvider.libs();
 			showIntroFullScreen();
 			Display.destroy();
 		} catch (LWJGLException e) {

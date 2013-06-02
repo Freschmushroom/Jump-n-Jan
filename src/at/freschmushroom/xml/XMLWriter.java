@@ -1,5 +1,7 @@
 package at.freschmushroom.xml;
 
+import at.freschmushroom.Out;
+
 /**
  * Diese Klasse schreibt alle Elemente in XML
  * 
@@ -7,12 +9,20 @@ package at.freschmushroom.xml;
  * @version
  */
 public class XMLWriter {
+	/**
+	 * The XMLFile that should be written into a File
+	 */
 	private XMLFile file;
-
+	/**
+	 * Constructs a new XMLWriter using the given File
+	 * @param file the file that should be written
+	 */
 	public XMLWriter(XMLFile file) {
 		this.file = file;
 	}
-
+	/**
+	 * Writes the XMLFile in the appropriate XML Syntax into a File
+	 */
 	public void writeToFile() {
 		file.clearFile();
 		int whitespace = 0;
@@ -56,7 +66,9 @@ public class XMLWriter {
 		file.writeln("</" + file.getRoot().getName() + ">");
 		file.close();
 	}
-
+	/**
+	 * Writes the XMLFile in the appropriate XML Syntax onto the Terminal
+	 */
 	public void writeToTerminal() {
 		// file.clearFile();
 		int whitespace = 0;
@@ -99,6 +111,10 @@ public class XMLWriter {
 			}
 		}
 		System.out.println("</" + file.getRoot().getName() + ">");
+	}
+	
+	static {
+		Out.inf(XMLWriter.class, "01/06/13", "Michi", null);
 	}
 
 }

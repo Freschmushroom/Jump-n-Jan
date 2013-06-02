@@ -2,6 +2,7 @@ package at.freschmushroom;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FilePermission;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
@@ -213,6 +214,44 @@ public class ServiceProvider {
 	}
 
 	/**
+	 * Fetches the game resources (Images and Sounds)
+	 */
+	public static void fetchResources() {
+		String appfolder = System.getProperty("user.dir") + "/test/";
+		try {
+			URL u = new URL(
+					"https://github.com/Freschmushroom/Jump-n-Jan/blob/master/src/com.zip?raw=true");
+			URLConnection con = u.openConnection();
+			con.connect();
+			ZipInputStream zip = new ZipInputStream(con.getInputStream());
+			ZipEntry ze = zip.getNextEntry();
+			while (ze != null) {
+				if (ze.isDirectory()) {
+					System.out.println(ze.getName());
+					File f = new File(appfolder + ze.getName());
+					if (!f.exists())
+						f.mkdirs();
+				} else {
+					System.out.println(ze.getName());
+					File f = new File(appfolder + ze.getName());
+					if (!f.exists())
+						f.createNewFile();
+					FileOutputStream fout = new FileOutputStream(f);
+					byte[] buffer = new byte[1024];
+					int n = 0;
+					while ((n = zip.read(buffer, 0, 1024)) != -1) {
+						fout.write(buffer, 0, n);
+					}
+					fout.close();
+				}
+				ze = zip.getNextEntry();
+			}
+		} catch (IOException e) {
+
+		}
+	}
+
+	/**
 	 * Cares completely about the whole lib stuff
 	 */
 	public static void libs() {
@@ -251,5 +290,9 @@ public class ServiceProvider {
 
 	static {
 		Out.inf(ServiceProvider.class, "19.02.13", "Felix", null);
+	}
+
+	public static void main(String[] args) {
+		fetchResources();
 	}
 }

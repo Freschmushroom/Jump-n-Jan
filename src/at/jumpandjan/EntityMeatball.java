@@ -3,7 +3,17 @@ package at.jumpandjan;
 import at.freschmushroom.Out;
 import at.jumpandjan.level.Level;
 
+/**
+ * A cute meatball :3
+ * 
+ * @author Felix
+ * @author Michael
+ * 
+ */
 public class EntityMeatball extends Entity {
+	/**
+	 * The cooldown on the jump
+	 */
 	private int cdJump;
 
 	public EntityMeatball(double x, double y, Level level) {
@@ -15,6 +25,7 @@ public class EntityMeatball extends Entity {
 		super(x, y, width, height, level);
 	}
 
+	@Override
 	public void update() {
 		super.update();
 		motion.x = 0;
@@ -38,40 +49,47 @@ public class EntityMeatball extends Entity {
 		}
 	}
 
+	@Override
 	public void collide(at.jumpandjan.Object withObject) {
 		if (withObject instanceof EntityPlayer) {
 			JumpAndJan.getPlayer().hurt(1);
 		}
 	}
 
+	@Override
 	public void render() {
 		super.renderHealthbar();
 		super.render("/Opp_Meatball.png", bounds.width, bounds.height,
 				bounds.x, bounds.y, 28, 26, 32, 32, state);
 	}
 
+	@Override
 	public void renderIcon() {
 		render("/Opp_Meatball.png", bounds.width - 4, bounds.height - 4,
 				bounds.x + 2, bounds.y + 2, 28, 26, 32, 32, false);
 	}
 
+	@Override
 	public double getDefaultWidth() {
 		return 32;
 	}
 
+	@Override
 	public double getDefaultHeight() {
 		return 32;
 	}
 
+	@Override
 	public boolean hasDefaultWidth() {
 		return true;
 	}
 
+	@Override
 	public boolean hasDefaultHeight() {
 		return true;
 	}
 
 	static {
-		Out.inf(EntityMeatball.class, "22.10.11", "Felix, Michael", null);
+		Out.inf(EntityMeatball.class, "22.10.12", "Felix, Michael", null);
 	}
 }

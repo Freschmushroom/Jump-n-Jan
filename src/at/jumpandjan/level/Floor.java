@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 import at.freschmushroom.Out;
 
+/**
+ * The building element representing the floors
+ * @author Felix
+ *
+ */
 public class Floor extends LevelElement implements Serializable {
 	/**
 	 * 

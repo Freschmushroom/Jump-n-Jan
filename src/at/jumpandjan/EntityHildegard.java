@@ -1,23 +1,59 @@
 package at.jumpandjan;
 
+import at.freschmushroom.Out;
 import at.jumpandjan.level.Level;
-
+/**
+ * Hildegard is an old lady that just wants to cross the road, but then there suddenly a wild JannyBunnyWarrior appaers and she needs to defaet him. And if it weren't for her weak heart she'd probably succeed, but unfortunately she gets an heart attack and dies.
+ * 
+ * @author Felix
+ *
+ */
 public class EntityHildegard extends Entity {
-
+	/**
+	 * The state in which Hildegard is at the moment
+	 */
 	private int state = 0;
-
+	/**
+	 * If she is looking left or right
+	 */
 	private boolean turned;
-
+	/**
+	 * The cooldown for the jump
+	 */
 	private int cdJump;
+	/**
+	 * The cooldown for the Attack
+	 */
 	private int cdAttack;
+	/**
+	 * The cooldown for the Animation
+	 */
 	private int cdAnimation;
+	/**
+	 * The number of attacks
+	 */
 	private int attackct;
+	/**
+	 * The number of attacks she manages before she dies
+	 */
 	private final int heartAttackIn;
-
+	/**
+	 * Constructs a new Hildegard with the default values for width and height
+	 * @param x the x coordinate of the top left corner
+	 * @param y the y coordinate of the top left corner
+	 * @param level the level she spawns in
+	 */
 	public EntityHildegard(double x, double y, Level level) {
 		this(x, y, 32, 64, level);
 	}
-
+	/**
+	 * Constructs a new Hildegard
+	 * @param x the x coordinate of the top left corner
+	 * @param y the y coordinate of the top left corner
+	 * @param width the width of this Hildegard instance
+	 * @param height the height of this Hildegard instance
+	 * @param level the level she spawns in
+	 */
 	public EntityHildegard(double x, double y, double width, double height,
 			Level level) {
 		super(x, y, width, height, level);
@@ -66,7 +102,7 @@ public class EntityHildegard extends Entity {
 				cdJump--;
 		}
 	}
-
+	@Override
 	public void collide(at.jumpandjan.Object withObject) {
 		if (cdAttack <= 0) {
 			attackct++;
@@ -101,12 +137,15 @@ public class EntityHildegard extends Entity {
 		}
 		}
 	}
-
+	@Override
 	public void renderIcon() {
 		double h = bounds.height * 0.97;
 		double w = h / 2;
 		render("/Opp_hildegard_passive.png", w, h, bounds.x
 				+ (bounds.width - w) / 2, bounds.y + (bounds.height - h) / 2,
 				32, 64, 32, 64, false);
+	}
+	static {
+		Out.inf(EntityHildegard.class, "01/06/13", "Felix", null);
 	}
 }

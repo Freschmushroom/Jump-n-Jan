@@ -50,10 +50,10 @@ public class Out {
 	public static void line(String msg) {
 		String p = String.format(Locale.US,
 				"%1$ta %1$tb %1$td %1$tT %1$tZ %1$tY INFO:- ",
-				new GregorianCalendar(TimeZone.getDefault(), Locale.US));
-		p += msg;
-		System.out.println(printAll ? p : msg);
-		if (line != null)
+				new GregorianCalendar(TimeZone.getDefault(), Locale.US));  //Create epic time format
+		p += msg;  //Create message string
+		System.out.println(printAll ? p : msg);  //If all should be printed print the message with the time, else just the message
+		if (line != null)  //Write it to the file if possible
 			line.println(p);
 	}
 
@@ -71,17 +71,17 @@ public class Out {
 	 *            other things ("REMOVE METHOD SOUNDSO")
 	 */
 	public static void inf(Class<?> c, String version, String author, String[] els) {
-		if (printAll) {
-			System.out.println(c.toString() + ":");
-			System.out.println("	" + "Version: " + version);
-			System.out.println("	" + "Auhor: " + author);
+		if (printAll) {  //If everything should be printed
+			System.out.println(c.toString() + ":");  //Print class name
+			System.out.println("	" + "Version: " + version);  //Print version
+			System.out.println("	" + "Auhor: " + author);  //Print author
 		}
-		if (inf != null) {
+		if (inf != null) {  //If the file is available
 			inf.println(c.toString() + ":");
 			inf.println("	" + "Version: " + version);
 			inf.println("	" + "Auhor: " + author);
 		}
-		if (els != null) {
+		if (els != null) {  //Print other comments
 			for (String s : els) {
 				if (printAll)
 					System.out.println("	" + s);
@@ -90,7 +90,7 @@ public class Out {
 			}
 		}
 
-		versions.put(c, version);
+		versions.put(c, version);  //Store information into the version control map
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class Out {
 	 * @param msg
 	 *            the message
 	 */
-	public static void err(String msg) {
+	public static void err(String msg) {  //See line()
 		String p = String.format(Locale.US,
 				"%1$ta %1$tb %1$td %1$tT %1$tZ %1$tY ERROR:- ",
 				new GregorianCalendar(TimeZone.getDefault(), Locale.US));
@@ -162,11 +162,20 @@ public class Out {
 		}
 		err = null;
 	}
-
+	/**
+	 * Compares two version controlling maps
+	 * @param versions	the version map of another instance
+	 * @return if the versions are equal
+	 */
 	public static boolean checkVersion(HashMap<Class<?>, String> versions) {
 		return Out.versions.equals(versions);
 	}
-
+	/**
+	 * Called from Errorhandling
+	 * Used to state later which files are missing
+	 * @param filename	The name of the file
+	 * @return  if the file was previously reported missing
+	 */
 	public static boolean reportMissingFile(String filename) {
 		if (!missingFiles.contains(filename)) {
 			missingFiles.add(filename);
@@ -174,7 +183,9 @@ public class Out {
 		}
 		return false;
 	}
-
+	/**
+	 * Prints basically all the version on the console, only of those classes who reported them
+	 */
 	public static void printAllVersions() {
 		if (!printAll)
 			return;
@@ -188,7 +199,9 @@ public class Out {
 			Out.line(txt);
 		}
 	}
-
+	/**
+	 * Prints the List of missing files
+	 */
 	public static void printAllMissingFiles() {
 		Iterator<String> i = missingFiles.iterator();
 		if (missingFiles.size() == 0 || !printAll)
@@ -198,7 +211,14 @@ public class Out {
 			Out.err(i.next());
 		}
 	}
-
+	/**
+	 * Creates an error report based on a Throwable
+	 * 
+	 * including missing files and all the Throwable information
+	 * 
+	 * @param t  the error causing throwable
+	 * @throws FileNotFoundException  if the neede file cannot be found
+	 */
 	public static void saveErrorInfo(Throwable t) throws FileNotFoundException {
 		File f = new File(System.getProperty("user.dir") + "/errors/");
 		if (!f.exists())
@@ -222,11 +242,15 @@ public class Out {
 		}
 		f_out.close();
 	}
-
+	/**
+	 * Suppresses the output of the date and unnesecary information on the console
+	 */
 	public static void surpressAdditionalInformation() {
 		printAll = false;
 	}
-
+	/**
+	 * Forces the output of the date and additional information on the console
+	 */
 	public static void forceAdditionalInformation() {
 		printAll = true;
 	}

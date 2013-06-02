@@ -3,6 +3,11 @@ package at.jumpandjan;
 import at.jumpandjan.level.Level;
 import at.freschmushroom.Out;
 
+/**
+ * The start flag
+ * @author Felix
+ *
+ */
 public class EntityStartFlag extends EntityFlag {
 
 	public EntityStartFlag(double x, double y, Level level) {
@@ -18,6 +23,7 @@ public class EntityStartFlag extends EntityFlag {
 		super.update();
 	}
 	
+	@Override
 	public boolean hasCollision() {
 		return false;
 	}

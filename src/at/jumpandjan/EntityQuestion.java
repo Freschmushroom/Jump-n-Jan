@@ -3,15 +3,36 @@ package at.jumpandjan;
 import at.freschmushroom.Intro;
 import at.freschmushroom.Out;
 import at.jumpandjan.level.Level;
-
+/**
+ * 
+ * Class that shoots at the Player 
+ * 
+ * @author Felix
+ *
+ */
 public class EntityQuestion extends Entity {
-
+	/**
+	 * The destination x coordinate
+	 */
 	private double destX;
+	/**
+	 * The destination y coordinate
+	 */
 	private double destY;
-
+	/**
+	 * The vector for the x axis
+	 */
 	private double vecX;
+	/**
+	 * The vector for the y axis
+	 */
 	private double vecY;
-
+	/**
+	 * Constructs a new Question aiming directly at the Player
+	 * @param x the x coordinate of the top left corner
+	 * @param y the y coordinate of the top left corner
+	 * @param level the level the entity should spawn in
+	 */
 	public EntityQuestion(double x, double y, Level level) {
 		super(x, y, 16, 16, level);
 		isGravityApplied = false;
@@ -27,13 +48,8 @@ public class EntityQuestion extends Entity {
 		super.update();
 		bounds.x -= vecX;
 		bounds.y -= vecY;
-		// if(x >= Constants.getActualLevel().getFinish() || x <
-		// Constants.getActualLevel().getStart() || y <= 0 || y >= 480 +
-		// Intro.vertMvmt) {
-		// this.kill(this);
-		// }
 	}
-
+	@Override
 	public void collide(at.jumpandjan.Object withObject) {
 		if (withObject instanceof EntityPlayer) {
 			Constants.getActualLevel().getPlayer().hurt(10);

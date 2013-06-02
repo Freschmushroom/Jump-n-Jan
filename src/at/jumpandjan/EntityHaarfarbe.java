@@ -3,6 +3,12 @@ package at.jumpandjan;
 import at.freschmushroom.Out;
 import at.jumpandjan.level.Level;
 
+/**
+ * Fabulous Haarfarbe
+ * 
+ * @author Felix
+ * 
+ */
 public class EntityHaarfarbe extends Entity {
 
 	public EntityHaarfarbe(double x, double y, Level level) {
@@ -10,6 +16,7 @@ public class EntityHaarfarbe extends Entity {
 		isGravityApplied = false;
 	}
 
+	@Override
 	public void collide(at.jumpandjan.Object withObject) {
 		if (withObject instanceof EntityPlayer) {
 			level.getPlayer().addPoint();
@@ -22,9 +29,11 @@ public class EntityHaarfarbe extends Entity {
 		super.render("/Janny_Farbe.png", bounds.width, bounds.height, bounds.x,
 				bounds.y, 16, 16, state);
 	}
-	
+
+	@Override
 	public boolean checkCollisionWith(at.jumpandjan.Object withObject) {
-		return super.checkCollisionWith(withObject) && withObject instanceof EntityPlayer;
+		return super.checkCollisionWith(withObject)
+				&& withObject instanceof EntityPlayer;
 	}
 
 	static {

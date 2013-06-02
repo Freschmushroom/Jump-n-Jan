@@ -2,13 +2,32 @@ package at.jumpandjan;
 
 import at.freschmushroom.Out;
 import at.jumpandjan.level.Level;
-
+/**
+ * 
+ * The ultimate boss opponent in this game, throws at the player with questions
+ * 
+ * @author Felix
+ *
+ */
 public class EntityPreym extends Entity {
-
+	/**
+	 * If it looks, right or left
+	 */
 	private boolean turned = true;
+	/**
+	 * The cooldown for the jump
+	 */
 	private int cdJump;
+	/**
+	 * The cooldown for the attack
+	 */
 	private int cdAttack = 300;
-
+	/**
+	 * Constructs a new Entity width the default height and width
+	 * @param x the x coordinate of the top left corner
+	 * @param y the y coordinate of the top left corner
+	 * @param level the level the entity should spawn in
+	 */
 	public EntityPreym(double x, double y, Level level) {
 		super(x, y, 64, 128, level);
 	}
@@ -40,7 +59,7 @@ public class EntityPreym extends Entity {
 			cdAttack--;
 		}
 	}
-	
+	@Override
 	public void collide(at.jumpandjan.Object withObject) {
 		JumpAndJan.getPlayer().hurt(2);
 	}

@@ -2,18 +2,52 @@ package at.jumpandjan;
 
 import at.freschmushroom.Out;
 import at.jumpandjan.level.Level;
-
+/**
+ * An Entity that represents a Pedo baer, which follows the Player at the edge of the screen, and suddenly attacks him
+ * 
+ * @author Felix
+ *
+ */
 public class EntityPedobaer extends Entity {
+	/**
+	 * The cooldown for the Attack
+	 */
 	private int cdAttack = 10 * 60;
-	private int cdR = 5;
+	/**
+	 * If the pedobaer is in attack state
+	 */
 	private boolean attack = false;
+	/**
+	 * The old x coordinate of the pedobaer
+	 */
 	private double oldX = 0;
+	/**
+	 * The old y coordinate of the pedobaer
+	 */
 	private double oldY = 0;
+	/**
+	 * The amount of attack ticks already done
+	 */
 	private double vecC = 0;
+	/**
+	 * The Vector on the x axis
+	 */
 	private double vecX = 0;
+	/**
+	 * The Vector on the y axis
+	 */
 	private double vecY = 0;
+	/**
+	 * The amount of ticks an attack takes
+	 */
 	private static final int countOfTicks = 40;
-
+	/**
+	 * Constructs a new Pedobaer at the given Position using the default width and height
+	 * 
+	 * @param x the x coordinate of the top left corner
+	 * @param y the y coordinate of the top left corner
+	 * @param level the level the pedobaer wants to spawn in
+	 */
 	public EntityPedobaer(double x, double y, Level level) {
 		super(x, y, 32, 64, level);
 		isGravityApplied = true;
@@ -37,7 +71,7 @@ public class EntityPedobaer extends Entity {
 				oldX = this.bounds.x;
 				oldY = this.bounds.y;
 				vecX = (oldX - level.getPlayer().bounds.x) / countOfTicks;
-				vecY = (oldX - level.getPlayer().bounds.y) / countOfTicks;
+				vecY = (oldY - level.getPlayer().bounds.y) / countOfTicks;
 				vecC = 0;
 			}
 			if (attack && vecC <= countOfTicks) {
@@ -51,7 +85,7 @@ public class EntityPedobaer extends Entity {
 			cdAttack--;
 		}
 	}
-	
+	@Override
 	public void collide(at.jumpandjan.Object withObject) {
 		if (withObject instanceof EntityPlayer && attack) {
 			level.getPlayer().hurt(10);

@@ -2,10 +2,16 @@ package at.jumpandjan;
 
 import at.freschmushroom.Out;
 import at.jumpandjan.gui.GuiLevelChooser;
-import at.jumpandjan.gui.GuiMenu;
+import at.jumpandjan.gui.GuiMainMenu;
 import at.jumpandjan.gui.GuiUserSaveStates;
 import at.jumpandjan.level.Level;
 
+/**
+ * The finish flag
+ * 
+ * @author Felix
+ *
+ */
 public class EntityFinishFlag extends EntityFlag {
 	public EntityFinishFlag(double x, double y, Level level) {
 		super(x, y, "/Finish_Flag.png", level);
@@ -16,6 +22,7 @@ public class EntityFinishFlag extends EntityFlag {
 		super(x, y, width, height, "/Finish_Flag.png", level);
 	}
 
+	@Override
 	public void collide(at.jumpandjan.Object withObject) {
 		if (withObject instanceof EntityPlayer) {
 			User u = new User("zaboing");
@@ -24,7 +31,7 @@ public class EntityFinishFlag extends EntityFlag {
 			u.finishedLvl(level, JumpAndJan.getPlayer().getPoints());
 			Constants.setActualLevel(null);
 			JumpAndJan.closeAllGuis();
-			JumpAndJan.openGui(new GuiMenu());
+			JumpAndJan.openGui(new GuiMainMenu());
 			JumpAndJan.openGui(new GuiUserSaveStates());
 			JumpAndJan.openGui(new GuiLevelChooser());
 			throw new InterruptUpdateException();

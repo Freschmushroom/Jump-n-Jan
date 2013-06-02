@@ -1,6 +1,8 @@
 package at.freschmushroom.xml;
 
 import java.util.ArrayList;
+
+import at.freschmushroom.Out;
 /**
  * Klasse zur erstellung von Kommentaren in XML
  * @author Felix Resch
@@ -66,5 +68,9 @@ public class XMLComment implements XMLElement {
 	}
 	public ArrayList<String> getLine() {
 		return lines;
+	}
+	
+	static {
+		Out.inf(XMLComment.class, "01/06/13", "Felix", null);
 	}
 }

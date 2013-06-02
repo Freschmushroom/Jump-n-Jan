@@ -17,7 +17,7 @@ import at.jumpandjan.level.Level;
 
 /**
  * A vertical unit providing collision.
- * @author Michael P.
+ * @author Michael
  *
  */
 public class Wall extends Object
@@ -27,6 +27,7 @@ public class Wall extends Object
 		super(x, y, width, height, level);
 	}
 
+	@Override
 	public void render()
 	{
 		glEnable(GL_TEXTURE_2D);
@@ -63,6 +64,7 @@ public class Wall extends Object
 		glDisable(GL_TEXTURE_2D);
 	}
 	
+	@Override
 	public void renderIcon() {
 		glTranslated(bounds.width / 2, bounds.height / 2, 0);
 		glRotatef(90, 0, 0, 1);
@@ -71,17 +73,20 @@ public class Wall extends Object
 	}
 	
 	static {
-		Out.inf(Wall.class, "23.10.12", "Michi", null);
+		Out.inf(Wall.class, "23.10.12", "Michael", null);
 	}
-	
+
+	@Override
 	public double getDefaultWidth() {
 		return 10;
 	}
-	
+
+	@Override
 	public boolean hasDefaultWidth() {
 		return true;
 	}
-	
+
+	@Override
 	public boolean hasDefaultHeight() {
 		return false;
 	}

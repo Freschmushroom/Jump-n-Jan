@@ -2,26 +2,44 @@ package at.jumpandjan.gui;
 
 import org.lwjgl.input.Keyboard;
 
+import at.freschmushroom.Out;
 import at.jumpandjan.Constants;
 import at.jumpandjan.JumpAndJan;
 import at.jumpandjan.User;
 
+/**
+ * The ingame menu
+ * @author Michael
+ *
+ */
 public class GuiMenu extends Gui {
+	/**
+	 * A button to the main menu
+	 */
 	private CompButton mainMenu;
+	/**
+	 * A button to save the game
+	 */
 	private CompButton saveGame;
+	/**
+	 * One button to quit them all
+	 */
 	private CompButton quit;
+	/**
+	 * A button to the options
+	 */
 	private CompButton options;
 
 	public GuiMenu() {
-		mainMenu = new CompButton(0, 0, 400, 40, "Go to Main Menu").setCenter(
+		mainMenu = new CompButton(this, 0, 0, 400, 40, "Go to Main Menu").setCenter(
 				Constants.getCameraWidth() / 2, 100);
-		saveGame = new CompButton(0, 0, 400, 40, "Save Game").setCenter(
+		saveGame = new CompButton(this, 0, 0, 400, 40, "Save Game").setCenter(
 				Constants.getCameraWidth() / 2, mainMenu.getY()
 						+ (int) (mainMenu.getHeight() * 2));
-		options = new CompButton(0, 0, 400, 40, "Options").setCenter(
+		options = new CompButton(this, 0, 0, 400, 40, "Options").setCenter(
 				Constants.getCameraWidth() / 2, saveGame.getY()
 						+ (int) (saveGame.getHeight() * 2));
-		quit = new CompButton(0, 0, 400, 40, "Quit Game").setCenter(
+		quit = new CompButton(this, 0, 0, 400, 40, "Quit Game").setCenter(
 				Constants.getCameraWidth() / 2, options.getY()
 						+ (int) (options.getHeight() * 2));
 
@@ -71,9 +89,10 @@ public class GuiMenu extends Gui {
 		components.add(quit);
 	}
 
-	public boolean fireKeyboardEvent(boolean eventKeyState, int eventKey,
+	@Override
+	public boolean fireKeyboardEvent(boolean eventKeyState, int eventKey, char eventChar, 
 			int mouseX, int mouseY) {
-		if (!super.fireKeyboardEvent(eventKeyState, eventKey, mouseX, mouseY)) {
+		if (!super.fireKeyboardEvent(eventKeyState, eventKey, eventChar, mouseX, mouseY)) {
 			if (eventKeyState && eventKey == Keyboard.KEY_ESCAPE) {
 				JumpAndJan.closeCurrentGui();
 				return true;
@@ -83,6 +102,7 @@ public class GuiMenu extends Gui {
 		return true;
 	}
 
+	@Override
 	public void paint() {
 		pushMatrix();
 		loadIdentity();
@@ -96,5 +116,9 @@ public class GuiMenu extends Gui {
 
 		end();
 		popMatrix();
+	}
+	
+	static {
+		Out.inf(GuiMenu.class, "01.06.2013", "Michael", null);
 	}
 }

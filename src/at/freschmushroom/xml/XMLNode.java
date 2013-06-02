@@ -1,6 +1,8 @@
 package at.freschmushroom.xml;
 
 import java.util.ArrayList;
+
+import at.freschmushroom.Out;
 /**
  * Stellt einen Container für XMLElemente dar
  * @author Felix Resch
@@ -89,4 +91,7 @@ public class XMLNode implements XMLElement {
 		return children;
 	}
 	
+	static {
+		Out.inf(XMLNode.class, "01/06/13", "Felix", null);
+	}
 }

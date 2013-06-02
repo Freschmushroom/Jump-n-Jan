@@ -109,6 +109,10 @@ public class TrueTypeFont {
 			correctR = 0;
 		}
 	}
+	
+	public int getActualWidth(int chars) {
+		return (getWidth("a") - correctL) * chars;
+	}
 
 	private BufferedImage getFontImage(char ch) {
 		// Create a temporary image to extract the character's size

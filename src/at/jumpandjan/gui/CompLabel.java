@@ -2,40 +2,91 @@ package at.jumpandjan.gui;
 
 import java.awt.Font;
 
+import at.freschmushroom.Out;
+
 import static org.lwjgl.opengl.GL11.*;
 
 import utils.TrueTypeFont;
 
+/**
+ * Represents a label
+ * 
+ * @author Michael
+ * 
+ */
 public class CompLabel extends Component {
 
+	/**
+	 * The text which is displayed by this Label
+	 */
 	private String text;
+
+	/**
+	 * The font being used to render the text
+	 */
 	private TrueTypeFont font = new TrueTypeFont(new Font(Font.MONOSPACED,
 			Font.BOLD, 20), false);
+
+	/**
+	 * The alignment
+	 */
 	private int align = TrueTypeFont.ALIGN_LEFT;
+
+	/**
+	 * Whether a fancy background should be drawn
+	 */
 	private boolean drawBackground;
+
+	/**
+	 * The color as a hexadecimal string (without the prefix 0x)
+	 */
 	public String color = "ffffff";
 
-	public CompLabel(int x, int y, int width, int height, String text) {
-		super(x, y, width, height);
+	public CompLabel(Gui parent, int x, int y, int width, int height,
+			String text) {
+		super(parent, x, y, width, height);
 		setText(text);
 	}
 
+	/**
+	 * Returns the text
+	 * 
+	 * @return The text
+	 */
 	public String getText() {
 		return text;
 	}
 
+	/**
+	 * Sets the text
+	 * 
+	 * @param text
+	 *            The text
+	 */
 	public void setText(String text) {
 		this.text = text;
 	}
-	
+
+	/**
+	 * Returns whether the background should be drawn
+	 * 
+	 * @return Whether the background should be drawn
+	 */
 	public boolean drawBackground() {
 		return drawBackground;
 	}
-	
+
+	/**
+	 * Sets whether the background should be drawn
+	 * 
+	 * @param drawBackground
+	 *            whether the background should be drawn
+	 */
 	public void setDrawBackground(boolean drawBackground) {
 		this.drawBackground = drawBackground;
 	}
 
+	@Override
 	public void drawComponent() {
 		if (drawBackground) {
 			color(150, 150, 150);
@@ -79,26 +130,50 @@ public class CompLabel extends Component {
 		glMatrixMode(GL_MODELVIEW);
 	}
 
+	/**
+	 * Sets the text alignment
+	 * @param align The text alignment
+	 * @return this
+	 */
 	public CompLabel setTextAlignment(int align) {
 		this.align = align;
 		return this;
 	}
 
+	/**
+	 * Sets the font
+	 * @param font the font
+	 */
 	public void setFont(TrueTypeFont font) {
 		this.font = font;
 	}
 
+	/**
+	 * Gets the font
+	 * @return The font
+	 */
 	public TrueTypeFont getFont() {
 		return this.font;
 	}
 
+	/**
+	 * Automatically locates the label at the specified horizontal center and centers the alignment
+	 * Also packs the label
+	 * @param centerX The horizontal center
+	 * @param posY The y-position
+	 * @return This
+	 */
 	public CompLabel autoDesign(int centerX, int posY) {
 		setTextAlignment(TrueTypeFont.ALIGN_CENTER);
 		setWidth(font.getWidth(text));
 		setHeight(font.getHeight(text));
 		setX(centerX - getWidth() / 2);
 		setY(posY);
-		
+
 		return this;
+	}
+
+	static {
+		Out.inf(CompLabel.class, "01.06.2013", "Michael", null);
 	}
 }

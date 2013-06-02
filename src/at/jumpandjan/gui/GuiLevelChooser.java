@@ -2,16 +2,25 @@ package at.jumpandjan.gui;
 
 import java.io.File;
 
+import at.freschmushroom.Out;
 import at.jumpandjan.Constants;
 import at.jumpandjan.JumpAndJan;
 import at.jumpandjan.level.Level;
 import at.jumpandjan.level.LevelBuilder;
 
+/**
+ * The Level Chooser
+ * @author Michael
+ *
+ */
 public class GuiLevelChooser extends Gui {
+	/**
+	 * The backbutton
+	 */
 	private CompButton back;
 
 	public GuiLevelChooser() {
-		back = new CompButton(0, 0, 150, 40, "<-- Back");
+		back = new CompButton(this, 0, 0, 150, 40, "<-- Back");
 		back.setCenter(100, Constants.getCameraHeight() - 75);
 		back.addButtonListener(new CloseGuiListener());
 		
@@ -20,6 +29,9 @@ public class GuiLevelChooser extends Gui {
 		initLevels();
 	}
 
+	/**
+	 * Loads all levels
+	 */
 	private void initLevels() {
 		File[] levels = new File("level/").listFiles();
 		if (levels == null || levels.length == 0)
@@ -32,7 +44,7 @@ public class GuiLevelChooser extends Gui {
 			try {
 				Level level = new Level(LevelBuilder.load(f.getAbsolutePath()));
 				if (Constants.getCURRENT_USER().isUnlocked(level.getName())) {
-					CompButton button = new CompButton(100, y, 200,
+					CompButton button = new CompButton(this, 100, y, 200,
 							40, level.getName());
 					button.addButtonListener(new LevelLoadListener(level));
 					components.add(button);
@@ -63,5 +75,9 @@ public class GuiLevelChooser extends Gui {
 			JumpAndJan.closeAllGuis();
 			Constants.setActualLevel(level);
 		}
+	}
+	
+	static {
+		Out.inf(GuiLevelChooser.class, "01.06.2013", "Michael", null);
 	}
 }

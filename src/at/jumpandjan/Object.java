@@ -17,6 +17,7 @@ import java.awt.Rectangle;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import at.freschmushroom.Out;
 import at.freschmushroom.TextureManager;
 import at.jumpandjan.level.Level;
 
@@ -29,6 +30,9 @@ import at.jumpandjan.level.Level;
  */
 public class Object {
 
+	/**
+	 * The bounds
+	 */
 	public Rectangle bounds = new Rectangle();
 
 	/**
@@ -98,12 +102,36 @@ public class Object {
 				false);
 	}
 
+	/**
+	 * Convenience method for rendering
+	 * @param texture Texture
+	 * @param width Width of the drawn area as well as the texture's
+	 * @param height Height of the drawn area as well as the texture's
+	 * @param x The x-coordinate in OpenGL
+	 * @param y The y-coordinate in OpenGL
+	 * @param rWidth The width of the texture
+	 * @param rHeight The height of the texture
+	 * @param turned Flipped
+	 */
 	public void render(String texture, double width, double height, double x,
 			double y, float rWidth, float rHeight, boolean turned) {
 		render(texture, width, height, x, y, rWidth, rHeight, (float) width,
 				(float) height, turned);
 	}
 
+	/**
+	 * Convenience method for rendering
+	 * @param texture Texture
+	 * @param width Width of the drawn area as well as the texture's
+	 * @param height Height of the drawn area as well as the texture's
+	 * @param x The x-coordinate in OpenGL
+	 * @param y The y-coordinate in OpenGL
+	 * @param rWidth The width of the texture
+	 * @param rHeight The height of the texture
+	 * @param sWidth The image width
+	 * @param sHeight The image height
+	 * @param turned Flipped
+	 */
 	public void render(String texture, double width, double height, double x,
 			double y, float rWidth, float rHeight, float sWidth, float sHeight,
 			boolean turned) {
@@ -111,6 +139,21 @@ public class Object {
 				sHeight, turned);
 	}
 
+	/**
+	 * Convenience method for rendering
+	 * @param texture Texture
+	 * @param width Width of the drawn area as well as the texture's
+	 * @param height Height of the drawn area as well as the texture's
+	 * @param x The x-coordinate in OpenGL
+	 * @param y The y-coordinate in OpenGL
+	 * @param rX The x-coordinate of the texture
+	 * @param rY The y-coordinate of the texture
+	 * @param rWidth The width of the texture
+	 * @param rHeight The height of the texture
+	 * @param sWidth The image width
+	 * @param sHeight The image height
+	 * @param turned Flipped
+	 */
 	public void render(String texture, double width, double height, double x,
 			double y, float rX, float rY, float rWidth, float rHeight,
 			float sWidth, float sHeight, boolean turned) {
@@ -139,28 +182,51 @@ public class Object {
 		glPopMatrix();
 	}
 
+	/**
+	 * Renders the icon
+	 */
 	public void renderIcon() {
 		render();
 	}
 
+	/**
+	 * The default width
+	 * @return The default width
+	 */
 	public double getDefaultWidth() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
+	/**
+	 * The default height
+	 * @return The default height
+	 */
 	public double getDefaultHeight() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
+	/**
+	 * Has it got a default width?
+	 * @return Whether a default width is set
+	 */
 	public boolean hasDefaultWidth() {
 		return false;
 	}
 
+	/**
+	 * Has it got a default height?
+	 * @return Whether a default height is set
+	 */
 	public boolean hasDefaultHeight() {
 		return false;
 	}
 
+	/**
+	 * Either set the width or use the default
+	 * @param width The optional width
+	 */
 	public void setWidthOrDefault(float width) {
 		if (hasDefaultWidth())
 			this.bounds.width = (int) getDefaultWidth();
@@ -168,6 +234,10 @@ public class Object {
 			this.bounds.width = (int) width;
 	}
 
+	/**
+	 * Either use the default or set the height
+	 * @param height The optional height
+	 */
 	public void setHeightOrDefault(float height) {
 		if (hasDefaultHeight())
 			this.bounds.height = (int) getDefaultHeight();
@@ -184,6 +254,9 @@ public class Object {
 		setBounds((int) x, (int) y, (int) width, (int) height);
 	}
 	
+	/**
+	 * Sets the bounds of this object
+	 */
 	public void setBounds(int x, int y, int width, int height) {
 		bounds.setBounds(x, y, width, height);
 	}
@@ -200,15 +273,32 @@ public class Object {
 		this.bounds = bounds;
 	}
 	
+	/**
+	 * Whether collision should be checked
+	 * @return General collision check?
+	 */
 	public boolean hasCollision() {
 		return true;
 	}
 	
+	/**
+	 * Whether collision with this object should be checked
+	 * @param withObject Object to check
+	 * @return Specific collision check
+	 */
 	public boolean checkCollisionWith(at.jumpandjan.Object withObject) {
 		return this != withObject && hasCollision();
 	}
 	
+	/**
+	 * Collide with that object
+	 * @param withObject that object
+	 */
 	public void collide(at.jumpandjan.Object withObject) {
 		
+	}
+	
+	static {
+		Out.inf(at.jumpandjan.Object.class, "01.06.2013", "Michael, Felix", null);
 	}
 }

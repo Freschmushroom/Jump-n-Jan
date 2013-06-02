@@ -18,11 +18,26 @@ import at.freschmushroom.*;
 import at.freschmushroom.audio.SoundContainer;
 import at.jumpandjan.gui.*;
 
+/**
+ * The main class
+ * 
+ * @author Michael
+ * @author Felix
+ * 
+ */
 public class JumpAndJan implements Constants.RAMListener {
+	/**
+	 * The frame of the display
+	 */
 	public static Frame parent;
+	/**
+	 * The canvas in the frame
+	 */
 	public static Canvas canvas;
 
-	
+	/**
+	 * All active guis, where the one with the highest index is the current one
+	 */
 	public static final java.util.ArrayList<Gui> openGuis = new java.util.ArrayList<Gui>();
 
 	public static void main(String[] args) {
@@ -50,7 +65,7 @@ public class JumpAndJan implements Constants.RAMListener {
 					Display.create();
 					Display.setParent((Canvas) JumpAndJan.canvas);
 					// Display.setVSyncEnabled(true);
-					JumpAndJan.parent.requestFocus();
+					//JumpAndJan.parent.requestFocus();
 					glMatrixMode(GL_PROJECTION);
 					glLoadIdentity();
 					glOrtho(0, 640, 480, 0, 1, -1);
@@ -132,7 +147,8 @@ public class JumpAndJan implements Constants.RAMListener {
 					} else {
 						openGuis.get(openGuis.size() - 1).fireKeyboardEvent(
 								Keyboard.getEventKeyState(),
-								Keyboard.getEventKey(), Mouse.getX(),
+								Keyboard.getEventKey(),
+								Keyboard.getEventCharacter(), Mouse.getX(),
 								Display.getHeight() - Mouse.getY());
 					}
 				}
@@ -175,8 +191,9 @@ public class JumpAndJan implements Constants.RAMListener {
 			long endTime = System.nanoTime();
 			System.out.println("Time: " + (endTime - startTime) / 1000000000
 					+ " seconds");
-			System.out.println("Average FPS: "
-					+ ((double) frameCount / ((endTime - startTime) / 1000000000)));
+			System.out
+					.println("Average FPS: "
+							+ ((double) frameCount / ((endTime - startTime) / 1000000000)));
 			AL.destroy();
 			Display.destroy();
 			parent.dispose();
@@ -203,15 +220,28 @@ public class JumpAndJan implements Constants.RAMListener {
 		}
 	}
 
+	/**
+	 * YOU SHALL NOT INITIALIZE
+	 */
 	private JumpAndJan() {
 		Out.line("Listeners started");
 	}
 
+	/**
+	 * Gets the player
+	 * 
+	 * @return The player
+	 */
 	public static EntityPlayer getPlayer() {
 		return Constants.getActualLevel() == null ? null : Constants
 				.getActualLevel().getPlayer();
 	}
-	
+
+	/**
+	 * Initializes the frame
+	 * 
+	 * @return The frame
+	 */
 	private static Frame initFrame() {
 		try {
 			Constants.load();
@@ -291,6 +321,9 @@ public class JumpAndJan implements Constants.RAMListener {
 		Out.inf(JumpAndJan.class, "22.10.12", "Felix, Michael", null);
 	}
 
+	/**
+	 * Draws the fancy background
+	 */
 	public static void drawBackground() {
 		glPushMatrix();
 		glColor3f(1, 1, 1);
@@ -317,6 +350,9 @@ public class JumpAndJan implements Constants.RAMListener {
 		glPopMatrix();
 	}
 
+	/**
+	 * Closes the current gui
+	 */
 	public static void closeCurrentGui() {
 		if (!openGuis.isEmpty())
 			openGuis.remove(openGuis.size() - 1);
@@ -324,11 +360,20 @@ public class JumpAndJan implements Constants.RAMListener {
 			Constants.setPaused(false);
 	}
 
+	/**
+	 * Closes all guis
+	 */
 	public static void closeAllGuis() {
 		openGuis.clear();
 		Constants.setPaused(false);
 	}
 
+	/**
+	 * Opens the Gui
+	 * 
+	 * @param gui
+	 *            The gui to open
+	 */
 	public static void openGui(Gui gui) {
 		openGuis.add(gui);
 		Constants.setPaused(true);

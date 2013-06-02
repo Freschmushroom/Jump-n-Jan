@@ -6,27 +6,45 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
+import at.freschmushroom.Out;
 import at.jumpandjan.Constants;
 import at.jumpandjan.JumpAndJan;
 import at.jumpandjan.User;
 
+/**
+ * A choice of all user save states
+ * @author Michael
+ *
+ */
 public class GuiUserSaveStates extends Gui {
+	/**
+	 * The title
+	 */
 	private CompLabel title;
+	/**
+	 * The "Create user" button
+	 */
 	private CompButton addUser;
+	/**
+	 * A 0815 back button
+	 */
 	private CompButton back;
 
+	/**
+	 * All buffered users
+	 */
 	private ArrayList<User> users = new ArrayList<User>();
 
 	public GuiUserSaveStates() {
-		title = new CompLabel(0, 0, 0, 0, "Choose User");
+		title = new CompLabel(this, 0, 0, 0, 0, "Choose User");
 		title.autoDesign(320, 10);
 		title.color = "000000";
 		
-		addUser = new CompButton(0, 0, 150, 40, "Create User");
+		addUser = new CompButton(this, 0, 0, 150, 40, "Create User");
 		addUser.setCenter(100, Constants.getCameraHeight() - 150);
-		addUser.addButtonListener(new UserAddListener());
+		addUser.addButtonListener(new OpenGuiListener(new GuiCreateUser(), false));
 
-		back = new CompButton(0, 0, 150, 40, "<-- Back");
+		back = new CompButton(this, 0, 0, 150, 40, "<-- Back");
 		back.setCenter(100, Constants.getCameraHeight() - 75);
 		back.addButtonListener(new CloseGuiListener());
 
@@ -39,13 +57,16 @@ public class GuiUserSaveStates extends Gui {
 		int y = 50;
 
 		for (User user : users) {
-			CompButton button = new CompButton(100, y, 200, 40, user.getName());
+			CompButton button = new CompButton(this, 100, y, 200, 40, user.getName());
 			button.addButtonListener(new UserButtonListener(user));
 			components.add(button);
 			y += button.getHeight() + 10;
 		}
 	}
 
+	/**
+	 * Loads and buffers the users
+	 */
 	public void initUsers() {
 		File[] userFiles = new File("saves/").listFiles();
 		if (userFiles == null)
@@ -85,23 +106,8 @@ public class GuiUserSaveStates extends Gui {
 			JumpAndJan.openGui(new GuiLevelChooser());
 		}
 	}
-
-	class UserAddListener implements ActionListener {
-
-		public void onClicked(CompButton source) {
-		}
-
-		public void onReleased(CompButton source) {
-		}
-
-		public void onPressed(CompButton source) {
-			// Display.destroy();
-			// Mouse.destroy();
-			// Keyboard.destroy();
-			// JumpAndJan.parent.setVisible(false);
-			// System.out.println(JOptionPane.showInputDialog(JumpAndJan.parent,
-			// "Please enter a username", null));
-			// JumpAndJan.parent.setVisible(true);
-		}
+	
+	static {
+		Out.inf(GuiUserSaveStates.class, "01.06.2013", "Michael", null);
 	}
 }
