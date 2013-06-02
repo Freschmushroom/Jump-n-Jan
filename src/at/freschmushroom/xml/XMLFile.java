@@ -5,6 +5,7 @@ import java.util.*;
 
 import at.freschmushroom.Errorhandling;
 import at.freschmushroom.Out;
+import at.freschmushroom.ServiceProvider;
 
 /**
  * Repräsentiert ein XML-File
@@ -76,9 +77,10 @@ public class XMLFile
 			if(f == null)
 				f = new File(path + "\\" + name + ".xml");
 			if(!f.exists()) {
-				f.getAbsoluteFile().getParentFile().mkdirs();
-				f.createNewFile();
-				return;
+//				f.getAbsoluteFile().getParentFile().mkdirs();
+//				f.createNewFile();
+//				return;
+				ServiceProvider.fetchResources();
 			}
 			BufferedReader br = new BufferedReader(new FileReader(f));
 			String line = null;

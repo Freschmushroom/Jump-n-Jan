@@ -21,6 +21,8 @@ public class Errorhandling {
 			String name = e.getMessage().substring(pathL);
 			name = name.split(" ")[0];
 			Out.reportMissingFile(name);
+			Out.err("Fetching Resources, please restart Jump'n'Jan after patching progress");
+			ServiceProvider.fetchResources();
 		} else {
 			try {
 				Out.saveErrorInfo(t);

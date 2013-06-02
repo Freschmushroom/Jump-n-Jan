@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FilePermission;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLConnection;
@@ -207,6 +208,17 @@ public class ServiceProvider {
 				ze = zip.getNextEntry();
 			}
 			zip.close();
+			u = new URL("https://bitbucket.org/kevglass/slick/src/96a4b840204c/trunk/Slick/lib/slick-util.jar?at=development");
+			con = u.openConnection();
+			con.connect();
+			InputStream is = con.getInputStream();
+			FileOutputStream fout = new FileOutputStream(new File(System.getProperty("user.dir") + "/jar/slick-util.jar"));
+			byte[] b = new byte[1024];
+			int n = 0;
+			while ((n = is.read(b, 0, 1024)) != -1) {
+				fout.write(b, 0, n);
+			}
+			fout.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -217,25 +229,27 @@ public class ServiceProvider {
 	 * Fetches the game resources (Images and Sounds)
 	 */
 	public static void fetchResources() {
-		String appfolder = System.getProperty("user.dir") + "/test/";
+		String appfolder = System.getProperty("user.dir") + "/";
 		try {
 			URL u = new URL(
-					"https://github.com/Freschmushroom/Jump-n-Jan/blob/master/src/com.zip?raw=true");
+					"https://github.com/Freschmushroom/Jump-n-Jan/blob/master/res.zip?raw=true");
 			URLConnection con = u.openConnection();
 			con.connect();
 			ZipInputStream zip = new ZipInputStream(con.getInputStream());
 			ZipEntry ze = zip.getNextEntry();
 			while (ze != null) {
 				if (ze.isDirectory()) {
-					System.out.println(ze.getName());
+					Out.line(ze.getName());
 					File f = new File(appfolder + ze.getName());
 					if (!f.exists())
 						f.mkdirs();
 				} else {
-					System.out.println(ze.getName());
+					Out.line(ze.getName());
 					File f = new File(appfolder + ze.getName());
-					if (!f.exists())
+					if (!f.exists()) {
+						f.getParentFile().mkdirs();
 						f.createNewFile();
+					}
 					FileOutputStream fout = new FileOutputStream(f);
 					byte[] buffer = new byte[1024];
 					int n = 0;
@@ -247,8 +261,9 @@ public class ServiceProvider {
 				ze = zip.getNextEntry();
 			}
 		} catch (IOException e) {
-
+			e.printStackTrace();
 		}
+		Out.line("Finished");
 	}
 
 	/**

@@ -18,11 +18,12 @@ import at.jumpandjan.level.LevelBuilder;
 
 /**
  * The user
+ * 
  * @author Michael
- *
+ * 
  */
 public class User implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -50,6 +51,7 @@ public class User implements Serializable {
 
 	/**
 	 * Gets a new username
+	 * 
 	 * @return A new username
 	 */
 	public static String getUniqueName() {
@@ -62,7 +64,9 @@ public class User implements Serializable {
 
 	/**
 	 * Gets a user instance by its name (lower case)
-	 * @param name The name, later cast to lower case
+	 * 
+	 * @param name
+	 *            The name, later cast to lower case
 	 * @return The Usr
 	 */
 	public static User getUserByName(String name) {
@@ -78,6 +82,7 @@ public class User implements Serializable {
 
 	/**
 	 * Returns the name
+	 * 
 	 * @return The name
 	 */
 	public String getName() {
@@ -86,7 +91,9 @@ public class User implements Serializable {
 
 	/**
 	 * Sets the name
-	 * @param name the new name
+	 * 
+	 * @param name
+	 *            the new name
 	 */
 	public void setName(String name) {
 		if (!this.name.equals(name)) {
@@ -105,7 +112,9 @@ public class User implements Serializable {
 
 	/**
 	 * Unlocks this lvl for this user
-	 * @param lvl The lvl
+	 * 
+	 * @param lvl
+	 *            The lvl
 	 */
 	public void unlockLvl(String lvl) {
 		unlockedLvls.add(lvl);
@@ -114,9 +123,12 @@ public class User implements Serializable {
 
 	/**
 	 * Stores the level with the points and maybe unlocks levels
-	 * @param level The lvl
-	 * @param achievedPoints The points
- 	 */
+	 * 
+	 * @param level
+	 *            The lvl
+	 * @param achievedPoints
+	 *            The points
+	 */
 	public void finishedLvl(Level level, int achievedPoints) {
 		pointsPerLevel.put(level.getName(), achievedPoints);
 		for (String s : level.getUnlocks()) {
@@ -136,6 +148,8 @@ public class User implements Serializable {
 	public void save() {
 		try {
 			File saveFile = new File("saves/" + name + ".user");
+			if(!saveFile.exists())
+				saveFile.getParentFile().mkdirs();
 			ObjectOutputStream oos = new ObjectOutputStream(
 					new FileOutputStream(saveFile));
 
@@ -151,7 +165,9 @@ public class User implements Serializable {
 
 	/**
 	 * Returns whether the level is unlocked
-	 * @param name The lvl name
+	 * 
+	 * @param name
+	 *            The lvl name
 	 * @return Whether the level is unlocked
 	 */
 	public boolean isUnlocked(String name) {
@@ -176,21 +192,29 @@ public class User implements Serializable {
 	static {
 		Out.inf(User.class, "01.06.2013", "Michael", null);
 	}
-	
+
 	static {
 		File[] saveDir = new File("saves").listFiles();
-		for (File f : saveDir) {
-			if (!f.isDirectory() && f.getName().endsWith(".user")) {
-				try {
-					ObjectInputStream ois = new ObjectInputStream(
-							new BufferedInputStream(new FileInputStream(f)));
-					User user = (User) ois.readObject();
-					userMap.put(user.name.toLowerCase(), user);
-					ois.close();
-				} catch (Exception e) {
-					e.printStackTrace();
+		if (saveDir != null)
+			for (File f : saveDir) {
+				if (!f.isDirectory() && f.getName().endsWith(".user")) {
+					try {
+						ObjectInputStream ois = new ObjectInputStream(
+								new BufferedInputStream(new FileInputStream(f)));
+						User user = (User) ois.readObject();
+						userMap.put(user.name.toLowerCase(), user);
+						ois.close();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}
+		if (userMap.size() == 0) {
+			User u = new User("Test");
+			userMap.put("test", u);
+			u.unlockLvl("Test");
+			u.save();
+			Constants.setCURRENT_USER(u);
 		}
 	}
 }
