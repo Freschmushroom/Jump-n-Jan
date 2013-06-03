@@ -2,6 +2,7 @@ package at.jumpandjan;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,10 +11,8 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import at.jumpandjan.Out;
-
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.GL11;
 
 public class TextureManager
 {
@@ -79,10 +78,25 @@ public class TextureManager
 			return imgMap.get(image);
 		InputStream is = null;
 		try {
+			System.out.println("Looking for " + image + " inside the program . . .");
 			is = getClass().getResourceAsStream(image);
-			if(is == null)
-				is = new BufferedInputStream(new FileInputStream(System.getProperty("user.dir") + image));
-			return ImageIO.read(is);
+			if (is == null) {
+				System.out.println("Looking for /img" + image + " inside the program . . .");
+				is = getClass().getResourceAsStream("/img" + image);
+			}
+			if(is == null) {
+				System.out.println("Looking for " + image + " outside the program . . . ");
+				File f = new File(System.getProperty("user.dir") + "/img" + image);
+				if (!f.exists() || !f.isFile()) {
+					System.out.println("Looking for /img" + image + " outside the program . . .");
+					f = new File(System.getProperty("user.dir"));
+				}
+				System.out.println("Trying " + f.getAbsolutePath());
+				is = new BufferedInputStream(new FileInputStream(f));
+			}
+			BufferedImage bufferedImage = ImageIO.read(is);
+			imgMap.put(image, bufferedImage);
+			return bufferedImage;
 		} catch(Exception e) {
 			e.printStackTrace();
 			return null;
