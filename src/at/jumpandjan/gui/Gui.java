@@ -42,6 +42,11 @@ import at.jumpandjan.Constants;
 public abstract class Gui {
 
 	/**
+	 * Whether this Gui is dirty
+	 */
+	private boolean dirty;
+	
+	/**
 	 * The currently bound image, used to determine texture coordinates
 	 */
 	private BufferedImage boundImage;
@@ -103,7 +108,15 @@ public abstract class Gui {
 			TextureManager.instance.bindTexture(texture);
 		}
 	}
-
+	
+	/**
+	 * Loads all Gui elements.
+	 * Note:	This method might be called multiple times, so be sure
+	 * 			to clean up at the beginning.
+	 */
+	public void init() {
+		
+	}
 	/**
 	 * Begins drawing in the specified mode
 	 * 
@@ -403,6 +416,25 @@ public abstract class Gui {
 			}
 			this.focusedComponent = component;
 			component.isFocused = true;
+		}
+	}
+	
+	/**
+	 * Marks this Gui dirty
+	 */
+	public void markDirty() {
+		this.dirty = true;
+	}
+	
+	/**
+	 * Returns whether this Gui is dirty
+	 * @return Whether this Gui is dirty
+	 */
+	public boolean isDirty() {
+		try {
+			return this.dirty;
+		} finally {
+			this.dirty = false;
 		}
 	}
 

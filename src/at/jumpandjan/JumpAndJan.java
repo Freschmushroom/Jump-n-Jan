@@ -122,6 +122,9 @@ public class JumpAndJan implements Constants.RAMListener {
 				}
 				if (openGuis.size() > 0) {
 					openGuis.get(openGuis.size() - 1).render();
+					if (openGuis.get(openGuis.size() - 1).isDirty()) {
+						openGuis.get(openGuis.size() - 1).init();
+					}
 				}
 
 				// Constants.stopRender();
@@ -181,6 +184,9 @@ public class JumpAndJan implements Constants.RAMListener {
 					// Constants.stopUpdate();
 				}
 				for (int i = 0; i < openGuis.size() - 1; i++) {
+					if (openGuis.get(i).isDirty()) {
+						openGuis.get(i).init();
+					}
 					openGuis.get(i).updateWhileInactive();
 				}
 				Display.update();
@@ -376,6 +382,16 @@ public class JumpAndJan implements Constants.RAMListener {
 	 */
 	public static void openGui(Gui gui) {
 		openGuis.add(gui);
+		gui.init();
 		Constants.setPaused(true);
+	}
+	
+	/**
+	 * Reloads all open Guis at the beginning of the next tick
+	 */
+	public static void reloadGuis() {
+		for (Gui gui : openGuis) {
+			gui.markDirty();
+		}
 	}
 }

@@ -3,8 +3,10 @@ package at.jumpandjan.gui;
 import java.awt.Font;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import at.freschmushroom.Out;
+import at.jumpandjan.Constants;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -12,8 +14,9 @@ import utils.TrueTypeFont;
 
 /**
  * A text field
+ * 
  * @author Michael
- *
+ * 
  */
 public class CompTextField extends Component {
 
@@ -21,32 +24,53 @@ public class CompTextField extends Component {
 	 * The text
 	 */
 	private String text;
-	
+
 	/**
 	 * The font
 	 */
 	private TrueTypeFont font = new TrueTypeFont(new Font(Font.MONOSPACED,
 			Font.BOLD, 20), false);
-	
+
 	/**
 	 * Whether the even fancier background should be drawn
 	 */
 	private boolean drawBackground = true;
-	
+
 	/**
 	 * The color; by default: white
 	 */
 	public String color = "ffffff";
-	
+
 	/**
 	 * A count for the caret animation
 	 */
 	private int count;
-	
+
 	/**
 	 * The position of the caret
 	 */
 	public int caret;
+
+	/**
+	 * When the textfield is smaller than the text to be displayed, charOffset
+	 * is used to scroll around
+	 */
+	private int charOffset;
+
+	/**
+	 * The time when the key which is currently down was pressed
+	 */
+	private long repetitiveKeyTime;
+
+	/**
+	 * The key code of the key which is currently down
+	 */
+	private int repetitiveKeyCode;
+
+	/**
+	 * The character code of the key which is currently down
+	 */
+	private char repetitiveCharCode;
 
 	public CompTextField(Gui parent, int x, int y, int width, int height,
 			String text) {
@@ -56,6 +80,7 @@ public class CompTextField extends Component {
 
 	/**
 	 * Returns the text
+	 * 
 	 * @return the text
 	 */
 	public String getText() {
@@ -64,7 +89,9 @@ public class CompTextField extends Component {
 
 	/**
 	 * Sets the text
-	 * @param text the text
+	 * 
+	 * @param text
+	 *            the text
 	 */
 	public void setText(String text) {
 		this.text = text;
@@ -72,6 +99,7 @@ public class CompTextField extends Component {
 
 	/**
 	 * Whether the background should be drawn
+	 * 
 	 * @return Whether the background should be drawn
 	 */
 	public boolean drawBackground() {
@@ -80,7 +108,9 @@ public class CompTextField extends Component {
 
 	/**
 	 * Sets whether the background should be drawn
-	 * @param drawBackground Whether the background should be drawn
+	 * 
+	 * @param drawBackground
+	 *            Whether the background should be drawn
 	 */
 	public void setDrawBackground(boolean drawBackground) {
 		this.drawBackground = drawBackground;
@@ -88,6 +118,13 @@ public class CompTextField extends Component {
 
 	@Override
 	public void drawComponent() {
+		if (repetitiveKeyTime != -1
+				&& System.currentTimeMillis() - repetitiveKeyTime > 500) {
+			onKeyPressed(repetitiveKeyCode, repetitiveCharCode, Mouse.getX()
+					/ Constants.getCameraWidth() * 640,
+					480 - (Mouse.getY() / Constants.getCameraHeight()) / 480);
+		}
+
 		if (drawBackground) {
 			color(150, 150, 150);
 			bindTexture("/button.png");
@@ -110,25 +147,35 @@ public class CompTextField extends Component {
 
 		int textX = getX() + 10;
 		int textY = getY() - getHeight() / 2 + font.getHeight(text) / 2;
-		font.drawString(textX, 480 - font.getHeight(text) - textY, text, 1, 1,
-				TrueTypeFont.ALIGN_LEFT);
+		if (!text.isEmpty()) {
+			int length = maxCharsInTextField();
+			if (text.length() - charOffset < length) {
+				font.drawString(textX, 480 - font.getHeight(text) - textY,
+						text, charOffset, text.length() - 1, 1, 1,
+						TrueTypeFont.ALIGN_LEFT);
+			} else {
+				font.drawString(textX, 480 - font.getHeight(text) - textY,
+						text, charOffset, length + charOffset - 2, 1, 1,
+						TrueTypeFont.ALIGN_LEFT);
+			}
+		}
 
-		if (isFocused && count > 30) {
+		if (isFocused && count >= 30) {
 
 			bindTexture(null);
 			begin(QUADS);
 
 			addVertex(
-					(int) (textX + font.getActualWidth(caret)) + 4,
+					(int) (textX + font.getActualWidth(caret - charOffset)) + 4,
 					(int) (480 - font.getHeight(text) / 1.5f - textY) - 2);
 			addVertex(
-					(int) (textX + font.getActualWidth(caret)) + 4,
+					(int) (textX + font.getActualWidth(caret - charOffset)) + 4,
 					(int) (480 - font.getHeight(text) / 1.5f - textY) - 4);
 			addVertex(
-					(int) (textX + font.getActualWidth(caret + 1)) + 4,
+					(int) (textX + font.getActualWidth(caret + 1 - charOffset)) + 4,
 					(int) (480 - font.getHeight(text) / 1.5f - textY) - 4);
 			addVertex(
-					(int) (textX + font.getActualWidth(caret + 1)) + 4,
+					(int) (textX + font.getActualWidth(caret + 1 - charOffset)) + 4,
 					(int) (480 - font.getHeight(text) / 1.5f - textY) - 2);
 
 			end();
@@ -146,7 +193,9 @@ public class CompTextField extends Component {
 
 	/**
 	 * Sets the font
-	 * @param font The font
+	 * 
+	 * @param font
+	 *            The font
 	 */
 	public void setFont(TrueTypeFont font) {
 		this.font = font;
@@ -154,6 +203,7 @@ public class CompTextField extends Component {
 
 	/**
 	 * Gets the font
+	 * 
 	 * @return The font
 	 */
 	public TrueTypeFont getFont() {
@@ -177,8 +227,7 @@ public class CompTextField extends Component {
 
 	@Override
 	public void onKeyPressed(int key, char character, int mouseX, int mouseY) {
-		if (character >= 'a' && character <= 'z' || character >= 'A'
-				&& character <= 'Z') {
+		if (character >= '!' && character <= '~') {
 			text = text.substring(0, caret) + character + text.substring(caret);
 			caret++;
 		} else if (key == Keyboard.KEY_LEFT) {
@@ -191,9 +240,50 @@ public class CompTextField extends Component {
 			if (caret < text.length()) {
 				caret++;
 			}
+		} else if (key == Keyboard.KEY_BACK) {
+			if (caret > 0) {
+				caret--;
+				text = text.substring(0, caret) + text.substring(caret + 1);
+			}
+		} else if (key == Keyboard.KEY_DELETE) {
+			if (caret < text.length()) {
+				text = text.substring(0, caret) + text.substring(caret + 1);
+			}
+		} else if (key == Keyboard.KEY_HOME) {
+			caret = 0;
+			charOffset = 0;
+		} else if (key == Keyboard.KEY_END) {
+			caret = text.length();
+			if (caret > maxCharsInTextField()) {
+				charOffset = text.length() - maxCharsInTextField();
+			}
+		}
+		if (caret - charOffset == maxCharsInTextField()) {
+			charOffset++;
+		}
+		if (caret != 0 && caret == charOffset) {
+			charOffset--;
+		}
+		if (repetitiveKeyCode != key) {
+			repetitiveKeyCode = key;
+			repetitiveCharCode = character;
+			repetitiveKeyTime = System.currentTimeMillis();
 		}
 	}
-	
+
+	private int maxCharsInTextField() {
+		return (getWidth() - 20) / font.getActualWidth(1);
+	}
+
+	@Override
+	public void onKeyReleased(int key, char character, int mouseX, int mouseY) {
+		if (key == repetitiveKeyCode) {
+			repetitiveKeyCode = -1;
+			repetitiveCharCode = '\0';
+			repetitiveKeyTime = -1;
+		}
+	}
+
 	static {
 		Out.inf(CompTextField.class, "01.06.2013", "Michael", null);
 	}

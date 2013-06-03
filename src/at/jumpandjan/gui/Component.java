@@ -4,8 +4,9 @@ import at.freschmushroom.Out;
 
 /**
  * The abstract class of ALL ZE COMPONENTS
+ * 
  * @author Michael
- *
+ * 
  */
 public abstract class Component extends Gui implements Cloneable {
 	/**
@@ -17,11 +18,16 @@ public abstract class Component extends Gui implements Cloneable {
 	 * The parenting Gui
 	 */
 	protected Gui parent;
-	
+
 	/**
 	 * Whether this component is focused
 	 */
 	protected boolean isFocused;
+
+	/**
+	 * Whether this component should be rendered
+	 */
+	public boolean visible = true;
 
 	public Component(Gui parent, int x, int y, int width, int height) {
 		this.parent = parent;
@@ -33,6 +39,7 @@ public abstract class Component extends Gui implements Cloneable {
 
 	/**
 	 * Returns the x-position
+	 * 
 	 * @return x-coordinate
 	 */
 	public int getX() {
@@ -41,6 +48,7 @@ public abstract class Component extends Gui implements Cloneable {
 
 	/**
 	 * Returns the y-position
+	 * 
 	 * @return y-coordinate
 	 */
 	public int getY() {
@@ -49,6 +57,7 @@ public abstract class Component extends Gui implements Cloneable {
 
 	/**
 	 * Returns the width
+	 * 
 	 * @return The width
 	 */
 	public int getWidth() {
@@ -57,6 +66,7 @@ public abstract class Component extends Gui implements Cloneable {
 
 	/**
 	 * Returns the height
+	 * 
 	 * @return The height
 	 */
 	public int getHeight() {
@@ -65,7 +75,9 @@ public abstract class Component extends Gui implements Cloneable {
 
 	/**
 	 * Sets the X-coordinate
-	 * @param x X-coordinate
+	 * 
+	 * @param x
+	 *            X-coordinate
 	 */
 	public void setX(int x) {
 		this.x = x;
@@ -73,7 +85,9 @@ public abstract class Component extends Gui implements Cloneable {
 
 	/**
 	 * Sets the Y-coordinate
-	 * @param y Y-coordinate
+	 * 
+	 * @param y
+	 *            Y-coordinate
 	 */
 	public void setY(int y) {
 		this.y = y;
@@ -81,7 +95,9 @@ public abstract class Component extends Gui implements Cloneable {
 
 	/**
 	 * Sets the Width
-	 * @param width The width
+	 * 
+	 * @param width
+	 *            The width
 	 */
 	public void setWidth(int width) {
 		this.width = width;
@@ -89,23 +105,29 @@ public abstract class Component extends Gui implements Cloneable {
 
 	/**
 	 * Sets the height
-	 * @param height The height
+	 * 
+	 * @param height
+	 *            The height
 	 */
 	public void setHeight(int height) {
 		this.height = height;
 	}
-	
+
 	@Override
 	public final void paint() {
-		drawComponent();
+		if (visible) {
+			drawComponent();
+		}
 	}
 
 	@Override
-	public final boolean fireKeyboardEvent(boolean eventKeyState, int eventKey, char eventChar, 
-			int mouseX, int mouseY) {
+	public final boolean fireKeyboardEvent(boolean eventKeyState, int eventKey,
+			char eventChar, int mouseX, int mouseY) {
 		if (isFocused) {
 			if (eventKeyState) {
 				onKeyPressed(eventKey, eventChar, mouseX, mouseY);
+			} else {
+				onKeyReleased(eventKey, eventChar, mouseX, mouseY);
 			}
 			return true;
 		}
@@ -143,20 +165,45 @@ public abstract class Component extends Gui implements Cloneable {
 
 	/**
 	 * Called when a key is pressed
-	 * @param key The keycode
-	 * @param character The character code, if available
-	 * @param mouseX The position of the mouse at the event
-	 * @param mouseY The position of the mouse at the event
+	 * 
+	 * @param key
+	 *            The key code
+	 * @param character
+	 *            The character code, if available
+	 * @param mouseX
+	 *            The position of the mouse at the event
+	 * @param mouseY
+	 *            The position of the mouse at the event
 	 */
 	public void onKeyPressed(int key, char character, int mouseX, int mouseY) {
 
 	}
 
 	/**
+	 * Called when a key is released
+	 * 
+	 * @param key
+	 *            The key code
+	 * @param character
+	 *            The character code, if available
+	 * @param mouseX
+	 *            The position of the mouse at the event
+	 * @param mouseY
+	 *            The position of the mouse at the event
+	 */
+	public void onKeyReleased(int key, char character, int mouseX, int mouseY) {
+
+	}
+
+	/**
 	 * Called when the mouse is clicked
-	 * @param mouseX X-position of the mouse
-	 * @param mouseY Y-position of the mouse
-	 * @param mouseButton The button which was clicked
+	 * 
+	 * @param mouseX
+	 *            X-position of the mouse
+	 * @param mouseY
+	 *            Y-position of the mouse
+	 * @param mouseButton
+	 *            The button which was clicked
 	 */
 	public void onClick(int mouseX, int mouseY, int mouseButton) {
 
@@ -164,9 +211,13 @@ public abstract class Component extends Gui implements Cloneable {
 
 	/**
 	 * Called, when the mouse is released
-	 * @param mouseX The X-Coordinate
-	 * @param mouseY The Y-Coordinate
-	 * @param mouseButton The mouse button which was released
+	 * 
+	 * @param mouseX
+	 *            The X-Coordinate
+	 * @param mouseY
+	 *            The Y-Coordinate
+	 * @param mouseButton
+	 *            The mouse button which was released
 	 */
 	public void onReleased(int mouseX, int mouseY, int mouseButton) {
 
@@ -174,8 +225,11 @@ public abstract class Component extends Gui implements Cloneable {
 
 	/**
 	 * Called when the mouse is moved above the component
-	 * @param mouseX The X-Position of the mouse
-	 * @param mouseY The Y-Position of the mouse
+	 * 
+	 * @param mouseX
+	 *            The X-Position of the mouse
+	 * @param mouseY
+	 *            The Y-Position of the mouse
 	 */
 	public void onHovered(int mouseX, int mouseY) {
 
@@ -183,22 +237,25 @@ public abstract class Component extends Gui implements Cloneable {
 
 	/**
 	 * Called when the mouse moves outside the box
-	 * @param mouseX The X-Position of the mouse
-	 * @param mouseY The Y-Position of the mouse
+	 * 
+	 * @param mouseX
+	 *            The X-Position of the mouse
+	 * @param mouseY
+	 *            The Y-Position of the mouse
 	 */
 	public void onMouseExit(int mouseX, int mouseY) {
 
 	}
 
 	/**
-	 * Called by paint; draws the component.
-	 * To be implemented by subclasses.
+	 * Called by paint; draws the component. To be implemented by subclasses.
 	 */
 	public void drawComponent() {
 	}
 
 	/**
 	 * Copies this component
+	 * 
 	 * @return A copy of this component
 	 */
 	public Object copy() {
@@ -209,7 +266,7 @@ public abstract class Component extends Gui implements Cloneable {
 		}
 		return null;
 	}
-	
+
 	static {
 		Out.inf(Component.class, "01.06.2013", "Michael", null);
 	}

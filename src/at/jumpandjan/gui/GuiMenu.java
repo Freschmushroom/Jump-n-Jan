@@ -31,6 +31,10 @@ public class GuiMenu extends Gui {
 	private CompButton options;
 
 	public GuiMenu() {
+	}
+
+	public void init() {
+		components.clear();
 		mainMenu = new CompButton(this, 0, 0, 400, 40, "Go to Main Menu").setCenter(
 				Constants.getCameraWidth() / 2, 100);
 		saveGame = new CompButton(this, 0, 0, 400, 40, "Save Game").setCenter(
@@ -58,10 +62,12 @@ public class GuiMenu extends Gui {
 
 			public void onPressed(CompButton source) {
 				Constants.setActualLevel(null);
+				System.out.println("Set the current level to null");
 			}
 			
 		});
 		
+		saveGame.addButtonListener(new OpenGuiListener(new GuiCreateUser(), false));
 		saveGame.addButtonListener(new ActionListener() {
 
 			public void onClicked(CompButton source) {
@@ -88,7 +94,7 @@ public class GuiMenu extends Gui {
 		components.add(options);
 		components.add(quit);
 	}
-
+	
 	@Override
 	public boolean fireKeyboardEvent(boolean eventKeyState, int eventKey, char eventChar, 
 			int mouseX, int mouseY) {

@@ -34,8 +34,12 @@ public class GuiUserSaveStates extends Gui {
 	 * All buffered users
 	 */
 	private ArrayList<User> users = new ArrayList<User>();
-
-	public GuiUserSaveStates() {
+	
+	@Override
+	public void init() {
+		components.clear();
+		users.clear();
+		
 		title = new CompLabel(this, 0, 0, 0, 0, "Choose User");
 		title.autoDesign(320, 10);
 		title.color = "000000";
@@ -80,7 +84,6 @@ public class GuiUserSaveStates extends Gui {
 				
 				User user = (User) ois.readObject();
 				users.add(user);
-				
 				ois.close();
 			} catch (Exception e) {
 				System.err.println(f.getName() + " could not be read.");
