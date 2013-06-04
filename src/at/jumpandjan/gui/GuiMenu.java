@@ -5,7 +5,6 @@ import org.lwjgl.input.Keyboard;
 import at.freschmushroom.Out;
 import at.jumpandjan.Constants;
 import at.jumpandjan.JumpAndJan;
-import at.jumpandjan.User;
 
 /**
  * The ingame menu
@@ -37,7 +36,7 @@ public class GuiMenu extends Gui {
 		components.clear();
 		mainMenu = new CompButton(this, 0, 0, 400, 40, "Go to Main Menu").setCenter(
 				Constants.getCameraWidth() / 2, 100);
-		saveGame = new CompButton(this, 0, 0, 400, 40, "Save Game").setCenter(
+		saveGame = new CompButton(this, 0, 0, 400, 40, "Save User").setCenter(
 				Constants.getCameraWidth() / 2, mainMenu.getY()
 						+ (int) (mainMenu.getHeight() * 2));
 		options = new CompButton(this, 0, 0, 400, 40, "Options").setCenter(
@@ -67,7 +66,7 @@ public class GuiMenu extends Gui {
 			
 		});
 		
-		saveGame.addButtonListener(new OpenGuiListener(new GuiCreateUser(), false));
+		saveGame.addButtonListener(new CloseGuiListener());
 		saveGame.addButtonListener(new ActionListener() {
 
 			public void onClicked(CompButton source) {
@@ -77,10 +76,7 @@ public class GuiMenu extends Gui {
 			}
 
 			public void onPressed(CompButton source) {
-				User u = new User("zaboing");
-				u.finishedLvl(Constants.getActualLevel(), Constants
-						.getActualLevel().getPlayer().getPoints());
-				u.save();
+				Constants.getCURRENT_USER().save();
 			}
 
 		});

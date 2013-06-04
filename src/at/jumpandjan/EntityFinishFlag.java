@@ -25,10 +25,8 @@ public class EntityFinishFlag extends EntityFlag {
 	@Override
 	public void collide(at.jumpandjan.Object withObject) {
 		if (withObject instanceof EntityPlayer) {
-			User u = new User("zaboing");
-			Constants.setCURRENT_USER(u);
-			u.save();
-			u.finishedLvl(level, JumpAndJan.getPlayer().getPoints());
+			Constants.getCURRENT_USER().finishedLvl(level, JumpAndJan.getPlayer().getPoints());
+			Constants.getCURRENT_USER().save();
 			Constants.setActualLevel(null);
 			JumpAndJan.closeAllGuis();
 			JumpAndJan.openGui(new GuiMainMenu());

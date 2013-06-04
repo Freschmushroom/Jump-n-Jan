@@ -194,6 +194,9 @@ public class JumpAndJan implements Constants.RAMListener {
 
 				frameCount++;
 			}
+			if (Constants.getCURRENT_USER() != null) {
+				Constants.getCURRENT_USER().save();
+			}
 			long endTime = System.nanoTime();
 			System.out.println("Time: " + (endTime - startTime) / 1000000000
 					+ " seconds");

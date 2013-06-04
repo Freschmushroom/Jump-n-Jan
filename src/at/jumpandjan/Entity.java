@@ -140,7 +140,7 @@ public class Entity extends Object {
 			}
 		}
 
-		if (this.bounds.y > 480 || this.bounds.y - Intro.vertMvmt < -64) {
+		if (this.bounds.y > 480 || this.bounds.y - Intro.vertMvmt < -500) {
 			level.getDeadObjects().add(this);
 		}
 	}

@@ -153,7 +153,6 @@ public class User implements Serializable {
 					new FileOutputStream(saveFile));
 
 			oos.writeObject(this);
-			System.out.println("Saved user " + this);
 
 			oos.close();
 		} catch (FileNotFoundException e) {
