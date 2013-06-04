@@ -74,7 +74,6 @@ public class User implements Serializable {
 	}
 
 	public User(String name) {
-		userMap.put(name.toLowerCase(), this);
 		System.out.println("Loaded " + name);
 		setName(name);
 		unlockLvl(LevelBuilder.load(Constants.getDEFAULT_LVL_FILE()).getName());
@@ -99,7 +98,7 @@ public class User implements Serializable {
 		if (!this.name.equals(name)) {
 			userMap.put(name.toLowerCase(), this);
 			try {
-				File oldFile = new File("saves/" + this.name + ".user");
+				File oldFile = new File("saves/" + this.name.toLowerCase() + ".user");
 				oldFile.delete();
 				userMap.remove(this.name.toLowerCase());
 				this.name = name;
@@ -147,13 +146,14 @@ public class User implements Serializable {
 	 */
 	public void save() {
 		try {
-			File saveFile = new File("saves/" + name + ".user");
+			File saveFile = new File("saves/" + name.toLowerCase() + ".user");
 			if(!saveFile.exists())
 				saveFile.getParentFile().mkdirs();
 			ObjectOutputStream oos = new ObjectOutputStream(
 					new FileOutputStream(saveFile));
 
 			oos.writeObject(this);
+			System.out.println("Saved user " + this);
 
 			oos.close();
 		} catch (FileNotFoundException e) {
@@ -209,12 +209,15 @@ public class User implements Serializable {
 					}
 				}
 			}
-		if (userMap.size() == 0) {
-			User u = new User("Test");
-			userMap.put("test", u);
-			u.unlockLvl("Test");
-			u.save();
-			Constants.setCURRENT_USER(u);
-		}
+	}
+	
+	/**
+	 * Deletes this user
+	 */
+	public void delete() {
+		userMap.remove(this);
+		File f = new File("saves/" + name.toLowerCase() + ".user");
+		f.delete();
+		System.out.println("Successfully deleted " + name);
 	}
 }

@@ -111,6 +111,9 @@ public class LevelBuilder implements Serializable {
 					continue;
 				}
 				try {
+					if (n.getName().equalsIgnoreCase("wall")) {
+						System.out.print('\0');
+					}
 					Class<? extends LevelElement> c = (Class<? extends LevelElement>) Class
 							.forName("at.jumpandjan.level." + n.getName());
 					double x, y, width, height;

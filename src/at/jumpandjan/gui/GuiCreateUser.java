@@ -60,7 +60,7 @@ public class GuiCreateUser extends Gui implements ActionListener {
 			errorMessage.visible = true;
 		} else {
 			JumpAndJan.closeCurrentGui();
-			new User(username.getText());
+			new User(username.getText()).save();
 			JumpAndJan.reloadGuis();
 		}
 	}

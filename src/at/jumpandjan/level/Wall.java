@@ -22,7 +22,7 @@ public class Wall extends LevelElement implements Serializable {
 	@Override
 	public at.jumpandjan.Object getElement(Level level) {
 		return new at.jumpandjan.Wall(getPosX(), getPosY(),
-				getWidth(), 10, level);
+				getWidth(), getHeight(), level);
 	}
 
 	static {

@@ -13,8 +13,9 @@ import at.jumpandjan.User;
 
 /**
  * A choice of all user save states
+ * 
  * @author Michael
- *
+ * 
  */
 public class GuiUserSaveStates extends Gui {
 	/**
@@ -34,19 +35,20 @@ public class GuiUserSaveStates extends Gui {
 	 * All buffered users
 	 */
 	private ArrayList<User> users = new ArrayList<User>();
-	
+
 	@Override
 	public void init() {
 		components.clear();
 		users.clear();
-		
+
 		title = new CompLabel(this, 0, 0, 0, 0, "Choose User");
 		title.autoDesign(320, 10);
 		title.color = "000000";
-		
+
 		addUser = new CompButton(this, 0, 0, 150, 40, "Create User");
 		addUser.setCenter(100, Constants.getCameraHeight() - 150);
-		addUser.addButtonListener(new OpenGuiListener(new GuiCreateUser(), false));
+		addUser.addButtonListener(new OpenGuiListener(new GuiCreateUser(),
+				false));
 
 		back = new CompButton(this, 0, 0, 150, 40, "<-- Back");
 		back.setCenter(100, Constants.getCameraHeight() - 75);
@@ -58,13 +60,18 @@ public class GuiUserSaveStates extends Gui {
 
 		initUsers();
 
-		int y = 50;
 
-		for (User user : users) {
-			CompButton button = new CompButton(this, 100, y, 200, 40, user.getName());
-			button.addButtonListener(new UserButtonListener(user));
+		for (int i = 0; i < users.size(); i++) {
+			int x;
+			if (i % 2 == 0) {
+				x = 100;
+			} else {
+				x = 340;
+			}
+			CompButton button = new CompButton(this, x,
+					i / 2 * 50 + 50, 200, 40, users.get(i).getName());
+			button.addButtonListener(new UserButtonListener(users.get(i)));
 			components.add(button);
-			y += button.getHeight() + 10;
 		}
 	}
 
@@ -80,8 +87,9 @@ public class GuiUserSaveStates extends Gui {
 				continue;
 			}
 			try {
-				ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(f)));
-				
+				ObjectInputStream ois = new ObjectInputStream(
+						new BufferedInputStream(new FileInputStream(f)));
+
 				User user = (User) ois.readObject();
 				users.add(user);
 				ois.close();
@@ -109,7 +117,7 @@ public class GuiUserSaveStates extends Gui {
 			JumpAndJan.openGui(new GuiLevelChooser());
 		}
 	}
-	
+
 	static {
 		Out.inf(GuiUserSaveStates.class, "01.06.2013", "Michael", null);
 	}
