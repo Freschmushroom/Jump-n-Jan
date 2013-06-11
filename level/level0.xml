@@ -109,14 +109,6 @@
     x=420
     y=434
   </Point>
-  <Point>
-    x=380
-    y=10
-  </Point>
-  <Point>
-    x=420
-    y=10
-  </Point>
   <EntityUnicorn>
     posX=400
     posY=100
