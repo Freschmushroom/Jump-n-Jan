@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -35,6 +36,7 @@ public class User implements Serializable {
 	 * The unlocked levels of the user
 	 */
 	private HashSet<String> unlockedLvls = new HashSet<String>();
+
 	/**
 	 * The points the user scored in each level
 	 */
@@ -98,7 +100,8 @@ public class User implements Serializable {
 		if (!this.name.equals(name)) {
 			userMap.put(name.toLowerCase(), this);
 			try {
-				File oldFile = new File("saves/" + this.name.toLowerCase() + ".user");
+				File oldFile = new File("saves/" + this.name.toLowerCase()
+						+ ".user");
 				oldFile.delete();
 				userMap.remove(this.name.toLowerCase());
 				this.name = name;
@@ -129,7 +132,9 @@ public class User implements Serializable {
 	 *            The points
 	 */
 	public void finishedLvl(Level level, int achievedPoints) {
-		pointsPerLevel.put(level.getName(), achievedPoints);
+		if (pointsPerLevel.get(level.getName()) == null || pointsPerLevel.get(level.getName()) < achievedPoints) {
+			pointsPerLevel.put(level.getName(), achievedPoints);	
+		}
 		for (String s : level.getUnlocks()) {
 			if (s.isEmpty()) {
 				continue;
@@ -147,7 +152,7 @@ public class User implements Serializable {
 	public void save() {
 		try {
 			File saveFile = new File("saves/" + name.toLowerCase() + ".user");
-			if(!saveFile.exists())
+			if (!saveFile.exists())
 				saveFile.getParentFile().mkdirs();
 			ObjectOutputStream oos = new ObjectOutputStream(
 					new FileOutputStream(saveFile));
@@ -188,6 +193,13 @@ public class User implements Serializable {
 		return sb.toString();
 	}
 
+	/**
+	 * Returns the current max score for that level
+	 */
+	public int getScore(String level) {
+		return pointsPerLevel.get(level);
+	}
+
 	static {
 		Out.inf(User.class, "01.06.2013", "Michael", null);
 	}
@@ -210,6 +222,17 @@ public class User implements Serializable {
 			}
 	}
 	
+	/**
+	 * Returns all already played (scrore != null) levels
+	 */
+	public ArrayList<String> getPlayedLevels() {
+		ArrayList<String> ret = new ArrayList<>();
+		for (String level : pointsPerLevel.keySet()) {
+			ret.add(level);
+		}
+		return ret;
+	}
+
 	/**
 	 * Deletes this user
 	 */

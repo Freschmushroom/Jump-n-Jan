@@ -3,7 +3,7 @@
   <Info>
     index=0
     name="Level 2"
-    unlock=""
+    unlock="level2.xml;"
     points=150
 	gamemusic="/main.ogg"
   </Info>
@@ -31,6 +31,58 @@
     width=10
     height=430
   </Wall>
+  <Point>
+    x=150
+    y=400
+  </Point>
+  <Point>
+    x=250
+    y=400
+  </Point>
+  <Point>
+    x=350
+    y=400
+  </Point>
+  <Point>
+    x=450
+    y=400
+  </Point>
+  <Point>
+    x=550
+    y=400
+  </Point>
+  <Point>
+    x=650
+    y=400
+  </Point>
+  <Point>
+    x=750
+    y=400
+  </Point>
+  <Point>
+    x=1200
+    y=350
+  </Point>
+  <Point>
+    x=1200
+    y=400
+  </Point>
+  <Point>
+    x=1400
+    y=350
+  </Point>
+  <Point>
+    x=1400
+    y=400
+  </Point>
+  <Point>
+    x=1300
+    y=350
+  </Point>
+  <Point>
+    x=1300
+    y=400
+  </Point>
   <Floor>
     posX=800
     posY=350
@@ -55,6 +107,22 @@
     width=40
     height=10
   </Floor>
+  <Point>
+    x=280
+    y=190
+  </Point>
+  <Point>
+    x=320
+    y=197
+  </Point>
+  <Point>
+    x=360
+    y=204
+  </Point>
+  <Point>
+    x=390
+    y=211
+  </Point>  
   <Floor>
     posX=360
     posY=290

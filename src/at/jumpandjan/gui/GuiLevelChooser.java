@@ -20,6 +20,11 @@ public class GuiLevelChooser extends Gui {
 	 * The backbutton
 	 */
 	private CompButton back;
+	
+	/**
+	 * The label indicating the current score.
+	 */
+	private CompLabel score;
 
 	public GuiLevelChooser() {
 	}
@@ -32,6 +37,16 @@ public class GuiLevelChooser extends Gui {
 		back.setCenter(100, Constants.getCameraHeight() - 75);
 		back.addButtonListener(new CloseGuiListener());
 
+		score = new CompLabel(this, 0, 0, 150, 40, "");
+		score.autoDesign(320, 400);
+		int currentScore = 0;
+		for (String s : Constants.getCURRENT_USER().getPlayedLevels()) {
+			currentScore += Constants.getCURRENT_USER().getScore(s);
+			System.out.println(s);
+		}
+		score.color = "000000";
+		score.setText("Overall score: " + currentScore);
+		
 		CompButton deleteUser = new CompButton(this, 0, 0, 150, 40, "Delete");
 		deleteUser.setCenter(100, 480 - 150);
 		deleteUser.addButtonListener(new ActionListener() {
@@ -59,6 +74,7 @@ public class GuiLevelChooser extends Gui {
 		deleteUser.addButtonListener(new CloseGuiListener());
 
 		components.add(deleteUser);
+		components.add(score);
 		components.add(back);
 
 		initLevels();

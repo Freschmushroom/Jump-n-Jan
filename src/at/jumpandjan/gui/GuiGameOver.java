@@ -8,8 +8,9 @@ import at.jumpandjan.Constants;
 
 /**
  * Dead End
+ * 
  * @author Michael
- *
+ * 
  */
 public class GuiGameOver extends Gui {
 	/**
@@ -37,8 +38,8 @@ public class GuiGameOver extends Gui {
 		setBackground(r, g, b);
 		label = new CompLabel(this, 0, 0, 0, 0, message).autoDesign(
 				Constants.getCameraWidth() / 2, 100);
-		mainMenu = new CompButton(this, 0, 0, 400, 40, "Go to Main Menu").setCenter(
-				Constants.getCameraWidth() / 2, 250);
+		mainMenu = new CompButton(this, 0, 0, 400, 40, "Go to Main Menu")
+				.setCenter(Constants.getCameraWidth() / 2, 250);
 		levels = new CompButton(this, 0, 0, 200, 40, "Choose level").setCenter(
 				Constants.getCameraWidth() / 3, 300);
 		quit = new CompButton(this, 0, 0, 200, 40, "Quit Game").setCenter(
@@ -55,11 +56,13 @@ public class GuiGameOver extends Gui {
 
 		mainMenu.addButtonListener(new OpenGuiListener(new GuiMainMenu()));
 		levels.addButtonListener(new OpenGuiListener(new GuiMainMenu(), false));
-		levels.addButtonListener(new OpenGuiListener(new GuiUserSaveStates(), false));
-		levels.addButtonListener(new OpenGuiListener(new GuiLevelChooser(), false));
+		levels.addButtonListener(new OpenGuiListener(new GuiUserSaveStates(),
+				false));
+		levels.addButtonListener(new OpenGuiListener(new GuiLevelChooser(),
+				false));
 
 		quit.addButtonListener(new GameQuitListener());
-		
+
 		components.add(label);
 		components.add(mainMenu);
 		components.add(levels);
@@ -92,7 +95,7 @@ public class GuiGameOver extends Gui {
 		super.addVertex(640, 0);
 		super.end();
 	}
-	
+
 	static {
 		Out.inf(GuiGameOver.class, "01.06.2013", "Michael", null);
 	}

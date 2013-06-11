@@ -122,7 +122,7 @@ public class EntityPlayer extends Entity {
 		glEnd();
 
 		float maxPoints = level.getSecond_Point().size();
-
+		
 		glColor3f(1, (maxPoints - points) / maxPoints, (maxPoints - points)
 				/ maxPoints);
 

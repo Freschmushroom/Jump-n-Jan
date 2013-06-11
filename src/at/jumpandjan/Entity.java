@@ -51,7 +51,7 @@ public class Entity extends Object {
 	/**
 	 * The Health Points
 	 */
-	protected int hp = 200;
+	protected int hp;
 	/**
 	 * The max health points
 	 */
@@ -65,10 +65,15 @@ public class Entity extends Object {
 	public Entity(double x, double y, double width, double height, Level level) {
 		super(x, y, width, height, level);
 		entityListener = new ArrayList<EntityListener>();
+		setMaxHP(200);
+		setHp(200);
 	}
 
 	@Override
 	public void update() {
+		if (hp > getMaxHP()) {
+			hp = getMaxHP();
+		}
 		if (motion.x < 0)
 			state = true;
 		else if (motion.x > 0)
@@ -141,7 +146,7 @@ public class Entity extends Object {
 		}
 
 		if (this.bounds.y > 480 || this.bounds.y - Intro.vertMvmt < -500) {
-			level.getDeadObjects().add(this);
+			kill(this);
 		}
 	}
 
@@ -229,6 +234,7 @@ public class Entity extends Object {
 		for (EntityListener listener : entityListener) {
 			listener.entityKilled(this);
 		}
+		level.getDeadObjects().add(this);
 	}
 
 	/**
@@ -336,5 +342,10 @@ public class Entity extends Object {
 	 */
 	public boolean removeEntityListener(EntityListener listener) {
 		return entityListener.remove(listener);
+	}
+	
+	@Override
+	public boolean checkCollisionWith(at.jumpandjan.Object o) {
+		return this.isAlive() && super.checkCollisionWith(o);
 	}
 }

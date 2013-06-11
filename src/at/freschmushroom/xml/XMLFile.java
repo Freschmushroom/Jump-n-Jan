@@ -196,7 +196,7 @@ public class XMLFile
 	}
 	
 	static {
-		Out.inf(XMLFile.class, "01\06\13", "Felix", null);
+		Out.inf(XMLFile.class, "01.06.13", "Felix", null);
 	}
 	
 }

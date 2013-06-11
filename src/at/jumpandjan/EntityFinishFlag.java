@@ -1,6 +1,7 @@
 package at.jumpandjan;
 
 import at.freschmushroom.Out;
+import at.jumpandjan.flags.FlagBoss;
 import at.jumpandjan.gui.GuiLevelChooser;
 import at.jumpandjan.gui.GuiMainMenu;
 import at.jumpandjan.gui.GuiUserSaveStates;
@@ -10,7 +11,7 @@ import at.jumpandjan.level.Level;
  * The finish flag
  * 
  * @author Felix
- *
+ * 
  */
 public class EntityFinishFlag extends EntityFlag {
 	public EntityFinishFlag(double x, double y, Level level) {
@@ -25,7 +26,13 @@ public class EntityFinishFlag extends EntityFlag {
 	@Override
 	public void collide(at.jumpandjan.Object withObject) {
 		if (withObject instanceof EntityPlayer) {
-			Constants.getCURRENT_USER().finishedLvl(level, JumpAndJan.getPlayer().getPoints());
+			for (at.jumpandjan.Object o : Constants.getActualLevel()
+					.getSecond()) {
+				if (o instanceof FlagBoss)
+					return;
+			}
+			Constants.getCURRENT_USER().finishedLvl(level,
+					JumpAndJan.getPlayer().getPoints());
 			Constants.getCURRENT_USER().save();
 			Constants.setActualLevel(null);
 			JumpAndJan.closeAllGuis();

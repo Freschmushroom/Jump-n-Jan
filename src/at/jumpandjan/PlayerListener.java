@@ -31,7 +31,9 @@ public class PlayerListener implements EntityListener {
 
 	@Override
 	public void entityKilled(Entity entityKilled) {
+		Constants.setActualLevel(null);
 		JumpAndJan.openGui(new GuiGameOver(1, 0, 0, "You died."));
+		throw new InterruptUpdateException();
 	}
 
 	@Override

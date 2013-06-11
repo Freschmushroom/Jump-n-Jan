@@ -71,8 +71,6 @@ public class GuiOptions extends Gui {
 			settingComp.setHeight(40);
 			settingComp.parent = this;
 			
-			System.out.println(settingComp.getWidth());
-			
 			panel.add(settingName);
 			panel.add(settingComp);
 			i++;

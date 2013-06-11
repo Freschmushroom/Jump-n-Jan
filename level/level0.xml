@@ -7,6 +7,12 @@
     points=150
 	gamemusic="/main.ogg"
   </Info>
+  <EntityJannyBunny>
+    posX=50
+    posY=300
+    width=64
+    height=64
+  </EntityJannyBunny>
   <Start>
     posX=50
     posY=380

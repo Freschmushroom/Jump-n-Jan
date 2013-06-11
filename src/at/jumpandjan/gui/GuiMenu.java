@@ -46,6 +46,8 @@ public class GuiMenu extends Gui {
 				Constants.getCameraWidth() / 2, options.getY()
 						+ (int) (options.getHeight() * 2));
 
+
+		
 		mainMenu.addButtonListener(new OpenGuiListener(new GuiMainMenu()));
 		mainMenu.addButtonListener(new ActionListener() {
 
@@ -61,7 +63,6 @@ public class GuiMenu extends Gui {
 
 			public void onPressed(CompButton source) {
 				Constants.setActualLevel(null);
-				System.out.println("Set the current level to null");
 			}
 			
 		});

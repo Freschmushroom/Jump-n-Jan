@@ -1,5 +1,7 @@
 package at.jumpandjan.gui;
 
+import org.lwjgl.opengl.GL11;
+
 import at.freschmushroom.Out;
 
 /**
@@ -32,6 +34,7 @@ public class CompPanel extends Component {
 		pushMatrix();
 		clip(getX(), getY(), getWidth(), getHeight());
 		bindTexture(null);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		color(200, 200, 200, 150);
 		begin(QUADS);
 		addVertex(getX(), getY());
@@ -44,6 +47,8 @@ public class CompPanel extends Component {
 		for (Component comp : components) {
 			comp.render();
 		}
+		
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
 
 		popMatrix();
 	}

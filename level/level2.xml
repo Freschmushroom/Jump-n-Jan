@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Level>
+  <Info>
+    index=0
+    name="Level 3"
+    unlock="level3.xml;"
+    points=150
+	gamemusic="/main.ogg"
+  </Info>
+  <Start>
+    posX=50
+    posY=80
+    width=32
+    height=64
+  </Start>
+  <FinishFlag>
+    posX=278
+    posY=80
+    width=32
+    height=64
+  </FinishFlag>
+  <Floor>
+    posX=10
+    posY=144
+    width=300
+    height=10
+  </Floor>
+  <EntityWaitrose>
+    posX=100
+    posY=80
+    width=32
+    height=64
+  </EntityWaitrose>
+</Level>

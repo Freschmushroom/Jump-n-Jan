@@ -51,13 +51,23 @@ public class LevelBuilder implements Serializable {
 
 	/**
 	 * Loads a level from the specified file
-	 * @param name the name of the level
+	 * 
+	 * @param name
+	 *            the name of the level
 	 * @return The levelbuilder instance
 	 */
 	public static LevelBuilder load(String name) {
+		Out.line("Loading level " + name + " . . .");
 		File file = new File(name);
 		if (!file.exists()) {
+			Out.err("File " + file.getPath()
+					+ " not found. Looking for alternative locations");
 			file = new File("level/" + name);
+			if (!file.exists()) {
+				Out.err("Level " + name
+						+ " could not be loaded: Missing required file.");
+				return null;
+			}
 		}
 		XMLFile f = new XMLFile(file);
 		LevelBuilder b = new LevelBuilder();
@@ -158,6 +168,7 @@ public class LevelBuilder implements Serializable {
 
 	/**
 	 * Returns all building elements
+	 * 
 	 * @return All building elements
 	 */
 	public ArrayList<LevelElement> getElements() {
@@ -166,6 +177,7 @@ public class LevelBuilder implements Serializable {
 
 	/**
 	 * Returns the index
+	 * 
 	 * @return The index
 	 */
 	public int getIndex() {
@@ -174,6 +186,7 @@ public class LevelBuilder implements Serializable {
 
 	/**
 	 * Returns the name
+	 * 
 	 * @return The name
 	 */
 	public String getName() {
@@ -182,6 +195,7 @@ public class LevelBuilder implements Serializable {
 
 	/**
 	 * Returns the points
+	 * 
 	 * @return The points
 	 */
 	public long getPoints() {
@@ -190,6 +204,7 @@ public class LevelBuilder implements Serializable {
 
 	/**
 	 * Returns the start flag
+	 * 
 	 * @return The start flag
 	 */
 	public LevelElement getStart() {
@@ -202,6 +217,7 @@ public class LevelBuilder implements Serializable {
 
 	/**
 	 * Returns the unlocking levels
+	 * 
 	 * @return The unlocking levels
 	 */
 	public String[] getUnlocks() {

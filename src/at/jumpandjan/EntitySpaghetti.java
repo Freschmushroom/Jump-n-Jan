@@ -1,6 +1,7 @@
 package at.jumpandjan;
 
 import at.freschmushroom.Out;
+import at.jumpandjan.flags.FlagBoss;
 import at.jumpandjan.level.Level;
 /**
  * The first boss opponent in Jump'n'Jan. It runs away from the player and spawns Meatballs on its way.
@@ -8,7 +9,7 @@ import at.jumpandjan.level.Level;
  * @author Felix
  *
  */
-public class EntitySpaghetti extends Entity {
+public class EntitySpaghetti extends Entity implements FlagBoss {
 	/**
 	 * The cooldown for the jump
 	 */
@@ -24,7 +25,13 @@ public class EntitySpaghetti extends Entity {
 	 * @param level the level the entity spawns in
 	 */
 	public EntitySpaghetti(double x, double y, Level level) {
-		super(x, y, 128, 64, level);
+		this(x, y, 128, 64, level);
+	}
+	
+	public EntitySpaghetti(double x, double y, double width, double height, Level level) {
+		super(x, y, width, height, level);
+		setMaxHP(6000);
+		setHp(6000);
 	}
 
 	@Override

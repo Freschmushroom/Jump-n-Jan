@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Level>
+  <Info>
+    index=0
+    name="Level 4"
+    unlock="boss_spaghetti.xml;"
+    points=150
+	gamemusic="/main.ogg"
+  </Info>
+  <Start>
+    posX=50
+    posY=80
+    width=32
+    height=64
+  </Start>
+  <FinishFlag>
+    posX=278
+    posY=80
+    width=32
+    height=64
+  </FinishFlag>
+  <Floor>
+    posX=10
+    posY=144
+    width=300
+    height=10
+  </Floor>
+  <EntityJannyBunny>
+    posX=100
+    posY=80
+    width=64
+    height=64
+  </EntityJannyBunny>
+</Level>
