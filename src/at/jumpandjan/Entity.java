@@ -206,7 +206,7 @@ public class Entity extends Object {
 
 		TextureManager.instance.bindTexture(TextureManager.instance
 				.getTexture("/Progress.png"));
-		float health = this.getHp() / 200F;
+		float health = this.getHp() / (float) this.getMaxHP();
 		double x2 = 1 / 128D * bounds.width;
 		double x3 = health * bounds.width - 1 / 128D * bounds.width;
 
