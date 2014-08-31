@@ -1,34 +1,61 @@
 package at.freschmushroom;
 
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glColor4f;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glRectf;
+import static org.lwjgl.opengl.GL11.glScalef;
+import static org.lwjgl.opengl.GL11.glTexCoord2f;
+import static org.lwjgl.opengl.GL11.glTranslatef;
+import static org.lwjgl.opengl.GL11.glVertex2f;
+
 import java.lang.reflect.InvocationTargetException;
-import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
 import org.lwjgl.LWJGLException;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
 
-import at.jumpandjan.*;
+import at.freschmushroom.xml.XMLAttribute;
+import at.freschmushroom.xml.XMLFile;
+import at.freschmushroom.xml.XMLNode;
+import at.freschmushroom.xml.XMLWriter;
+import at.jumpandjan.Body;
+import at.jumpandjan.Floor;
+import at.jumpandjan.Wall;
+import at.jumpandjan.entity.EntityFinishFlag;
+import at.jumpandjan.entity.EntityMeatball;
+import at.jumpandjan.entity.EntityStartFlag;
+import at.jumpandjan.entity.EntityUnicorn;
+import at.jumpandjan.entity.EntityWaitrose;
 import at.jumpandjan.level.Level;
-import at.freschmushroom.xml.*;
 
-import static org.lwjgl.opengl.GL11.*;
+public class JaJLevelCreator
+{
+	public static ArrayList<Body> firstLayer = new ArrayList<Body>();
+	public static ArrayList<Body> secondLayer = new ArrayList<Body>();
+	public static ArrayList<Body> thirdLayer = new ArrayList<Body>();
 
-public class JaJLevelCreator {
-	public static ArrayList<at.jumpandjan.Object> firstLayer = new ArrayList<at.jumpandjan.Object>();
-	public static ArrayList<at.jumpandjan.Object> secondLayer = new ArrayList<at.jumpandjan.Object>();
-	public static ArrayList<at.jumpandjan.Object> thirdLayer = new ArrayList<at.jumpandjan.Object>();
-
-	public static void main(String[] args) {
-		try {
+	public static void main(String[] args)
+	{
+		try
+		{
 			Display.setDisplayMode(new DisplayMode(640, 480));
 			Display.setTitle("Jump'n'Jan: Level creator");
 			Display.create();
-		} catch (LWJGLException lwjgle) {
+		} catch (LWJGLException lwjgle)
+		{
 			lwjgle.printStackTrace();
 			System.err.println("Aborting...");
 			System.exit(1);
@@ -46,17 +73,19 @@ public class JaJLevelCreator {
 		objectGui[5] = new ObjectSlot(5, 0, EntityUnicorn.class);
 		objectGui[6] = new ObjectSlot(6, 0, EntityWaitrose.class);
 
-		at.jumpandjan.Object selectedObject = null;
+		Body selectedObject = null;
 
 		Vector2f start = null;
 		Vector2f end = null;
 
-		while (!Display.isCloseRequested()) {
+		while (!Display.isCloseRequested())
+		{
 			glClear(GL_COLOR_BUFFER_BIT);
 			glLoadIdentity();
 			glTranslatef(-camX, 0, 0);
 
-			for (at.jumpandjan.Object o : firstLayer) {
+			for (Body o : firstLayer)
+			{
 				if (o != null)
 					o.render();
 			}
@@ -71,8 +100,7 @@ public class JaJLevelCreator {
 			glColor4f(1, 1, 1, 1);
 
 			glEnable(GL_TEXTURE_2D);
-			TextureManager.instance.bindTexture(TextureManager.instance
-					.getTexture("/button_object.png"));
+			TextureManager.instance.bindTexture(TextureManager.instance.getTexture("/button_object.png"));
 			glBegin(GL_QUADS);
 			glTexCoord2f(0, 0);
 			glVertex2f(40, 430);
@@ -83,8 +111,7 @@ public class JaJLevelCreator {
 			glTexCoord2f(1, 0);
 			glVertex2f(72, 430);
 			glEnd();
-			TextureManager.instance.bindTexture(TextureManager.instance
-					.getTexture("/button_save.png"));
+			TextureManager.instance.bindTexture(TextureManager.instance.getTexture("/button_save.png"));
 			glBegin(GL_QUADS);
 			glTexCoord2f(0, 0);
 			glVertex2f(80, 430);
@@ -97,10 +124,12 @@ public class JaJLevelCreator {
 			glEnd();
 			glDisable(GL_TEXTURE_2D);
 
-			if (objectGuiOpen) {
+			if (objectGuiOpen)
+			{
 				glColor4f(0f, 0f, 0.3f, 0.5f);
 				glRectf(37, 37, 603, 443);
-				for (int i = 0; i < objectGui.length; i++) {
+				for (int i = 0; i < objectGui.length; i++)
+				{
 					if (objectGui[i] == null)
 						continue;
 					int xInGui = objectGui[i].xInGui;
@@ -115,7 +144,8 @@ public class JaJLevelCreator {
 					glPopMatrix();
 				}
 			}
-			if (selectedObject != null) {
+			if (selectedObject != null)
+			{
 				glPushMatrix();
 				glTranslatef(Mouse.getX(), 480 - Mouse.getY(), 0);
 				selectedObject.renderIcon();
@@ -123,42 +153,60 @@ public class JaJLevelCreator {
 			}
 			glPopMatrix();
 
-			while (Mouse.next()) {
+			while (Mouse.next())
+			{
 				double x = Mouse.getEventX();
 				double y = 480 - Mouse.getEventY();
 
-				if (Mouse.getEventButtonState()) {
-					if (objectGuiOpen && Mouse.getEventButton() == 0) {
-						if (x >= 40 && x <= 72 && y >= 430 && y <= 462) {
+				if (Mouse.getEventButtonState())
+				{
+					if (objectGuiOpen && Mouse.getEventButton() == 0)
+					{
+						if (x >= 40 && x <= 72 && y >= 430 && y <= 462)
+						{
 							objectGuiOpen = false;
-						} else {
-							for (int i = 0; i < objectGui.length; i++) {
-								if (objectGui[i] == null) {
+						}
+						else
+						{
+							for (int i = 0; i < objectGui.length; i++)
+							{
+								if (objectGui[i] == null)
+								{
 									continue;
 								}
 								int xInGui = objectGui[i].xInGui;
 								int yInGui = objectGui[i].yInGui;
 								float slotX = 40 + xInGui * 53.6f + xInGui * 3;
 								float slotY = 40 + yInGui * 53.6f + yInGui * 3;
-								if (x >= slotX && x <= slotX + 53.6
-										&& y >= slotY && y <= slotY + 53.6)
+								if (x >= slotX && x <= slotX + 53.6 && y >= slotY && y <= slotY + 53.6)
 									selectedObject = objectGui[i].getObject();
 							}
 						}
-					} else if (Mouse.getEventButton() == 0) {
-						if (x >= 0 && x <= 40 && y >= 220 && y <= 260) {
+					}
+					else if (Mouse.getEventButton() == 0)
+					{
+						if (x >= 0 && x <= 40 && y >= 220 && y <= 260)
+						{
 							camX -= 50;
-						} else if (x >= 600 && x <= 640 && y >= 220 && y <= 260) {
+						}
+						else if (x >= 600 && x <= 640 && y >= 220 && y <= 260)
+						{
 							camX += 50;
-						} else if (x >= 40 && x <= 72 && y >= 430 && y <= 462) {
+						}
+						else if (x >= 40 && x <= 72 && y >= 430 && y <= 462)
+						{
 							objectGuiOpen = true;
-						} else if (x >= 80 && x <= 112 && y >= 430 && y <= 462) {
+						}
+						else if (x >= 80 && x <= 112 && y >= 430 && y <= 462)
+						{
 							save();
-						} else if (selectedObject != null) {
+						}
+						else if (selectedObject != null)
+						{
 							if (start == null)
-								start = new Vector2f((float) x + camX,
-										(float) y);
-							else {
+								start = new Vector2f((float) x + camX, (float) y);
+							else
+							{
 								end = new Vector2f((float) x + camX, (float) y);
 								selectedObject.bounds.x = (int) start.x;
 								selectedObject.bounds.y = (int) start.y;
@@ -167,33 +215,32 @@ public class JaJLevelCreator {
 								firstLayer.add(selectedObject);
 								if (selectedObject instanceof EntityStartFlag)
 									for (ObjectSlot o : objectGui)
-										if (o != null
-												&& o.objectClass == EntityStartFlag.class)
+										if (o != null && o.objectClass == EntityStartFlag.class)
 											o.isEnabled = false;
 								selectedObject = null;
 								start = null;
 								end = null;
 							}
 						}
-					} else if (Mouse.getEventButton() == 1
-							&& selectedObject != null) {
-						if (start == null) {
+					}
+					else if (Mouse.getEventButton() == 1 && selectedObject != null)
+					{
+						if (start == null)
+						{
 							selectedObject.bounds.x = (int) (x + camX);
 							selectedObject.bounds.y = (int) y;
-							selectedObject.bounds.width = (int) selectedObject
-									.getDefaultWidth();
-							selectedObject.bounds.height = (int) selectedObject
-									.getDefaultHeight();
-							System.out.println(selectedObject.bounds.width + " "
-									+ selectedObject.bounds.height);
+							selectedObject.bounds.width = (int) selectedObject.getDefaultWidth();
+							selectedObject.bounds.height = (int) selectedObject.getDefaultHeight();
+							System.out.println(selectedObject.bounds.width + " " + selectedObject.bounds.height);
 							firstLayer.add(selectedObject);
 							if (selectedObject instanceof EntityStartFlag)
 								for (ObjectSlot o : objectGui)
-									if (o != null
-											&& o.objectClass == EntityStartFlag.class)
+									if (o != null && o.objectClass == EntityStartFlag.class)
 										o.isEnabled = false;
 							selectedObject = null;
-						} else {
+						}
+						else
+						{
 							end = new Vector2f((float) x + camX, (float) y);
 							selectedObject.bounds.x = (int) start.x;
 							selectedObject.bounds.y = (int) start.y;
@@ -202,8 +249,7 @@ public class JaJLevelCreator {
 							firstLayer.add(selectedObject);
 							if (selectedObject instanceof EntityStartFlag)
 								for (ObjectSlot o : objectGui)
-									if (o != null
-											&& o.objectClass == EntityStartFlag.class)
+									if (o != null && o.objectClass == EntityStartFlag.class)
 										o.isEnabled = false;
 							selectedObject = null;
 							start = null;
@@ -219,16 +265,18 @@ public class JaJLevelCreator {
 		}
 	}
 
-	private static void save() {
+	private static void save()
+	{
 		XMLFile f = new XMLFile("/level/", "Level2");
 		f.root = new XMLNode(null, "Level");
 		XMLNode root = (XMLNode) f.root;
 		XMLNode info = new XMLNode(root, "Info");
-		new XMLAttribut("index", "2", info);
-		new XMLAttribut("name", "\"LevelMakerTest\"", info);
-		new XMLAttribut("points", "150", info);
+		new XMLAttribute("index", "2", info);
+		new XMLAttribute("name", "\"LevelMakerTest\"", info);
+		new XMLAttribute("points", "150", info);
 
-		for (at.jumpandjan.Object o : firstLayer) {
+		for (Body o : firstLayer)
+		{
 			String name;
 			if (o instanceof EntityStartFlag)
 				name = "Start";
@@ -237,10 +285,10 @@ public class JaJLevelCreator {
 			else
 				name = o.getClass().getSimpleName();
 			XMLNode node = new XMLNode(root, name);
-			new XMLAttribut("posX", String.valueOf((int) o.bounds.x), node);
-			new XMLAttribut("posY", String.valueOf((int) o.bounds.y), node);
-			new XMLAttribut("width", String.valueOf((int) o.bounds.width), node);
-			new XMLAttribut("height", String.valueOf((int) o.bounds.height), node);
+			new XMLAttribute("posX", String.valueOf((int) o.bounds.x), node);
+			new XMLAttribute("posY", String.valueOf((int) o.bounds.y), node);
+			new XMLAttribute("width", String.valueOf((int) o.bounds.width), node);
+			new XMLAttribute("height", String.valueOf((int) o.bounds.height), node);
 		}
 
 		XMLWriter w = new XMLWriter(f);
@@ -249,52 +297,57 @@ public class JaJLevelCreator {
 	}
 }
 
-class ObjectSlot {
-	public Class<? extends at.jumpandjan.Object> objectClass;
-	private at.jumpandjan.Object object;
+class ObjectSlot
+{
+	public Class<? extends Body> objectClass;
+	private Body body;
 	public int xInGui;
 	public int yInGui;
 	public boolean isEnabled;
 
-	public ObjectSlot(int x, int y,
-			Class<? extends at.jumpandjan.Object> objectClass) {
+	public ObjectSlot(int x, int y, Class<? extends Body> objectClass)
+	{
 		xInGui = x;
 		yInGui = y;
 		isEnabled = true;
 		this.objectClass = objectClass;
-		try {
-			this.object = objectClass.getConstructor(
-					new Class[] { double.class, double.class, double.class,
-							double.class, Level.class }).newInstance(
-					new java.lang.Object[] { 0, 0, 53.6, 53.6, null });
-		} catch (InstantiationException e) {
+		try
+		{
+			this.body = objectClass.getConstructor(new Class[] { double.class, double.class, double.class, double.class, Level.class })
+					.newInstance(new java.lang.Object[] { 0, 0, 53.6, 53.6, null });
+		} catch (InstantiationException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IllegalAccessException e) {
+		} catch (IllegalAccessException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (InvocationTargetException e) {
+		} catch (InvocationTargetException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
+		} catch (NoSuchMethodException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (SecurityException e) {
+		} catch (SecurityException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	public void render() {
-		object.renderIcon();
+	public void render()
+	{
+		body.renderIcon();
 		glPushMatrix();
 		glEnable(GL_TEXTURE_2D);
-		TextureManager.instance.bindTexture(TextureManager.instance
-				.getTexture("/slot_margin_"
-						+ (isEnabled ? "enabled" : "disabled") + ".png"));
+		TextureManager.instance.bindTexture(TextureManager.instance.getTexture("/slot_margin_" + (isEnabled ? "enabled" : "disabled") + ".png"));
 		glScalef(53.6f, 53.6f, 1);
 		glBegin(GL_QUADS);
 		glTexCoord2f(0, 0);
@@ -310,30 +363,35 @@ class ObjectSlot {
 		glPopMatrix();
 	}
 
-	public at.jumpandjan.Object getObject() {
+	public Body getObject()
+	{
 		if (!isEnabled)
 			return null;
-		try {
-			return objectClass.getConstructor(
-					new Class[] { double.class, double.class, double.class,
-							double.class, Level.class }).newInstance(
-					new java.lang.Object[] { 0, 0, 53.6, 53.6, null });
-		} catch (InstantiationException e) {
+		try
+		{
+			return objectClass.getConstructor(new Class[] { double.class, double.class, double.class, double.class, Level.class }).newInstance(new java.lang.Object[] { 0, 0, 53.6, 53.6, null });
+		} catch (InstantiationException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IllegalAccessException e) {
+		} catch (IllegalAccessException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (InvocationTargetException e) {
+		} catch (InvocationTargetException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
+		} catch (NoSuchMethodException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (SecurityException e) {
+		} catch (SecurityException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

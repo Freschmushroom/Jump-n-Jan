@@ -23,7 +23,8 @@ import at.jumpandjan.level.LevelBuilder;
  * @author Michael
  * 
  */
-public class User implements Serializable {
+public class User implements Serializable
+{
 
 	private static final long serialVersionUID = 1L;
 
@@ -47,7 +48,8 @@ public class User implements Serializable {
 	 */
 	private static HashMap<String, User> userMap = new HashMap<String, User>();
 
-	public User() {
+	public User()
+	{
 		this(getUniqueName());
 	}
 
@@ -56,9 +58,11 @@ public class User implements Serializable {
 	 * 
 	 * @return A new username
 	 */
-	public static String getUniqueName() {
+	public static String getUniqueName()
+	{
 		String name = "Player";
-		while (userMap.containsKey(name)) {
+		while (userMap.containsKey(name))
+		{
 			name += Constants.random.nextInt(10);
 		}
 		return name;
@@ -71,11 +75,13 @@ public class User implements Serializable {
 	 *            The name, later cast to lower case
 	 * @return The Usr
 	 */
-	public static User getUserByName(String name) {
+	public static User getUserByName(String name)
+	{
 		return userMap.get(name.toLowerCase());
 	}
 
-	public User(String name) {
+	public User(String name)
+	{
 		System.out.println("Loaded " + name);
 		setName(name);
 		unlockLvl(LevelBuilder.load(Constants.getDEFAULT_LVL_FILE()).getName());
@@ -86,7 +92,8 @@ public class User implements Serializable {
 	 * 
 	 * @return The name
 	 */
-	public String getName() {
+	public String getName()
+	{
 		return name;
 	}
 
@@ -96,17 +103,20 @@ public class User implements Serializable {
 	 * @param name
 	 *            the new name
 	 */
-	public void setName(String name) {
-		if (!this.name.equals(name)) {
+	public void setName(String name)
+	{
+		if (!this.name.equals(name))
+		{
 			userMap.put(name.toLowerCase(), this);
-			try {
-				File oldFile = new File("saves/" + this.name.toLowerCase()
-						+ ".user");
+			try
+			{
+				File oldFile = new File("saves/" + this.name.toLowerCase() + ".user");
 				oldFile.delete();
 				userMap.remove(this.name.toLowerCase());
 				this.name = name;
 				save();
-			} catch (Exception e) {
+			} catch (Exception e)
+			{
 				e.printStackTrace();
 			}
 		}
@@ -118,7 +128,8 @@ public class User implements Serializable {
 	 * @param lvl
 	 *            The lvl
 	 */
-	public void unlockLvl(String lvl) {
+	public void unlockLvl(String lvl)
+	{
 		unlockedLvls.add(lvl);
 		pointsPerLevel.put(lvl, 0);
 	}
@@ -131,12 +142,16 @@ public class User implements Serializable {
 	 * @param achievedPoints
 	 *            The points
 	 */
-	public void finishedLvl(Level level, int achievedPoints) {
-		if (pointsPerLevel.get(level.getName()) == null || pointsPerLevel.get(level.getName()) < achievedPoints) {
-			pointsPerLevel.put(level.getName(), achievedPoints);	
+	public void finishedLvl(Level level, int achievedPoints)
+	{
+		if (pointsPerLevel.get(level.getName()) == null || pointsPerLevel.get(level.getName()) < achievedPoints)
+		{
+			pointsPerLevel.put(level.getName(), achievedPoints);
 		}
-		for (String s : level.getUnlocks()) {
-			if (s.isEmpty()) {
+		for (String s : level.getUnlocks())
+		{
+			if (s.isEmpty())
+			{
 				continue;
 			}
 			LevelBuilder lvl = LevelBuilder.load(s);
@@ -149,20 +164,23 @@ public class User implements Serializable {
 	/**
 	 * Saves the user
 	 */
-	public void save() {
-		try {
+	public void save()
+	{
+		try
+		{
 			File saveFile = new File("saves/" + name.toLowerCase() + ".user");
 			if (!saveFile.exists())
 				saveFile.getParentFile().mkdirs();
-			ObjectOutputStream oos = new ObjectOutputStream(
-					new FileOutputStream(saveFile));
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(saveFile));
 
 			oos.writeObject(this);
 
 			oos.close();
-		} catch (FileNotFoundException e) {
+		} catch (FileNotFoundException e)
+		{
 			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (IOException e)
+		{
 			e.printStackTrace();
 		}
 	}
@@ -174,17 +192,20 @@ public class User implements Serializable {
 	 *            The lvl name
 	 * @return Whether the level is unlocked
 	 */
-	public boolean isUnlocked(String name) {
+	public boolean isUnlocked(String name)
+	{
 		return unlockedLvls.contains(name);
 	}
 
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		StringBuilder sb = new StringBuilder("User: ");
 		sb.append(name);
 		sb.append("\n");
 		sb.append("Unlocked levels:\r\n");
-		for (String s : unlockedLvls) {
+		for (String s : unlockedLvls)
+		{
 			sb.append('\t');
 			sb.append(s);
 			sb.append("\r\n");
@@ -196,38 +217,46 @@ public class User implements Serializable {
 	/**
 	 * Returns the current max score for that level
 	 */
-	public int getScore(String level) {
+	public int getScore(String level)
+	{
 		return pointsPerLevel.get(level);
 	}
 
-	static {
+	static
+	{
 		Out.inf(User.class, "01.06.2013", "Michael", null);
 	}
 
-	static {
+	static
+	{
 		File[] saveDir = new File("saves").listFiles();
 		if (saveDir != null)
-			for (File f : saveDir) {
-				if (!f.isDirectory() && f.getName().endsWith(".user")) {
-					try {
-						ObjectInputStream ois = new ObjectInputStream(
-								new BufferedInputStream(new FileInputStream(f)));
+			for (File f : saveDir)
+			{
+				if (!f.isDirectory() && f.getName().endsWith(".user"))
+				{
+					try
+					{
+						ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(f)));
 						User user = (User) ois.readObject();
 						userMap.put(user.name.toLowerCase(), user);
 						ois.close();
-					} catch (Exception e) {
+					} catch (Exception e)
+					{
 						e.printStackTrace();
 					}
 				}
 			}
 	}
-	
+
 	/**
 	 * Returns all already played (scrore != null) levels
 	 */
-	public ArrayList<String> getPlayedLevels() {
+	public ArrayList<String> getPlayedLevels()
+	{
 		ArrayList<String> ret = new ArrayList<>();
-		for (String level : pointsPerLevel.keySet()) {
+		for (String level : pointsPerLevel.keySet())
+		{
 			ret.add(level);
 		}
 		return ret;
@@ -236,7 +265,8 @@ public class User implements Serializable {
 	/**
 	 * Deletes this user
 	 */
-	public void delete() {
+	public void delete()
+	{
 		userMap.remove(this);
 		File f = new File("saves/" + name.toLowerCase() + ".user");
 		f.delete();

@@ -29,9 +29,10 @@ import static org.lwjgl.opengl.GL11.glVertex2f;
 
 import java.awt.image.BufferedImage;
 
+import org.lwjgl.opengl.Display;
+
 import at.freschmushroom.Out;
 import at.freschmushroom.TextureManager;
-import at.jumpandjan.Constants;
 
 /**
  * A Gui
@@ -39,13 +40,14 @@ import at.jumpandjan.Constants;
  * @author Michael
  * 
  */
-public abstract class Gui {
+public abstract class Gui
+{
 
 	/**
 	 * Whether this Gui is dirty
 	 */
 	private boolean dirty;
-	
+
 	/**
 	 * The currently bound image, used to determine texture coordinates
 	 */
@@ -89,7 +91,8 @@ public abstract class Gui {
 	 * @param y
 	 *            Y-Coordinate
 	 */
-	public void addVertex(int x, int y) {
+	public void addVertex(int x, int y)
+	{
 		glVertex2f(x, y);
 	}
 
@@ -99,59 +102,69 @@ public abstract class Gui {
 	 * @param texture
 	 *            The texture path, or null for unbinding
 	 */
-	public void bindTexture(String texture) {
-		if (texture == null) {
+	public void bindTexture(String texture)
+	{
+		if (texture == null)
+		{
 			boundImage = null;
 			TextureManager.instance.unbind();
-		} else {
+		}
+		else
+		{
 			boundImage = TextureManager.instance.getImage(texture);
 			TextureManager.instance.bindTexture(texture);
 		}
 	}
-	
+
 	/**
-	 * Loads all Gui elements.
-	 * Note:	This method might be called multiple times, so be sure
-	 * 			to clean up at the beginning.
+	 * Loads all Gui elements. Note: This method might be called multiple times,
+	 * so be sure to clean up at the beginning.
 	 */
-	public void init() {
-		
+	public void init()
+	{
+
 	}
+
 	/**
 	 * Begins drawing in the specified mode
 	 * 
 	 * @param mode
 	 *            The mode
 	 */
-	public void begin(int mode) {
+	public void begin(int mode)
+	{
 		glBegin(mode);
 	}
 
 	/**
 	 * Ends the current render mode
 	 */
-	public void end() {
+	public void end()
+	{
 		glEnd();
 	}
 
 	/**
 	 * Pushes the matrix
 	 */
-	public void pushMatrix() {
+	public void pushMatrix()
+	{
 		glPushMatrix();
 	}
 
 	/**
 	 * Pops the matrix
 	 */
-	public void popMatrix() {
+	public void popMatrix()
+	{
 		glPopMatrix();
 	}
 
 	/**
 	 * Loads the Identity matrix
 	 */
-	public void loadIdentity() {
+	public void loadIdentity()
+	{
 		glLoadIdentity();
 	}
 
@@ -168,12 +181,12 @@ public abstract class Gui {
 	 * @param height
 	 *            height
 	 */
-	public void clip(int x, int y, int width, int height) {
-		int realX = (int) (x / 640f * Constants.getCameraWidth());
-		int realY = (int) ((480 - height) / 480f * Constants.getCameraHeight());
-		int realWidth = (int) (width / 640f * Constants.getCameraWidth());
-		int realHeight = (int) ((480 - y - realY) / 480f * Constants
-				.getCameraHeight());
+	public void clip(int x, int y, int width, int height)
+	{
+		int realX = (int) (x / 640f * Display.getWidth());
+		int realY = (int) ((480 - height) / 480f * Display.getHeight());
+		int realWidth = (int) (width / 640f * Display.getWidth());
+		int realHeight = (int) ((480 - y - realY) / 480f * Display.getHeight());
 		glScissor(realX, realY, realWidth, realHeight);
 	}
 
@@ -190,7 +203,8 @@ public abstract class Gui {
 	 * @param v
 	 *            The texture Y-Coordinate
 	 */
-	public void addVertexUV(int x, int y, int u, int v) {
+	public void addVertexUV(int x, int y, int u, int v)
+	{
 		addVertexUV((double) x, (double) y, u, v);
 	}
 
@@ -207,12 +221,11 @@ public abstract class Gui {
 	 * @param v
 	 *            The texture Y-Coordinate
 	 */
-	public void addVertexUV(double x, double y, int u, int v) {
+	public void addVertexUV(double x, double y, int u, int v)
+	{
 		if (boundImage == null)
-			throw new IllegalStateException(
-					"No image was bound by the GUI. Please use Gui.bindTexture(String texture)");
-		glTexCoord2f(u / (float) boundImage.getWidth(),
-				v / (float) boundImage.getHeight());
+			throw new IllegalStateException("No image was bound by the GUI. Please use Gui.bindTexture(String texture)");
+		glTexCoord2f(u / (float) boundImage.getWidth(), v / (float) boundImage.getHeight());
 		glVertex2d(x, y);
 	}
 
@@ -224,7 +237,8 @@ public abstract class Gui {
 	 * @param y
 	 *            The amount on the Y-axis
 	 */
-	public void translate(int x, int y) {
+	public void translate(int x, int y)
+	{
 		glTranslatef(x, y, 0);
 	}
 
@@ -240,7 +254,8 @@ public abstract class Gui {
 	 * @param z
 	 *            1, if it should rotate around the z-axis
 	 */
-	public void rotate(double angle, int x, int y, int z) {
+	public void rotate(double angle, int x, int y, int z)
+	{
 		glRotated(angle, x, y, z);
 	}
 
@@ -260,8 +275,8 @@ public abstract class Gui {
 	 * @param axisY
 	 *            the y-offset of the axis
 	 */
-	public void rotateAroundAxis(double angle, int x, int y, int z, int axisX,
-			int axisY) {
+	public void rotateAroundAxis(double angle, int x, int y, int z, int axisX, int axisY)
+	{
 		translate(axisX, axisY);
 		rotate(angle, x, y, z);
 		translate(-axisX, -axisY);
@@ -270,7 +285,8 @@ public abstract class Gui {
 	/**
 	 * Renders the rendering renderer
 	 */
-	public final void render() {
+	public final void render()
+	{
 		glPushAttrib(GL_TRANSFORM_BIT);
 		glPushMatrix();
 
@@ -293,7 +309,8 @@ public abstract class Gui {
 	/**
 	 * Called by render, overriden by subclasses
 	 */
-	public void paint() {
+	public void paint()
+	{
 
 	}
 
@@ -303,7 +320,8 @@ public abstract class Gui {
 	 * @param color
 	 *            The color
 	 */
-	public void color(String color) {
+	public void color(String color)
+	{
 		color(java.awt.Color.decode(color));
 	}
 
@@ -313,7 +331,8 @@ public abstract class Gui {
 	 * @param color
 	 *            The color
 	 */
-	public void color(java.awt.Color color) {
+	public void color(java.awt.Color color)
+	{
 		color(color.getRed(), color.getGreen(), color.getBlue());
 	}
 
@@ -323,7 +342,8 @@ public abstract class Gui {
 	 * @param color
 	 *            The color
 	 */
-	public void color(int red, int green, int blue) {
+	public void color(int red, int green, int blue)
+	{
 		color(red, green, blue, 255);
 	}
 
@@ -333,7 +353,8 @@ public abstract class Gui {
 	 * @param color
 	 *            The color
 	 */
-	public void color(int red, int green, int blue, int alpha) {
+	public void color(int red, int green, int blue, int alpha)
+	{
 		color(red / 255f, green / 255f, blue / 255f, alpha / 255f);
 	}
 
@@ -343,7 +364,8 @@ public abstract class Gui {
 	 * @param color
 	 *            The color
 	 */
-	public void color(float red, float green, float blue) {
+	public void color(float red, float green, float blue)
+	{
 		color(red, green, blue, 1);
 	}
 
@@ -353,18 +375,19 @@ public abstract class Gui {
 	 * @param color
 	 *            The color
 	 */
-	public void color(float red, float green, float blue, float alpha) {
+	public void color(float red, float green, float blue, float alpha)
+	{
 		glColor4f(red, green, blue, alpha);
 	}
 
 	/**
 	 * Fires a keyboard event
 	 */
-	public boolean fireKeyboardEvent(boolean eventKeyState, int eventKey,
-			char eventChar, int mouseX, int mouseY) {
-		if (focusedComponent != null) {
-			focusedComponent.fireKeyboardEvent(eventKeyState, eventKey,
-					eventChar, mouseX, mouseY);
+	public boolean fireKeyboardEvent(boolean eventKeyState, int eventKey, char eventChar, int mouseX, int mouseY)
+	{
+		if (focusedComponent != null)
+		{
+			focusedComponent.fireKeyboardEvent(eventKeyState, eventKey, eventChar, mouseX, mouseY);
 		}
 		return focusedComponent != null;
 	}
@@ -372,13 +395,14 @@ public abstract class Gui {
 	/**
 	 * Fires a mouse event
 	 */
-	public boolean fireMouseEvent(boolean eventButtonState, int eventButton,
-			int mouseX, int mouseY, int dX, int dY) {
-		mouseX = (int) ((double) mouseX / (double) Constants.getCameraWidth() * 640);
-		mouseY = (int) ((double) mouseY / (double) Constants.getCameraHeight() * 480);
-		for (Component c : components) {
-			if (c.fireMouseEvent(eventButtonState, eventButton, mouseX, mouseY,
-					dX, dY)) {
+	public boolean fireMouseEvent(boolean eventButtonState, int eventButton, int mouseX, int mouseY, int dX, int dY)
+	{
+		mouseX = (int) ((double) mouseX / (double) Display.getWidth() * 640);
+		mouseY = (int) ((double) mouseY / (double) Display.getHeight() * 480);
+		for (Component c : components)
+		{
+			if (c.fireMouseEvent(eventButtonState, eventButton, mouseX, mouseY, dX, dY))
+			{
 				return true;
 			}
 		}
@@ -389,14 +413,17 @@ public abstract class Gui {
 	/**
 	 * Called when ze gui was resized
 	 */
-	public void resized() {
+	public void resized()
+	{
 	}
 
 	/**
 	 * Updates while inactive
 	 */
-	public void updateWhileInactive() {
-		for (Component c : components) {
+	public void updateWhileInactive()
+	{
+		for (Component c : components)
+		{
 			c.updateWhileInactive();
 		}
 	}
@@ -407,10 +434,14 @@ public abstract class Gui {
 	 * @param component
 	 *            The component
 	 */
-	public void requestFocus(Component component) {
-		if (components.contains(component)) {
-			for (Component c : components) {
-				if (c != component) {
+	public void requestFocus(Component component)
+	{
+		if (components.contains(component))
+		{
+			for (Component c : components)
+			{
+				if (c != component)
+				{
 					c.isFocused = false;
 				}
 			}
@@ -418,27 +449,33 @@ public abstract class Gui {
 			component.isFocused = true;
 		}
 	}
-	
+
 	/**
 	 * Marks this Gui dirty
 	 */
-	public void markDirty() {
+	public void markDirty()
+	{
 		this.dirty = true;
 	}
-	
+
 	/**
 	 * Returns whether this Gui is dirty
+	 * 
 	 * @return Whether this Gui is dirty
 	 */
-	public boolean isDirty() {
-		try {
+	public boolean isDirty()
+	{
+		try
+		{
 			return this.dirty;
-		} finally {
+		} finally
+		{
 			this.dirty = false;
 		}
 	}
 
-	static {
+	static
+	{
 		Out.inf(Gui.class, "01.06.2013", "Michael", null);
 	}
 }

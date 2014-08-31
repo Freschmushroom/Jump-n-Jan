@@ -4,10 +4,12 @@ import at.freschmushroom.Out;
 
 /**
  * Einfache XML Deklaration
+ * 
  * @author Felix Resch
  *
  */
-public class XMLDeclaration implements XMLElement {
+public class XMLDeclaration implements XMLElement
+{
 	/**
 	 * Die XML Version
 	 */
@@ -20,45 +22,60 @@ public class XMLDeclaration implements XMLElement {
 	 * k.a.
 	 */
 	private String standAlone = "yes";
+
 	/**
 	 * Generiert die Standard deklaration
 	 */
-	public XMLDeclaration() {
+	public XMLDeclaration()
+	{
 	}
+
 	/**
-	 * Generiert eine Deklaration mit den gegebenen Daten 
-	 * @param version die XMLVersion
-	 * @param encoding die Zeichenkodierung
-	 * @param standAlone k.a.
+	 * Generiert eine Deklaration mit den gegebenen Daten
+	 * 
+	 * @param version
+	 *            die XMLVersion
+	 * @param encoding
+	 *            die Zeichenkodierung
+	 * @param standAlone
+	 *            k.a.
 	 */
-	public XMLDeclaration(String version, String encoding, String standAlone) {
+	public XMLDeclaration(String version, String encoding, String standAlone)
+	{
 		super();
-		if(!(version == null))
+		if (!(version == null))
 			this.version = version;
-		if(!(encoding == null))
+		if (!(encoding == null))
 			this.encoding = encoding;
-		if(!(standAlone == null))
+		if (!(standAlone == null))
 			this.standAlone = standAlone;
 	}
+
 	@Override
-	public XMLElement getParent() {
+	public XMLElement getParent()
+	{
 		return null;
 	}
 
 	@Override
-	public String getName() {
+	public String getName()
+	{
 		return "Declaration";
 	}
 
 	@Override
-	public String[] getLines() {
-		return new String[] {"<?xml " + "version=\"" + version + "\" encoding=\"" + encoding + "\" standalone=\"" + standAlone + "\"?>"};
+	public String[] getLines()
+	{
+		return new String[] { "<?xml " + "version=\"" + version + "\" encoding=\"" + encoding + "\" standalone=\"" + standAlone + "\"?>" };
 	}
+
 	@Override
-	public void setParent(XMLElement parent) {
+	public void setParent(XMLElement parent)
+	{
 	}
-	
-	static {
+
+	static
+	{
 		Out.inf(XMLDeclaration.class, "01/06/13/", "Felix", null);
 	}
 }

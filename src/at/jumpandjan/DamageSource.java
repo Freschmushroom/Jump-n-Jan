@@ -4,28 +4,34 @@ import at.freschmushroom.Out;
 
 /**
  * A damage source
+ * 
  * @author Michael
  *
  */
-public class DamageSource {
+public class DamageSource
+{
 	/**
 	 * The damage inflicted
 	 */
 	private int damage;
-	
-	public DamageSource(int damage) {
+
+	public DamageSource(int damage)
+	{
 		this.damage = damage;
 	}
-	
+
 	/**
 	 * The damage inflicted
+	 * 
 	 * @return The damage inflicted
 	 */
-	public int getDamage() {
+	public int getDamage()
+	{
 		return damage;
 	}
-	
-	static {
+
+	static
+	{
 		Out.inf(DamageSource.class, "01.06.2013", "Michael", null);
 	}
 }

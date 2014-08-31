@@ -1,20 +1,26 @@
 package at.freschmushroom;
 
 import java.io.FileNotFoundException;
+
 /**
- * Class used to capsule Errorhandling and work better with the FreschMushroom API
+ * Class used to capsule Errorhandling and work better with the FreschMushroom
+ * API
+ * 
  * @author Felix
  *
  */
-public class Errorhandling {
+public class Errorhandling
+{
 	/**
 	 * Handles the given Throwable and prints it to the output destinations
 	 * 
 	 * @param t
 	 *            the Throwable to be handled
 	 */
-	public static void handle(Throwable t) {
-		if (t instanceof FileNotFoundException) {
+	public static void handle(Throwable t)
+	{
+		if (t instanceof FileNotFoundException)
+		{
 			FileNotFoundException e = (FileNotFoundException) t;
 			e.printStackTrace();
 			int pathL = System.getProperty("user.dir").length();
@@ -23,10 +29,14 @@ public class Errorhandling {
 			Out.reportMissingFile(name);
 			Out.err("Fetching Resources, please restart Jump'n'Jan after patching progress");
 			ServiceProvider.fetchResources();
-		} else {
-			try {
+		}
+		else
+		{
+			try
+			{
 				Out.saveErrorInfo(t);
-			} catch (FileNotFoundException e) {
+			} catch (FileNotFoundException e)
+			{
 				handle(e);
 			}
 			t.printStackTrace(Out.err);
@@ -37,7 +47,8 @@ public class Errorhandling {
 	/**
 	 * Not longer used, use for later initialization Class List etc.
 	 */
-	static {
+	static
+	{
 		Out.inf(Errorhandling.class, "06.11.12", "Felix", null);
 	}
 }

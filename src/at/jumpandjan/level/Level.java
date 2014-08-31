@@ -1,23 +1,34 @@
 package at.jumpandjan.level;
 
+import static org.lwjgl.opengl.GL11.glTranslatef;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.lwjgl.opengl.Display;
+
 import at.freschmushroom.Out;
-import at.jumpandjan.Entity;
-import at.jumpandjan.EntityPlayer;
-import at.jumpandjan.EntityStartFlag;
+import at.jumpandjan.Body;
+import at.jumpandjan.Floor;
 import at.jumpandjan.InterruptUpdateException;
-import at.jumpandjan.Object;
+import at.jumpandjan.JumpAndJan;
 import at.jumpandjan.PlayerListener;
+import at.jumpandjan.Wall;
+import at.jumpandjan.entity.Entity;
+import at.jumpandjan.entity.EntityFlag;
+import at.jumpandjan.entity.EntityPlayer;
+import at.jumpandjan.entity.EntityStartFlag;
+import at.zaboing.Camera;
 
 /**
  * The level
+ * 
  * @author Felix, Michael
  *
  */
-public class Level {
+public class Level
+{
 	/**
 	 * The start flag
 	 */
@@ -37,73 +48,93 @@ public class Level {
 	/**
 	 * First object layer
 	 */
-	private ArrayList<at.jumpandjan.Object> first = new ArrayList<at.jumpandjan.Object>();
+	private ArrayList<Body> first = new ArrayList<Body>();
 	/**
 	 * Second Object layer
 	 */
-	private ArrayList<at.jumpandjan.Object> second = new ArrayList<at.jumpandjan.Object>();
+	private ArrayList<Body> second = new ArrayList<Body>();
 	/**
 	 * Third Object layer
 	 */
-	private ArrayList<at.jumpandjan.Object> third = new ArrayList<at.jumpandjan.Object>();
+	private ArrayList<Body> third = new ArrayList<Body>();
 	/**
 	 * Point layer
 	 */
-	private ArrayList<at.jumpandjan.Object> second_point = new ArrayList<at.jumpandjan.Object>();
+	private ArrayList<Body> second_point = new ArrayList<Body>();
 	/**
 	 * The objects to despawn the next tick
 	 */
-	private ArrayList<at.jumpandjan.Object> deadObjects = new ArrayList<at.jumpandjan.Object>();
+	private ArrayList<Body> deadObjects = new ArrayList<Body>();
 	/**
 	 * The objects to spawn the next tick
 	 */
-	private ArrayList<at.jumpandjan.Object> spawnObjects = new ArrayList<at.jumpandjan.Object>();
+	private ArrayList<Body> spawnObjects = new ArrayList<Body>();
 	/**
 	 * The levels which are unlocked by finishing this one
 	 */
 	private List<String> unlocks = new ArrayList<String>();
-	
+
 	/**
 	 * All object which should be checked for collision
 	 */
-	public ArrayList<at.jumpandjan.Object> collisionPool = new ArrayList<at.jumpandjan.Object>();
-	
-	public Level(LevelBuilder lb) {
+	public ArrayList<Body> collisionPool = new ArrayList<Body>();
+
+	public Camera camera;
+
+	public JumpAndJan game;
+
+	public Level(JumpAndJan game, LevelBuilder lb)
+	{
+		this.game = game;
+		camera = Camera.createCamera();
 		start = lb.getStart();
 		name = lb.getName();
 		unlocks = Arrays.asList(lb.getUnlocks());
-		for (LevelElement le : lb.getElements()) {
-			if (le instanceof Wall || le instanceof Floor
-					|| le instanceof FinishFlag) {
-				first.add(le.getElement(this));
-			} else if (le instanceof Point) {
-				second_point.add(le.getElement(this));
-			} else {
-				second.add(le.getElement(this));
+		for (LevelElement le : lb.getElements())
+		{
+			Body body = le.getElement(this);
+			if (body instanceof Wall || body instanceof Floor || body instanceof EntityFlag)
+			{
+				first.add(body);
+			}
+			else if (le instanceof Point)
+			{
+				second_point.add(body);
+			}
+			else
+			{
+				second.add(body);
 			}
 		}
 		first.add(start.getElement(this));
 		// first.add(new EntityFinishFlag(finish, this));
-		third.add(player = new EntityPlayer(start.getPosX(), start.getPosY()
-				+ start.getHeight() - 64, 32, 64, this));
+		third.add(player = new EntityPlayer(start.getPosX(), start.getPosY() + start.getHeight() - 64, 32, 64, this));
 		player.addEntityListener(new PlayerListener());
-		for (at.jumpandjan.Object o : first) {
-			if (o.hasCollision()) {
+		for (Body o : first)
+		{
+			if (o.hasCollision())
+			{
 				collisionPool.add(o);
 			}
 		}
-		for (at.jumpandjan.Object o : second) {
-			if (o.hasCollision()) {
+		for (Body o : second)
+		{
+			if (o.hasCollision())
+			{
 				collisionPool.add(o);
 			}
 		}
-		for (at.jumpandjan.Object o : second_point) {
-			if (o.hasCollision()) {
+		for (Body o : second_point)
+		{
+			if (o.hasCollision())
+			{
 				collisionPool.add(o);
 			}
 		}
-		for (at.jumpandjan.Object o : third) {
-			if (o.hasCollision()) {
+		for (Body o : third)
+		{
+			if (o.hasCollision())
+			{
 				collisionPool.add(o);
 			}
 		}
@@ -111,127 +142,166 @@ public class Level {
 
 	/**
 	 * Returns the start flag
+	 * 
 	 * @return The start flag
 	 */
-	public LevelElement getStart() {
+	public LevelElement getStart()
+	{
 		return start;
 	}
 
 	/**
 	 * Sets the start flag
-	 * @param start The start flag
+	 * 
+	 * @param start
+	 *            The start flag
 	 */
-	public void setStart(LevelElement start) {
+	public void setStart(LevelElement start)
+	{
 		this.start = start;
 	}
 
 	/**
 	 * Returns the name of the level
+	 * 
 	 * @return The name of the level
 	 */
-	public String getName() {
+	public String getName()
+	{
 		return name;
 	}
 
 	/**
 	 * Sets the name of the level
-	 * @param name The name of the level
+	 * 
+	 * @param name
+	 *            The name of the level
 	 */
-	public void setName(String name) {
+	public void setName(String name)
+	{
 		this.name = name;
 	}
 
 	/**
 	 * Returns the amount of points
+	 * 
 	 * @return The amount of points
 	 */
-	public int getPoints() {
+	public int getPoints()
+	{
 		return points;
 	}
 
 	/**
 	 * Specifies the amount of points
-	 * @param points Amount of points
+	 * 
+	 * @param points
+	 *            Amount of points
 	 */
-	public void setPoints(int points) {
+	public void setPoints(int points)
+	{
 		this.points = points;
 	}
 
 	/**
 	 * Returns the point layer
+	 * 
 	 * @return The point layer
 	 */
-	public ArrayList<at.jumpandjan.Object> getSecond_Point() {
+	public ArrayList<Body> getSecond_Point()
+	{
 		return second_point;
 	}
 
 	/**
 	 * Returns the first layer
+	 * 
 	 * @return The first layer
 	 */
-	public ArrayList<at.jumpandjan.Object> getFirst() {
+	public ArrayList<Body> getFirst()
+	{
 		return first;
 	}
 
 	/**
 	 * Sets the first layer
-	 * @param first The first layer
+	 * 
+	 * @param first
+	 *            The first layer
 	 */
-	public void setFirst(ArrayList<at.jumpandjan.Object> first) {
+	public void setFirst(ArrayList<Body> first)
+	{
 		this.first = first;
 	}
 
 	/**
 	 * Returns the second layer
+	 * 
 	 * @return The second layer
 	 */
-	public ArrayList<at.jumpandjan.Object> getSecond() {
+	public ArrayList<Body> getSecond()
+	{
 		return second;
 	}
 
 	/**
 	 * Sets the second layer
-	 * @param second The second layer
+	 * 
+	 * @param second
+	 *            The second layer
 	 */
-	public void setSecond(ArrayList<at.jumpandjan.Object> second) {
+	public void setSecond(ArrayList<Body> second)
+	{
 		this.second = second;
 	}
 
 	/**
 	 * Returns the third layer
+	 * 
 	 * @return The third layer
 	 */
-	public ArrayList<at.jumpandjan.Object> getThird() {
+	public ArrayList<Body> getThird()
+	{
 		return third;
 	}
 
 	/**
 	 * Sets the third layer
-	 * @param third The third layer
+	 * 
+	 * @param third
+	 *            The third layer
 	 */
-	public void setThird(ArrayList<at.jumpandjan.Object> third) {
+	public void setThird(ArrayList<Body> third)
+	{
 		this.third = third;
 	}
 
 	/**
 	 * Renders all objects
 	 */
-	public void render() {
-		for (at.jumpandjan.Object o : first) {
+	public void render()
+	{
+		glTranslatef(-camera.x, 0, 0);
+		camera.x = (int) (player.bounds.x - Display.getWidth() / 2);
+		for (Body o : first)
+		{
 			if (o.shouldRender())
 				o.render();
 		}
-		for (at.jumpandjan.Object o : second) {
+		for (Body o : second)
+		{
 			if (((Entity) o).isAlive())
 				if (o.shouldRender())
 					o.render();
 		}
-		for (at.jumpandjan.Object o : second_point) {
+		for (Body o : second_point)
+		{
 			if (((Entity) o).isAlive())
 				if (o.shouldRender())
 					o.render();
 		}
-		for (at.jumpandjan.Object o : third) {
+		for (Body o : third)
+		{
 			if (((Entity) o).isAlive())
 				if (o.shouldRender())
 					o.render();
@@ -241,67 +311,97 @@ public class Level {
 	/**
 	 * Updates all entities, removes dead objects and spawns new objects
 	 */
-	public void update() {
-		for (at.jumpandjan.Object o : deadObjects) {
+	public void update()
+	{
+		camera.update();
+		for (Body o : deadObjects)
+		{
 			first.remove(o);
 			second.remove(o);
 			third.remove(o);
 			collisionPool.remove(o);
 		}
 		deadObjects.clear();
-		for (at.jumpandjan.Object o : spawnObjects) {
+		for (Body o : spawnObjects)
+		{
 			second.add(o);
-			if (o.hasCollision()) {
+			if (o.hasCollision())
+			{
 				collisionPool.add(o);
 			}
 		}
 		spawnObjects.clear();
 		boolean continueUpdate = true;
-		for (at.jumpandjan.Object o : first) {
-			try {
-				if (continueUpdate) {
+		for (Body o : first)
+		{
+			try
+			{
+				if (continueUpdate)
+				{
 					o.update();
 				}
-			} catch (InterruptUpdateException iue) {
+			} catch (InterruptUpdateException iue)
+			{
 				continueUpdate = false;
 			}
 		}
-		for (at.jumpandjan.Object o : second) {
-			if (((Entity) o).isAlive()) {
-				try {
-					if (continueUpdate) {
+		for (Body o : second)
+		{
+			if (((Entity) o).isAlive())
+			{
+				try
+				{
+					if (continueUpdate)
+					{
 						o.update();
 					}
-				} catch (InterruptUpdateException iue) {
+				} catch (InterruptUpdateException iue)
+				{
 					continueUpdate = false;
 				}
-			} else {
+			}
+			else
+			{
 				deadObjects.add(o);
 			}
 		}
-		for (at.jumpandjan.Object o : second_point) {
-			if (((Entity) o).isAlive()) {
-				try {
-					if (continueUpdate) {
+		for (Body o : second_point)
+		{
+			if (((Entity) o).isAlive())
+			{
+				try
+				{
+					if (continueUpdate)
+					{
 						o.update();
 					}
-				} catch (InterruptUpdateException iue) {
+				} catch (InterruptUpdateException iue)
+				{
 					continueUpdate = false;
 				}
-			} else {
+			}
+			else
+			{
 				deadObjects.add(o);
 			}
 		}
-		for (at.jumpandjan.Object o : third) {
-			if (((Entity) o).isAlive()) {
-				try {
-					if (continueUpdate) {
+		for (Body o : third)
+		{
+			if (((Entity) o).isAlive())
+			{
+				try
+				{
+					if (continueUpdate)
+					{
 						o.update();
 					}
-				} catch (InterruptUpdateException iue) {
+				} catch (InterruptUpdateException iue)
+				{
 					continueUpdate = false;
 				}
-			} else {
+			}
+			else
+			{
 				deadObjects.add(o);
 			}
 		}
@@ -309,19 +409,25 @@ public class Level {
 
 	/**
 	 * Returns the player
+	 * 
 	 * @return The player
 	 */
-	public EntityPlayer getPlayer() {
+	public EntityPlayer getPlayer()
+	{
 		return player;
 	}
 
 	/**
 	 * Gets the startflag of this level
+	 * 
 	 * @return The start flag
 	 */
-	public EntityStartFlag getStartFlag() {
-		for (at.jumpandjan.Object o : first) {
-			if (o instanceof EntityStartFlag) {
+	public EntityStartFlag getStartFlag()
+	{
+		for (Body o : first)
+		{
+			if (o instanceof EntityStartFlag)
+			{
 				return (EntityStartFlag) o;
 			}
 		}
@@ -330,14 +436,16 @@ public class Level {
 
 	/**
 	 * Returns all dead objects
+	 * 
 	 * @return All dead objects
 	 */
-	public ArrayList<at.jumpandjan.Object> getDeadObjects() {
+	public ArrayList<Body> getDeadObjects()
+	{
 		return deadObjects;
 	}
 
-	public Level(ArrayList<Object> first, ArrayList<Object> second,
-			ArrayList<Object> third) {
+	public Level(ArrayList<Body> first, ArrayList<Body> second, ArrayList<Body> third)
+	{
 		super();
 		this.first = first;
 		this.second = second;
@@ -346,21 +454,27 @@ public class Level {
 
 	/**
 	 * Adds the object to spawn next round
-	 * @param spawn The object to spawn
+	 * 
+	 * @param spawn
+	 *            The object to spawn
 	 */
-	public void addSpawnable(at.jumpandjan.Object spawn) {
+	public void addSpawnable(Body spawn)
+	{
 		spawnObjects.add(spawn);
 	}
-	
+
 	/**
 	 * Get all the Levels being unlocked
+	 * 
 	 * @return The levels being unlocked
 	 */
-	public List<String> getUnlocks() {
+	public List<String> getUnlocks()
+	{
 		return unlocks;
 	}
 
-	static {
+	static
+	{
 		Out.inf(Level.class, "23.10.12", "Felix, Michi", null);
 	}
 }

@@ -8,54 +8,73 @@ import at.freschmushroom.Out;
  * @author Michael Pilz
  * @version
  */
-public class XMLWriter {
+public class XMLWriter
+{
 	/**
 	 * The XMLFile that should be written into a File
 	 */
 	private XMLFile file;
+
 	/**
 	 * Constructs a new XMLWriter using the given File
-	 * @param file the file that should be written
+	 * 
+	 * @param file
+	 *            the file that should be written
 	 */
-	public XMLWriter(XMLFile file) {
+	public XMLWriter(XMLFile file)
+	{
 		this.file = file;
 	}
+
 	/**
 	 * Writes the XMLFile in the appropriate XML Syntax into a File
 	 */
-	public void writeToFile() {
+	public void writeToFile()
+	{
 		file.clearFile();
 		int whitespace = 0;
 		file.writeln(file.getDeclaration().getLines()[0]);
 		file.writeln("<" + file.getRoot().getName() + ">");
 		whitespace++;
-		for (XMLElement element : ((XMLNode) file.getRoot()).getChildren()) {
+		for (XMLElement element : ((XMLNode) file.getRoot()).getChildren())
+		{
 			for (int i = 0; i < whitespace; i++)
 				file.write(" ");
-			if (element instanceof XMLNode) {
+			if (element instanceof XMLNode)
+			{
 				int ws = whitespace;
-				for (String s : element.getLines()) {
-					if (s.startsWith("</") && ws != whitespace) {
+				for (String s : element.getLines())
+				{
+					if (s.startsWith("</") && ws != whitespace)
+					{
 						ws--;
 						for (int i = 0; i < ws; i++)
 							s = "  " + s;
 						file.writeln(s);
-					} else if (s.startsWith("<!")) {
+					}
+					else if (s.startsWith("<!"))
+					{
 						for (int i = 0; i < ws; i++)
 							s = "  " + s;
 						file.writeln(s);
-					} else if (s.startsWith(("<"))) {
+					}
+					else if (s.startsWith(("<")))
+					{
 						for (int i = 0; i < ws; i++)
 							s = "  " + s;
 						ws++;
 						file.writeln(s);
-					} else {
+					}
+					else
+					{
 						for (int i = 0; i < ws; i++)
 							s = "  " + s;
 						file.writeln(s);
 					}
 				}
-			} else {
+			}
+			else
+			{
 				String ws = "";
 				for (int i = 0; i < whitespace; i++)
 					ws += "  ";
@@ -66,43 +85,57 @@ public class XMLWriter {
 		file.writeln("</" + file.getRoot().getName() + ">");
 		file.close();
 	}
+
 	/**
 	 * Writes the XMLFile in the appropriate XML Syntax onto the Terminal
 	 */
-	public void writeToTerminal() {
+	public void writeToTerminal()
+	{
 		// file.clearFile();
 		int whitespace = 0;
 		System.out.println(file.getDeclaration().getLines()[0]);
 		System.out.println("<" + file.getRoot().getName() + ">");
 		whitespace++;
-		for (XMLElement element : ((XMLNode) file.getRoot()).getChildren()) {
+		for (XMLElement element : ((XMLNode) file.getRoot()).getChildren())
+		{
 			for (int i = 0; i < whitespace; i++)
 				System.out.print(" ");
-			if (element instanceof XMLNode) {
+			if (element instanceof XMLNode)
+			{
 				int ws = whitespace;
-				for (String s : element.getLines()) {
-					if (s.startsWith("</") && ws != whitespace) {
+				for (String s : element.getLines())
+				{
+					if (s.startsWith("</") && ws != whitespace)
+					{
 						ws--;
 						for (int i = 0; i < ws; i++)
 							s = "  " + s;
 						System.out.println(s);
-					} else if (s.startsWith("<!")) {
+					}
+					else if (s.startsWith("<!"))
+					{
 						for (int i = 0; i < ws; i++)
 							s = "  " + s;
 						System.out.println(s);
-					} else if (s.startsWith(("<"))) {
+					}
+					else if (s.startsWith(("<")))
+					{
 						for (int i = 0; i < ws; i++)
 							s = "  " + s;
 						if (!s.contains("</"))
 							ws++;
 						System.out.println(s);
-					} else {
+					}
+					else
+					{
 						for (int i = 0; i < ws; i++)
 							s = "  " + s;
 						System.out.println(s);
 					}
 				}
-			} else {
+			}
+			else
+			{
 				String ws = "";
 				for (int i = 0; i < whitespace; i++)
 					ws += "  ";
@@ -112,8 +145,9 @@ public class XMLWriter {
 		}
 		System.out.println("</" + file.getRoot().getName() + ">");
 	}
-	
-	static {
+
+	static
+	{
 		Out.inf(XMLWriter.class, "01/06/13", "Michi", null);
 	}
 

@@ -1,0 +1,16 @@
+locale.name=Deutsch
+
+gui.loading.text=Lade
+
+gui.user.taken=Dieser Name ist bereits vergeben
+gui.user.create.text=Erstelle Benutzer
+gui.user.cancel.text=Abbrechen
+
+gui.main.play.text=Spiel starten
+gui.main.settings.text=Einstellungen
+gui.main.quit.text=Spiel beenden
+
+gui.back.text=Zurück
+
+comp.yes=Ja
+comp.no=Nein

@@ -19,12 +19,12 @@
     width=32
     height=64
   </Start>
-  <FinishFlag>
+  <EntityFinishFlag>
     posX=2000
     posY=380
     width=32
     height=64
-  </FinishFlag>
+  </EntityFinishFlag>
   <Floor>
     posX=10
     posY=444
@@ -74,12 +74,6 @@
     kind=psy
   </Spawn>
   <Spawn>
-    posX=1400
-    posY=0
-    type=opp
-    kind=meatball
-  </Spawn>
-  <Spawn>
     posX=400
     posY=0
     type=opp
@@ -87,27 +81,27 @@
   </Spawn>
   <Point>
     x=300
-    y=434
+    y=410
   </Point>
   <Point>
     x=300
-    y=434
+    y=410
   </Point>
   <Point>
     x=340
-    y=434
+    y=410
   </Point>
   <Point>
     x=380
-    y=434
+    y=410
   </Point>
   <Point>
     x=420
-    y=434
+    y=410
   </Point>
   <Point>
     x=420
-    y=434
+    y=410
   </Point>
   <EntityUnicorn>
     posX=400

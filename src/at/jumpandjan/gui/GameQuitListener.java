@@ -5,26 +5,32 @@ import at.jumpandjan.Constants;
 
 /**
  * Quits the game
+ * 
  * @author Michael
  *
  */
-public class GameQuitListener implements ActionListener {
+public class GameQuitListener implements ActionListener
+{
 	@Override
-	public void onClicked(CompButton source) {
+	public void onClicked(CompButton source)
+	{
 
 	}
 
 	@Override
-	public void onReleased(CompButton source) {
-		
+	public void onReleased(CompButton source)
+	{
+
 	}
 
 	@Override
-	public void onPressed(CompButton source) {
+	public void onPressed(CompButton source)
+	{
 		Constants.setRunning(false);
 	}
 
-	static {
+	static
+	{
 		Out.inf(GameQuitListener.class, "01.06.2013", "Michael", null);
 	}
 }

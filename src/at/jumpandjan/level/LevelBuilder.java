@@ -5,12 +5,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import at.freschmushroom.Out;
-import at.freschmushroom.xml.XMLAttribut;
+import at.freschmushroom.xml.XMLAttribute;
 import at.freschmushroom.xml.XMLElement;
 import at.freschmushroom.xml.XMLFile;
 import at.freschmushroom.xml.XMLNode;
-import at.freschmushroom.xml.XMLTag;
-import at.jumpandjan.EntityStartFlag;
+import at.jumpandjan.Body;
+import at.jumpandjan.entity.EntityStartFlag;
 
 /**
  * The level builder
@@ -19,7 +19,8 @@ import at.jumpandjan.EntityStartFlag;
  * @author Michael
  * 
  */
-public class LevelBuilder implements Serializable {
+public class LevelBuilder implements Serializable
+{
 	/**
 	 * 
 	 */
@@ -56,16 +57,18 @@ public class LevelBuilder implements Serializable {
 	 *            the name of the level
 	 * @return The levelbuilder instance
 	 */
-	public static LevelBuilder load(String name) {
+	@SuppressWarnings("unchecked")
+	public static LevelBuilder load(String name)
+	{
 		Out.line("Loading level " + name + " . . .");
 		File file = new File(name);
-		if (!file.exists()) {
-			Out.err("File " + file.getPath()
-					+ " not found. Looking for alternative locations");
+		if (!file.exists())
+		{
+			Out.err("File " + file.getPath() + " not found. Looking for alternative locations");
 			file = new File("level/" + name);
-			if (!file.exists()) {
-				Out.err("Level " + name
-						+ " could not be loaded: Missing required file.");
+			if (!file.exists())
+			{
+				Out.err("Level " + name + " could not be loaded: Missing required file.");
 				return null;
 			}
 		}
@@ -73,92 +76,93 @@ public class LevelBuilder implements Serializable {
 		LevelBuilder b = new LevelBuilder();
 		XMLNode r = (XMLNode) f.root;
 		XMLNode info = (XMLNode) r.getChild("Info", false);
-		b.index = Integer
-				.parseInt(((XMLAttribut) info.getChild("index", false))
-						.getValue());
-		b.name = ((XMLAttribut) info.getChild("name", false)).getValue();
-		b.points = Integer.parseInt(((XMLAttribut) info.getChild("points",
-				false)).getValue());
-		b.unlocks = ((XMLAttribut) info.getChild("unlock", false)).getValue()
-				.split(";");
-		for (XMLElement el : r.getChildren()) {
-			if (el instanceof XMLNode) {
+		b.index = Integer.parseInt(((XMLAttribute) info.getChild("index", false)).getValue());
+		b.name = ((XMLAttribute) info.getChild("name", false)).getValue();
+		b.points = Integer.parseInt(((XMLAttribute) info.getChild("points", false)).getValue());
+		String unlocks = ((XMLAttribute) info.getChild("unlock", false)).getValue();
+		if (unlocks.contains(";"))
+		{
+			b.unlocks = unlocks.split(";");
+		}
+		else
+		{
+			b.unlocks = new String[] { unlocks };
+		}
+		for (XMLElement el : r.getChildren())
+		{
+			if (el instanceof XMLNode)
+			{
 				XMLNode n = (XMLNode) el;
 				if (n.getName().equalsIgnoreCase("Info"))
-					continue;
-				if (n.getName().equalsIgnoreCase("start")) {
-					double posX, posY, width, height;
-					posX = Double.parseDouble(((XMLAttribut) n.getChild("posX",
-							false)).getValue());
-					posY = Double.parseDouble(((XMLAttribut) n.getChild("posY",
-							false)).getValue());
-					width = Double.parseDouble(((XMLAttribut) n.getChild(
-							"width", false)).getValue());
-					height = Double.parseDouble(((XMLAttribut) n.getChild(
-							"height", false)).getValue());
-					b.start = new FlexibleElement(posX, posY, width, height,
-							EntityStartFlag.class);
+				{
 					continue;
 				}
-				if (n.getName().equalsIgnoreCase("point")) {
+				if (n.getName().equalsIgnoreCase("start"))
+				{
+					double posX, posY, width, height;
+					posX = Double.parseDouble(((XMLAttribute) n.getChild("posX", false)).getValue());
+					posY = Double.parseDouble(((XMLAttribute) n.getChild("posY", false)).getValue());
+					width = Double.parseDouble(((XMLAttribute) n.getChild("width", false)).getValue());
+					height = Double.parseDouble(((XMLAttribute) n.getChild("height", false)).getValue());
+					b.start = new GenericElement(posX, posY, width, height, EntityStartFlag.class);
+					continue;
+				}
+				if (n.getName().equalsIgnoreCase("point"))
+				{
 					int x, y;
-					x = Integer.parseInt(((XMLAttribut) n.getChild("x", false))
-							.getValue());
-					y = Integer.parseInt(((XMLAttribut) n.getChild("y", false))
-							.getValue());
+					x = Integer.parseInt(((XMLAttribute) n.getChild("x", false)).getValue());
+					y = Integer.parseInt(((XMLAttribute) n.getChild("y", false)).getValue());
 					b.elements.add(new Point(x, y));
 					continue;
-				} else if (n.getName().equalsIgnoreCase("spawn")) {
+				}
+				else if (n.getName().equalsIgnoreCase("spawn"))
+				{
 					double posX, posY;
 					String type, kind;
-					posX = Integer.parseInt(((XMLAttribut) n.getChild("posX",
-							false)).getValue());
-					posY = Integer.parseInt(((XMLAttribut) n.getChild("posY",
-							false)).getValue());
-					type = ((XMLAttribut) n.getChild("type", false)).getValue();
-					kind = ((XMLAttribut) n.getChild("kind", false)).getValue();
+					posX = Integer.parseInt(((XMLAttribute) n.getChild("posX", false)).getValue());
+					posY = Integer.parseInt(((XMLAttribute) n.getChild("posY", false)).getValue());
+					type = ((XMLAttribute) n.getChild("type", false)).getValue();
+					kind = ((XMLAttribute) n.getChild("kind", false)).getValue();
 					b.elements.add(new Spawn(posX, posY, type, kind));
 					continue;
 				}
-				try {
-					if (n.getName().equalsIgnoreCase("wall")) {
-						System.out.print('\0');
+				Class<?> elementClass;
+				try
+				{
+					elementClass = Class.forName(n.getName());
+				} catch (Exception e)
+				{
+					try
+					{
+						elementClass = Class.forName("at.jumpandjan." + n.getName());
+					} catch (Exception e1)
+					{
+						try
+						{
+							elementClass = Class.forName("at.jumpandjan.entity." + n.getName());
+						} catch (Exception e2)
+						{
+							System.err.println("COULD NOT LOAD ELEMENT TYPE " + n.getName());
+							continue;
+						}
 					}
-					Class<? extends LevelElement> c = (Class<? extends LevelElement>) Class
-							.forName("at.jumpandjan.level." + n.getName());
-					double x, y, width, height;
-					x = Integer.parseInt(((XMLAttribut) n.getChild("posX",
-							false)).getValue());
-					y = Integer.parseInt(((XMLAttribut) n.getChild("posY",
-							false)).getValue());
-					width = Integer.parseInt(((XMLAttribut) n.getChild("width",
-							false)).getValue());
-					height = Integer.parseInt(((XMLAttribut) n.getChild(
-							"height", false)).getValue());
-					b.elements.add(c.getConstructor(
-							new Class[] { double.class, double.class,
-									double.class, double.class }).newInstance(
-							new Object[] { x, y, width, height }));
-				} catch (Exception e) {
-					try {
-						Class<? extends at.jumpandjan.Object> c = (Class<? extends at.jumpandjan.Object>) Class
-								.forName("at.jumpandjan." + n.getName());
-						double x, y, width, height;
-						x = Integer.parseInt(((XMLAttribut) n.getChild("posX",
-								false)).getValue());
-						y = Integer.parseInt(((XMLAttribut) n.getChild("posY",
-								false)).getValue());
-						width = Integer.parseInt(((XMLAttribut) n.getChild(
-								"width", false)).getValue());
-						height = Integer.parseInt(((XMLAttribut) n.getChild(
-								"height", false)).getValue());
-						b.elements.add(new FlexibleElement(x, y, width, height,
-								c));
-					} catch (Exception e1) {
-						System.err.println("INVALID CODE:");
-						String[] lines = n.getLines();
-						for (String s : lines)
-							System.err.println(s);
+				}
+				try
+				{
+					int x, y, width, height;
+					x = Integer.parseInt(((XMLAttribute) n.getChild("posX", false)).getValue());
+					y = Integer.parseInt(((XMLAttribute) n.getChild("posY", false)).getValue());
+					width = Integer.parseInt(((XMLAttribute) n.getChild("width", false)).getValue());
+					height = Integer.parseInt(((XMLAttribute) n.getChild("height", false)).getValue());
+					b.elements.add(new GenericElement(x, y, width, height, (Class<? extends Body>) elementClass));
+				} catch (Exception e)
+				{
+					System.err.println("EXCEPTION " + e + " THROWN AT");
+					System.err.println("INVALID PARAMETERS: ");
+					String[] lines = n.getLines();
+					for (String s : lines)
+					{
+						System.err.println(s);
 					}
 				}
 			}
@@ -171,7 +175,8 @@ public class LevelBuilder implements Serializable {
 	 * 
 	 * @return All building elements
 	 */
-	public ArrayList<LevelElement> getElements() {
+	public ArrayList<LevelElement> getElements()
+	{
 		return elements;
 	}
 
@@ -180,7 +185,8 @@ public class LevelBuilder implements Serializable {
 	 * 
 	 * @return The index
 	 */
-	public int getIndex() {
+	public int getIndex()
+	{
 		return index;
 	}
 
@@ -189,7 +195,8 @@ public class LevelBuilder implements Serializable {
 	 * 
 	 * @return The name
 	 */
-	public String getName() {
+	public String getName()
+	{
 		return name;
 	}
 
@@ -198,7 +205,8 @@ public class LevelBuilder implements Serializable {
 	 * 
 	 * @return The points
 	 */
-	public long getPoints() {
+	public long getPoints()
+	{
 		return points;
 	}
 
@@ -207,11 +215,13 @@ public class LevelBuilder implements Serializable {
 	 * 
 	 * @return The start flag
 	 */
-	public LevelElement getStart() {
+	public LevelElement getStart()
+	{
 		return start;
 	}
 
-	static {
+	static
+	{
 		Out.inf(LevelBuilder.class, "23.10.12", "Felix", null);
 	}
 
@@ -220,7 +230,8 @@ public class LevelBuilder implements Serializable {
 	 * 
 	 * @return The unlocking levels
 	 */
-	public String[] getUnlocks() {
+	public String[] getUnlocks()
+	{
 		return unlocks;
 	}
 }

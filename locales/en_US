@@ -1,0 +1,16 @@
+locale.name=English
+
+gui.loading.text=Loading
+
+gui.user.taken=This name is already taken
+gui.user.create.text=Create User
+gui.user.cancel.text=Cancel
+
+gui.main.play.text=Play Game
+gui.main.settings.text=Settings
+gui.main.quit.text=Quit Game
+
+gui.back.text=Back
+
+comp.yes=Yes
+comp.no=No

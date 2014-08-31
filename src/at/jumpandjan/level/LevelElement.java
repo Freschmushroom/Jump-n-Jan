@@ -1,6 +1,7 @@
 package at.jumpandjan.level;
 
 import at.freschmushroom.Out;
+import at.jumpandjan.Body;
 
 /**
  * The building element base class
@@ -9,7 +10,8 @@ import at.freschmushroom.Out;
  * @author Michael
  * 
  */
-public abstract class LevelElement {
+public abstract class LevelElement
+{
 	/**
 	 * The x-position of the element
 	 */
@@ -28,7 +30,8 @@ public abstract class LevelElement {
 	 */
 	private int height;
 
-	public LevelElement(double x, double y, double width, double height) {
+	public LevelElement(double x, double y, double width, double height)
+	{
 		setPosX((int) x);
 		setPosY((int) y);
 		setWidth((int) width);
@@ -37,76 +40,99 @@ public abstract class LevelElement {
 
 	/**
 	 * Sets the x-position
-	 * @param posX The x-position
+	 * 
+	 * @param posX
+	 *            The x-position
 	 */
-	public void setPosX(int posX) {
+	public void setPosX(int posX)
+	{
 		this.posX = posX;
 	}
 
 	/**
 	 * Sets the y-position
-	 * @param posY The y-position
+	 * 
+	 * @param posY
+	 *            The y-position
 	 */
-	public void setPosY(int posY) {
+	public void setPosY(int posY)
+	{
 		this.posY = posY;
 	}
 
 	/**
 	 * Sets the width
-	 * @param width The width
+	 * 
+	 * @param width
+	 *            The width
 	 */
-	public void setWidth(int width) {
+	public void setWidth(int width)
+	{
 		this.width = width;
 	}
 
 	/**
 	 * Sets the height
-	 * @param height The height
+	 * 
+	 * @param height
+	 *            The height
 	 */
-	public void setHeight(int height) {
+	public void setHeight(int height)
+	{
 		this.height = height;
 	}
 
 	/**
 	 * Returns the x-position
+	 * 
 	 * @return The x-position
 	 */
-	public int getPosX() {
+	public int getPosX()
+	{
 		return posX;
 	}
 
 	/**
 	 * Returns the y-position
+	 * 
 	 * @return The y-position
 	 */
-	public int getPosY() {
+	public int getPosY()
+	{
 		return posY;
 	}
 
 	/**
 	 * Returns the width
+	 * 
 	 * @return The width
 	 */
-	public int getWidth() {
+	public int getWidth()
+	{
 		return width;
 	}
 
 	/**
 	 * Returns the height
+	 * 
 	 * @return The height
 	 */
-	public int getHeight() {
+	public int getHeight()
+	{
 		return height;
 	}
 
 	/**
 	 * Returns the Object of this element
-	 * @param level For this level
+	 * 
+	 * @param level
+	 *            For this level
 	 * @return The object
 	 */
-	public abstract at.jumpandjan.Object getElement(Level level);
-	
-	static {
+	public abstract Body getElement(Level level);
+
+	static
+	{
 		Out.inf(LevelElement.class, "01.06.2013", "Felix", null);
 	}
 }

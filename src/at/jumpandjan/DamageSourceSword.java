@@ -1,40 +1,51 @@
 package at.jumpandjan;
 
 import at.freschmushroom.Out;
+import at.jumpandjan.entity.Entity;
+import at.jumpandjan.entity.EntitySword;
 
 /**
  * The damage source by a sword
+ * 
  * @author Michael
  *
  */
-public class DamageSourceSword extends DamageSourceEntity {
+public class DamageSourceSword extends DamageSourceEntity
+{
 	/**
 	 * The weilder
 	 */
 	private Entity wielder;
-	
-	public DamageSourceSword(int damage, EntitySword sword, Entity wielder) {
+
+	public DamageSourceSword(int damage, EntitySword sword, Entity wielder)
+	{
 		super(damage, sword);
 		this.wielder = wielder;
 	}
 
 	/**
 	 * Returns the wielder
+	 * 
 	 * @return The wielder
 	 */
-	public Entity getWielder() {
+	public Entity getWielder()
+	{
 		return wielder;
 	}
 
 	/**
 	 * Sets the wielder
-	 * @param wielder The wielder
+	 * 
+	 * @param wielder
+	 *            The wielder
 	 */
-	public void setWielder(Entity wielder) {
+	public void setWielder(Entity wielder)
+	{
 		this.wielder = wielder;
 	}
-	
-	static {
+
+	static
+	{
 		Out.inf(DamageSourceSword.class, "01.06.2013", "Michael", null);
 	}
 }

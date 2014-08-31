@@ -25,7 +25,6 @@ public class TextureManager
 	{
 
 	}
-	
 
 	public int getTexture(String texture)
 	{
@@ -33,7 +32,7 @@ public class TextureManager
 			return texMap.get(texture);
 		int name = GL11.glGenTextures();
 		BufferedImage bufferedImage = getImage(texture);
-		if(bufferedImage == null)
+		if (bufferedImage == null)
 			return -1;
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, name);
 		int i = bufferedImage.getWidth();
@@ -58,36 +57,43 @@ public class TextureManager
 		byteBuffer.put(rgba);
 		byteBuffer.position(0);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
-        //GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
-        //GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
-        //GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-        //GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, i, j, 0,
-				GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, byteBuffer);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+		// GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S,
+		// GL11.GL_CLAMP);
+		// GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T,
+		// GL11.GL_CLAMP);
+		// GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER,
+		// GL11.GL_LINEAR);
+		// GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER,
+		// GL11.GL_LINEAR);
+		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, i, j, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, byteBuffer);
 		texMap.put(texture, name);
-		
+
 		return name;
 	}
-	
+
 	public BufferedImage getImage(String image)
 	{
-		if(imgMap.get(image) != null)
+		if (imgMap.get(image) != null)
 			return imgMap.get(image);
 		InputStream is = null;
-		try {
+		try
+		{
 			System.out.println("Looking for " + image + " inside the program . . .");
 			is = getClass().getResourceAsStream(image);
-			if (is == null) {
+			if (is == null)
+			{
 				System.out.println("Looking for /img" + image + " inside the program . . .");
 				is = getClass().getResourceAsStream("/img" + image);
 			}
-			if(is == null) {
+			if (is == null)
+			{
 				System.out.println("Looking for " + image + " outside the program . . . ");
 				File f = new File(System.getProperty("user.dir") + "/img" + image);
-				if (!f.exists() || !f.isFile()) {
+				if (!f.exists() || !f.isFile())
+				{
 					System.out.println("Looking for /img" + image + " outside the program . . .");
 					f = new File(System.getProperty("user.dir"));
 				}
@@ -97,20 +103,25 @@ public class TextureManager
 			BufferedImage bufferedImage = ImageIO.read(is);
 			imgMap.put(image, bufferedImage);
 			return bufferedImage;
-		} catch(Exception e) {
+		} catch (Exception e)
+		{
 			e.printStackTrace();
 			return null;
-		} finally {
-			if(is != null)
-				try {
+		} finally
+		{
+			if (is != null)
+				try
+				{
 					is.close();
-				} catch (IOException e) {
+				} catch (IOException e)
+				{
 					e.printStackTrace();
 				}
 		}
-	} 
-	
-	static {
+	}
+
+	static
+	{
 		Out.inf(TextureManager.class, "29.08.2012", "Michael", null);
 	}
 
@@ -118,12 +129,11 @@ public class TextureManager
 	{
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
 	}
-	
+
 	public void bindTexture(String texture)
 	{
 		bindTexture(getTexture(texture));
 	}
-
 
 	public void unbind()
 	{

@@ -13,12 +13,12 @@
     width=32
     height=64
   </Start>
-  <FinishFlag>
+  <EntityFinishFlag>
     posX=278
     posY=80
     width=32
     height=64
-  </FinishFlag>
+  </EntityFinishFlag>
   <Floor>
     posX=10
     posY=144

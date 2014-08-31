@@ -14,7 +14,8 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 
-public class Out {
+public class Out
+{
 	/**
 	 * PrintStream for normal output
 	 */
@@ -47,13 +48,17 @@ public class Out {
 	 * @param msg
 	 *            the message to be printed
 	 */
-	public static void line(String msg) {
-		String p = String.format(Locale.US,
-				"%1$ta %1$tb %1$td %1$tT %1$tZ %1$tY INFO:- ",
-				new GregorianCalendar(TimeZone.getDefault(), Locale.US));  //Create epic time format
-		p += msg;  //Create message string
-		System.out.println(printAll ? p : msg);  //If all should be printed print the message with the time, else just the message
-		if (line != null)  //Write it to the file if possible
+	public static void line(String msg)
+	{
+		String p = String.format(Locale.US, "%1$ta %1$tb %1$td %1$tT %1$tZ %1$tY INFO:- ", new GregorianCalendar(TimeZone.getDefault(), Locale.US)); // Create
+																																						// epic
+																																						// time
+																																						// format
+		p += msg; // Create message string
+		System.out.println(printAll ? p : msg); // If all should be printed
+												// print the message with the
+												// time, else just the message
+		if (line != null) // Write it to the file if possible
 			line.println(p);
 	}
 
@@ -70,19 +75,24 @@ public class Out {
 	 * @param els
 	 *            other things ("REMOVE METHOD SOUNDSO")
 	 */
-	public static void inf(Class<?> c, String version, String author, String[] els) {
-		if (printAll) {  //If everything should be printed
-			System.out.println(c.toString() + ":");  //Print class name
-			System.out.println("	" + "Version: " + version);  //Print version
-			System.out.println("	" + "Auhor: " + author);  //Print author
+	public static void inf(Class<?> c, String version, String author, String[] els)
+	{
+		if (printAll)
+		{ // If everything should be printed
+			System.out.println(c.toString() + ":"); // Print class name
+			System.out.println("	" + "Version: " + version); // Print version
+			System.out.println("	" + "Auhor: " + author); // Print author
 		}
-		if (inf != null) {  //If the file is available
+		if (inf != null)
+		{ // If the file is available
 			inf.println(c.toString() + ":");
 			inf.println("	" + "Version: " + version);
 			inf.println("	" + "Auhor: " + author);
 		}
-		if (els != null) {  //Print other comments
-			for (String s : els) {
+		if (els != null)
+		{ // Print other comments
+			for (String s : els)
+			{
 				if (printAll)
 					System.out.println("	" + s);
 				if (inf != null)
@@ -90,7 +100,8 @@ public class Out {
 			}
 		}
 
-		versions.put(c, version);  //Store information into the version control map
+		versions.put(c, version); // Store information into the version control
+									// map
 	}
 
 	/**
@@ -99,10 +110,9 @@ public class Out {
 	 * @param msg
 	 *            the message
 	 */
-	public static void err(String msg) {  //See line()
-		String p = String.format(Locale.US,
-				"%1$ta %1$tb %1$td %1$tT %1$tZ %1$tY ERROR:- ",
-				new GregorianCalendar(TimeZone.getDefault(), Locale.US));
+	public static void err(String msg)
+	{ // See line()
+		String p = String.format(Locale.US, "%1$ta %1$tb %1$td %1$tT %1$tZ %1$tY ERROR:- ", new GregorianCalendar(TimeZone.getDefault(), Locale.US));
 		p += msg;
 		System.err.println(printAll ? p : msg);
 		if (err != null)
@@ -113,9 +123,11 @@ public class Out {
 	 * Initializes all Streams and starts all record keeping processes, do not
 	 * change or delete
 	 */
-	static {
+	static
+	{
 		Out.inf(Out.class, "27.09.12", "Felix", null);
-		try {
+		try
+		{
 			File li = new File("line.log");
 			li.createNewFile();
 			line = new PrintStream(new FileOutputStream(li));
@@ -125,10 +137,12 @@ public class Out {
 			File er = new File("err.log");
 			er.createNewFile();
 			err = new PrintStream(new FileOutputStream(er));
-		} catch (FileNotFoundException e) {
+		} catch (FileNotFoundException e)
+		{
 			Errorhandling.handle(e);
 			err("Fatal error: Unable to initialize Console. r u sure i can write here?! ");
-		} catch (IOException e) {
+		} catch (IOException e)
+		{
 			Errorhandling.handle(e);
 			err("Fatal error: Unable to initialize Console. r u sure i can write here?! ");
 		}
@@ -137,121 +151,150 @@ public class Out {
 	/**
 	 * Destroys all record keeping processes. Last call in every program
 	 */
-	public static void destroy() {
+	public static void destroy()
+	{
 		line("Destroying Console");
-		try {
+		try
+		{
 			line.flush();
 			line.close();
-		} catch (Exception e) {
+		} catch (Exception e)
+		{
 			e.printStackTrace();
 		}
 		line = null;
-		try {
+		try
+		{
 			inf.flush();
 			inf.close();
-		} catch (Exception e) {
+		} catch (Exception e)
+		{
 			e.printStackTrace();
 		}
 		inf = null;
 		err("Canceling all record keeping processes");
-		try {
+		try
+		{
 			err.flush();
 			err.close();
-		} catch (Exception e) {
+		} catch (Exception e)
+		{
 			e.printStackTrace();
 		}
 		err = null;
 	}
+
 	/**
 	 * Compares two version controlling maps
-	 * @param versions	the version map of another instance
+	 * 
+	 * @param versions
+	 *            the version map of another instance
 	 * @return if the versions are equal
 	 */
-	public static boolean checkVersion(HashMap<Class<?>, String> versions) {
+	public static boolean checkVersion(HashMap<Class<?>, String> versions)
+	{
 		return Out.versions.equals(versions);
 	}
+
 	/**
-	 * Called from Errorhandling
-	 * Used to state later which files are missing
-	 * @param filename	The name of the file
-	 * @return  if the file was previously reported missing
+	 * Called from Errorhandling Used to state later which files are missing
+	 * 
+	 * @param filename
+	 *            The name of the file
+	 * @return if the file was previously reported missing
 	 */
-	public static boolean reportMissingFile(String filename) {
-		if (!missingFiles.contains(filename)) {
+	public static boolean reportMissingFile(String filename)
+	{
+		if (!missingFiles.contains(filename))
+		{
 			missingFiles.add(filename);
 			return true;
 		}
 		return false;
 	}
+
 	/**
-	 * Prints basically all the version on the console, only of those classes who reported them
+	 * Prints basically all the version on the console, only of those classes
+	 * who reported them
 	 */
-	public static void printAllVersions() {
+	public static void printAllVersions()
+	{
 		if (!printAll)
 			return;
 		Set<Class<?>> keys = versions.keySet();
 		Collection<String> values = versions.values();
 		Iterator<Class<?>> i = keys.iterator();
 		Iterator<String> j = values.iterator();
-		while (i.hasNext()) {
-			String txt = String.format("%1$-50s %2$8s", i.next()
-					.getCanonicalName(), j.next());
+		while (i.hasNext())
+		{
+			String txt = String.format("%1$-50s %2$8s", i.next().getCanonicalName(), j.next());
 			Out.line(txt);
 		}
 	}
+
 	/**
 	 * Prints the List of missing files
 	 */
-	public static void printAllMissingFiles() {
+	public static void printAllMissingFiles()
+	{
 		Iterator<String> i = missingFiles.iterator();
 		if (missingFiles.size() == 0 || !printAll)
 			return;
 		Out.err("Following Files are missing on your System. Please send us these Information");
-		while (i.hasNext()) {
+		while (i.hasNext())
+		{
 			Out.err(i.next());
 		}
 	}
+
 	/**
 	 * Creates an error report based on a Throwable
 	 * 
 	 * including missing files and all the Throwable information
 	 * 
-	 * @param t  the error causing throwable
-	 * @throws FileNotFoundException  if the neede file cannot be found
+	 * @param t
+	 *            the error causing throwable
+	 * @throws FileNotFoundException
+	 *             if the neede file cannot be found
 	 */
-	public static void saveErrorInfo(Throwable t) throws FileNotFoundException {
+	public static void saveErrorInfo(Throwable t) throws FileNotFoundException
+	{
 		File f = new File(System.getProperty("user.dir") + "/errors/");
 		if (!f.exists())
 			f.mkdir();
-		PrintStream f_out = new PrintStream(
-				new FileOutputStream(f.getAbsolutePath() + "/"
-						+ System.currentTimeMillis() + ".log"));
+		PrintStream f_out = new PrintStream(new FileOutputStream(f.getAbsolutePath() + "/" + System.currentTimeMillis() + ".log"));
 		t.printStackTrace(f_out);
 		Set<Class<?>> keys = versions.keySet();
 		Collection<String> values = versions.values();
 		Iterator<Class<?>> i = keys.iterator();
 		Iterator<String> j = values.iterator();
-		while (i.hasNext()) {
-			String txt = String.format("%1$-50s %2$8s", i.next()
-					.getCanonicalName(), j.next());
+		while (i.hasNext())
+		{
+			String txt = String.format("%1$-50s %2$8s", i.next().getCanonicalName(), j.next());
 			f_out.println(txt);
 		}
 		Iterator<String> m = missingFiles.iterator();
-		while (m.hasNext()) {
+		while (m.hasNext())
+		{
 			f_out.println("Missing file:" + m.next());
 		}
 		f_out.close();
 	}
+
 	/**
-	 * Suppresses the output of the date and unnesecary information on the console
+	 * Suppresses the output of the date and unnesecary information on the
+	 * console
 	 */
-	public static void surpressAdditionalInformation() {
+	public static void surpressAdditionalInformation()
+	{
 		printAll = false;
 	}
+
 	/**
 	 * Forces the output of the date and additional information on the console
 	 */
-	public static void forceAdditionalInformation() {
+	public static void forceAdditionalInformation()
+	{
 		printAll = true;
 	}
 }

@@ -1,8 +1,8 @@
 package at.jumpandjan.level;
 
 import at.freschmushroom.Out;
-import at.jumpandjan.EntityHaarfarbe;
-import at.jumpandjan.Object;
+import at.jumpandjan.Body;
+import at.jumpandjan.entity.EntityInk;
 
 /**
  * The building element for color
@@ -10,18 +10,22 @@ import at.jumpandjan.Object;
  * @author Felix
  * 
  */
-public class Point extends LevelElement {
+public class Point extends LevelElement
+{
 
-	public Point(double x, double y) {
+	public Point(double x, double y)
+	{
 		super(x, y, 0, 0);
 	}
 
 	@Override
-	public Object getElement(Level level) {
-		return new EntityHaarfarbe(getPosX(), getPosY(), level);
+	public Body getElement(Level level)
+	{
+		return new EntityInk(getPosX(), getPosY(), level);
 	}
 
-	static {
+	static
+	{
 		Out.inf(Point.class, "23.10.12", "Felix", null);
 	}
 }

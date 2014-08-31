@@ -8,7 +8,8 @@ import at.freschmushroom.Out;
  * @author Michael
  * 
  */
-public abstract class Component extends Gui implements Cloneable {
+public abstract class Component extends Gui implements Cloneable
+{
 	/**
 	 * The bounds
 	 */
@@ -29,7 +30,8 @@ public abstract class Component extends Gui implements Cloneable {
 	 */
 	public boolean visible = true;
 
-	public Component(Gui parent, int x, int y, int width, int height) {
+	public Component(Gui parent, int x, int y, int width, int height)
+	{
 		this.parent = parent;
 		this.x = x;
 		this.y = y;
@@ -42,7 +44,8 @@ public abstract class Component extends Gui implements Cloneable {
 	 * 
 	 * @return x-coordinate
 	 */
-	public int getX() {
+	public int getX()
+	{
 		return x;
 	}
 
@@ -51,7 +54,8 @@ public abstract class Component extends Gui implements Cloneable {
 	 * 
 	 * @return y-coordinate
 	 */
-	public int getY() {
+	public int getY()
+	{
 		return y;
 	}
 
@@ -60,7 +64,8 @@ public abstract class Component extends Gui implements Cloneable {
 	 * 
 	 * @return The width
 	 */
-	public int getWidth() {
+	public int getWidth()
+	{
 		return width;
 	}
 
@@ -69,7 +74,8 @@ public abstract class Component extends Gui implements Cloneable {
 	 * 
 	 * @return The height
 	 */
-	public int getHeight() {
+	public int getHeight()
+	{
 		return height;
 	}
 
@@ -79,7 +85,8 @@ public abstract class Component extends Gui implements Cloneable {
 	 * @param x
 	 *            X-coordinate
 	 */
-	public void setX(int x) {
+	public void setX(int x)
+	{
 		this.x = x;
 	}
 
@@ -89,7 +96,8 @@ public abstract class Component extends Gui implements Cloneable {
 	 * @param y
 	 *            Y-coordinate
 	 */
-	public void setY(int y) {
+	public void setY(int y)
+	{
 		this.y = y;
 	}
 
@@ -99,7 +107,8 @@ public abstract class Component extends Gui implements Cloneable {
 	 * @param width
 	 *            The width
 	 */
-	public void setWidth(int width) {
+	public void setWidth(int width)
+	{
 		this.width = width;
 	}
 
@@ -109,24 +118,31 @@ public abstract class Component extends Gui implements Cloneable {
 	 * @param height
 	 *            The height
 	 */
-	public void setHeight(int height) {
+	public void setHeight(int height)
+	{
 		this.height = height;
 	}
 
 	@Override
-	public final void paint() {
-		if (visible) {
+	public final void paint()
+	{
+		if (visible)
+		{
 			drawComponent();
 		}
 	}
 
 	@Override
-	public final boolean fireKeyboardEvent(boolean eventKeyState, int eventKey,
-			char eventChar, int mouseX, int mouseY) {
-		if (isFocused) {
-			if (eventKeyState) {
+	public final boolean fireKeyboardEvent(boolean eventKeyState, int eventKey, char eventChar, int mouseX, int mouseY)
+	{
+		if (isFocused)
+		{
+			if (eventKeyState)
+			{
 				onKeyPressed(eventKey, eventChar, mouseX, mouseY);
-			} else {
+			}
+			else
+			{
 				onKeyReleased(eventKey, eventChar, mouseX, mouseY);
 			}
 			return true;
@@ -135,26 +151,34 @@ public abstract class Component extends Gui implements Cloneable {
 	}
 
 	@Override
-	public final boolean fireMouseEvent(boolean eventButtonState,
-			int eventButton, int mouseX, int mouseY, int dX, int dY) {
+	public final boolean fireMouseEvent(boolean eventButtonState, int eventButton, int mouseX, int mouseY, int dX, int dY)
+	{
 		mouseY = 480 - mouseY;
-		if (eventButton == -1) {
-			if (mouseX >= this.x && mouseX <= this.x + this.width
-					&& mouseY >= this.y && mouseY <= this.y + this.height) {
+		if (eventButton == -1)
+		{
+			if (mouseX >= this.x && mouseX <= this.x + this.width && mouseY >= this.y && mouseY <= this.y + this.height)
+			{
 				onHovered(mouseX, mouseY);
-			} else {
+			}
+			else
+			{
 				onMouseExit(mouseX, mouseY);
 			}
-		} else {
-			if (eventButtonState) {
-				if (mouseX >= this.x && mouseX <= this.x + this.width
-						&& mouseY >= this.y && mouseY <= this.y + this.height) {
+		}
+		else
+		{
+			if (eventButtonState)
+			{
+				if (mouseX >= this.x && mouseX <= this.x + this.width && mouseY >= this.y && mouseY <= this.y + this.height)
+				{
 					onClick(mouseX, mouseY, eventButton);
 				}
-			} else {
+			}
+			else
+			{
 				onReleased(mouseX, mouseY, eventButton);
-				if (mouseX >= this.x && mouseX <= this.x + this.width
-						&& mouseY >= this.y && mouseY <= this.y + this.height) {
+				if (mouseX >= this.x && mouseX <= this.x + this.width && mouseY >= this.y && mouseY <= this.y + this.height)
+				{
 					parent.requestFocus(this);
 				}
 			}
@@ -175,7 +199,8 @@ public abstract class Component extends Gui implements Cloneable {
 	 * @param mouseY
 	 *            The position of the mouse at the event
 	 */
-	public void onKeyPressed(int key, char character, int mouseX, int mouseY) {
+	public void onKeyPressed(int key, char character, int mouseX, int mouseY)
+	{
 
 	}
 
@@ -191,7 +216,8 @@ public abstract class Component extends Gui implements Cloneable {
 	 * @param mouseY
 	 *            The position of the mouse at the event
 	 */
-	public void onKeyReleased(int key, char character, int mouseX, int mouseY) {
+	public void onKeyReleased(int key, char character, int mouseX, int mouseY)
+	{
 
 	}
 
@@ -205,7 +231,8 @@ public abstract class Component extends Gui implements Cloneable {
 	 * @param mouseButton
 	 *            The button which was clicked
 	 */
-	public void onClick(int mouseX, int mouseY, int mouseButton) {
+	public void onClick(int mouseX, int mouseY, int mouseButton)
+	{
 
 	}
 
@@ -219,7 +246,8 @@ public abstract class Component extends Gui implements Cloneable {
 	 * @param mouseButton
 	 *            The mouse button which was released
 	 */
-	public void onReleased(int mouseX, int mouseY, int mouseButton) {
+	public void onReleased(int mouseX, int mouseY, int mouseButton)
+	{
 
 	}
 
@@ -231,7 +259,8 @@ public abstract class Component extends Gui implements Cloneable {
 	 * @param mouseY
 	 *            The Y-Position of the mouse
 	 */
-	public void onHovered(int mouseX, int mouseY) {
+	public void onHovered(int mouseX, int mouseY)
+	{
 
 	}
 
@@ -243,14 +272,16 @@ public abstract class Component extends Gui implements Cloneable {
 	 * @param mouseY
 	 *            The Y-Position of the mouse
 	 */
-	public void onMouseExit(int mouseX, int mouseY) {
+	public void onMouseExit(int mouseX, int mouseY)
+	{
 
 	}
 
 	/**
 	 * Called by paint; draws the component. To be implemented by subclasses.
 	 */
-	public void drawComponent() {
+	public void drawComponent()
+	{
 	}
 
 	/**
@@ -258,16 +289,20 @@ public abstract class Component extends Gui implements Cloneable {
 	 * 
 	 * @return A copy of this component
 	 */
-	public Object copy() {
-		try {
+	public Object copy()
+	{
+		try
+		{
 			return clone();
-		} catch (CloneNotSupportedException e) {
+		} catch (CloneNotSupportedException e)
+		{
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	static {
+	static
+	{
 		Out.inf(Component.class, "01.06.2013", "Michael", null);
 	}
 }

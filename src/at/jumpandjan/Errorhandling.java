@@ -1,33 +1,38 @@
 package at.jumpandjan;
 
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 
-public class Errorhandling {
-	//private static PrintStream out = null;
+public class Errorhandling
+{
+	// private static PrintStream out = null;
 	/**
 	 * Handles the given Throwable and prints it to the output destinations
-	 * @param t the Throwable to be handled
+	 * 
+	 * @param t
+	 *            the Throwable to be handled
 	 */
-	public static void handle(Throwable t) {
-		if(t instanceof FileNotFoundException) {
+	public static void handle(Throwable t)
+	{
+		if (t instanceof FileNotFoundException)
+		{
 			FileNotFoundException e = (FileNotFoundException) t;
 			e.printStackTrace(Out.err);
-		} else {
+		}
+		else
+		{
 			t.printStackTrace(Out.err);
 		}
 	}
+
 	/**
-	 * Not longer used, use for later initialization 
-	 * Class List etc. 
+	 * Not longer used, use for later initialization Class List etc.
 	 */
-	static {
+	static
+	{
 		Out.inf(Errorhandling.class, "28.08.12", "Felix", null);
-		/*try {
-			out = new PrintStream(new FileOutputStream("errorlog.log"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace(Out.err);
-		}*/
+		/*
+		 * try { out = new PrintStream(new FileOutputStream("errorlog.log")); }
+		 * catch (FileNotFoundException e) { e.printStackTrace(Out.err); }
+		 */
 	}
 }

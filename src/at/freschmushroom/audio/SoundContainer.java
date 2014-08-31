@@ -7,21 +7,21 @@ import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Queue;
 
-import org.lwjgl.openal.AL10;
 import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.openal.AudioLoader;
 
 import at.freschmushroom.Errorhandling;
-import at.jumpandjan.Constants;
 import at.freschmushroom.Out;
+import at.jumpandjan.Constants;
 
 /**
- * Class to unify Sound Loading and Sound playing 
+ * Class to unify Sound Loading and Sound playing
  * 
  * @author Beide
  *
  */
-public class SoundContainer {
+public class SoundContainer
+{
 	/**
 	 * Thread to display loading progress on screen
 	 */
@@ -30,92 +30,122 @@ public class SoundContainer {
 	 * The map where the sounds are stored
 	 */
 	private static HashMap<String, Audio> sounds = new HashMap<>();
+
 	/**
 	 * Loads a sound from a local File
-	 * @param path the path to the sound file
-	 * @param format the format of the sound file
-	 * @param name the name the sound file should be remebered
+	 * 
+	 * @param path
+	 *            the path to the sound file
+	 * @param format
+	 *            the format of the sound file
+	 * @param name
+	 *            the name the sound file should be remebered
 	 */
-	private static void loadSound(String path, String format, String name) {
-		Out.line("Loading sound " + name + " from " + path + " in " + format
-				+ " format");
-		try {
-			sounds.put(name,
-					AudioLoader.getAudio(format, new FileInputStream(path)));
-		} catch (FileNotFoundException e) {
-			Out.err("Audio " + name + "@" + path
-					+ " not loadable: FileNotFound");
+	private static void loadSound(String path, String format, String name)
+	{
+		Out.line("Loading sound " + name + " from " + path + " in " + format + " format");
+		try
+		{
+			sounds.put(name, AudioLoader.getAudio(format, new FileInputStream(path)));
+		} catch (FileNotFoundException e)
+		{
+			Out.err("Audio " + name + "@" + path + " not loadable: FileNotFound");
 			Errorhandling.handle(e);
-		} catch (IOException e) {
-			Out.err("Audio " + name + "@" + path
-					+ " not loadable: Other mistake");
+		} catch (IOException e)
+		{
+			Out.err("Audio " + name + "@" + path + " not loadable: Other mistake");
 			Errorhandling.handle(e);
 		}
 	}
+
 	/**
 	 * Starts the Main Loading Thread
 	 */
-	public static void init() {
+	public static void init()
+	{
 		new Thread(mainLoadingThread).start();
 	}
+
 	/**
 	 * Plays a sound continuously until its stoped
-	 * @param sound the name of the sound you want to play
+	 * 
+	 * @param sound
+	 *            the name of the sound you want to play
 	 */
-	public static void play(String sound) {
+	public static void play(String sound)
+	{
 		if (sounds.containsKey(sound))
 			sounds.get(sound).playAsMusic(1, 1, true);
 	}
+
 	/**
 	 * Plays a sound once
-	 * @param sound the sound you want to play
+	 * 
+	 * @param sound
+	 *            the sound you want to play
 	 */
-	public static void play_once(String sound) {
+	public static void play_once(String sound)
+	{
 		if (sounds.containsKey(sound))
 			sounds.get(sound).playAsMusic(1, 1, false);
 	}
+
 	/**
 	 * Stops a sound immediatley if its playing
-	 * @param sound the sound you want to stop
+	 * 
+	 * @param sound
+	 *            the sound you want to stop
 	 */
-	public static void stop(String sound) {
+	public static void stop(String sound)
+	{
 		if (sounds.containsKey(sound))
 			sounds.get(sound).stop();
 	}
+
 	/**
 	 * Fixed: Now stops all the sounds instead of playing them
 	 */
-	public static void stopAll() {
-		for (String s : sounds.keySet()) {
+	public static void stopAll()
+	{
+		for (String s : sounds.keySet())
+		{
 			stop(s);
 		}
 	}
-	
-	/*public static void stopAll() {
-		for (String s : sounds.keySet()) {
-			play(s);
-		}
-	}*/
+
+	/*
+	 * public static void stopAll() { for (String s : sounds.keySet()) {
+	 * play(s); } }
+	 */
 	/**
-	 * Checks if the sound is playing 
-	 * @param sound the name of the sound you want to check
+	 * Checks if the sound is playing
+	 * 
+	 * @param sound
+	 *            the name of the sound you want to check
 	 * @return if the sound is playing
 	 */
-	public static boolean isPlaying(String sound) {
-		if(sounds.containsKey(sound))
+	public static boolean isPlaying(String sound)
+	{
+		if (sounds.containsKey(sound))
 			return sounds.get(sound).isPlaying();
 		return false;
 	}
+
 	/**
 	 * Looks up the position of a sound
-	 * @param sound the name of the sound you want to check
-	 * @return the current position of the sound, or -1 if the sound is not in the list
+	 * 
+	 * @param sound
+	 *            the name of the sound you want to check
+	 * @return the current position of the sound, or -1 if the sound is not in
+	 *         the list
 	 */
-	public static float getPosition(String sound) {
-		if(sounds.containsKey(sound))
+	public static float getPosition(String sound)
+	{
+		if (sounds.containsKey(sound))
 			return sounds.get(sound).getPosition();
 		return -1f;
 	}
+
 	/**
 	 * 
 	 * Class to load all the sounds
@@ -123,7 +153,8 @@ public class SoundContainer {
 	 * @author Michi
 	 *
 	 */
-	public static class SoundLoadingThread implements Runnable {
+	public static class SoundLoadingThread implements Runnable
+	{
 		/**
 		 * A Queue to store the paths, formats and names of the sounds
 		 */
@@ -132,40 +163,55 @@ public class SoundContainer {
 		 * The name of the current sound
 		 */
 		public String currentSound;
-		
-		public void run() {
-			while (Constants.isRunning()) {
-				if (!loadingQueue.isEmpty()) {
+
+		public void run()
+		{
+			while (Constants.isRunning())
+			{
+				if (!loadingQueue.isEmpty())
+				{
 					String[] sound = loadingQueue.element();
 					loadingQueue.remove();
 					currentSound = sound[2];
-					try {
+					try
+					{
 						SoundContainer.loadSound(sound[0], sound[1], sound[2]);
-					} catch (Exception e) {
+					} catch (Exception e)
+					{
 						System.err.println("Error occured while loading " + currentSound);
 					}
 				}
 			}
 		}
+
 		/**
 		 * Returns the number of Elements in the Loading Queue
+		 * 
 		 * @return the number of Elements
 		 */
-		public int elementsInQueue() {
+		public int elementsInQueue()
+		{
 			return loadingQueue.size();
 		}
+
 		/**
 		 * Adds a sound to the Loading Queue
-		 * @param path the path to the source file
-		 * @param format the format of the sound file
-		 * @param name the name of the sound file
+		 * 
+		 * @param path
+		 *            the path to the source file
+		 * @param format
+		 *            the format of the sound file
+		 * @param name
+		 *            the name of the sound file
 		 */
-		public void loadSound(String path, String format, String name) {
-			loadingQueue.add(new String[] {path, format, name});
+		public void loadSound(String path, String format, String name)
+		{
+			loadingQueue.add(new String[] { path, format, name });
 		}
 	}
-	
-	static {
+
+	static
+	{
 		Out.inf(SoundContainer.class, "01/06/13", "Beide", null);
 	}
 }

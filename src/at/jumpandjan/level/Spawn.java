@@ -3,21 +3,24 @@ package at.jumpandjan.level;
 import java.io.Serializable;
 
 import at.freschmushroom.Out;
-import at.jumpandjan.EntityHildegard;
-import at.jumpandjan.EntityMeatball;
-import at.jumpandjan.EntityPedobaer;
-import at.jumpandjan.EntityPreym;
-import at.jumpandjan.EntityPsy;
-import at.jumpandjan.EntitySpaghetti;
-import at.jumpandjan.EntityUnicorn;
-import at.jumpandjan.EntityWaitrose;
+import at.jumpandjan.Body;
+import at.jumpandjan.entity.EntityHildegard;
+import at.jumpandjan.entity.EntityMeatball;
+import at.jumpandjan.entity.EntityPedobaer;
+import at.jumpandjan.entity.EntityPreym;
+import at.jumpandjan.entity.EntityPsy;
+import at.jumpandjan.entity.EntitySpaghetti;
+import at.jumpandjan.entity.EntityUnicorn;
+import at.jumpandjan.entity.EntityWaitrose;
 
 /**
  * The Element which spawns entities later
+ * 
  * @author Felix
  *
  */
-public class Spawn extends LevelElement implements Serializable {
+public class Spawn extends LevelElement implements Serializable
+{
 	/**
 	 * 
 	 */
@@ -32,52 +35,73 @@ public class Spawn extends LevelElement implements Serializable {
 	private String kind;
 
 	@Override
-	public at.jumpandjan.Object getElement(Level level) {
-		if (type.equals("opp") && kind.equals("meatball")) {
+	public Body getElement(Level level)
+	{
+		if (type.equals("opp") && kind.equals("meatball"))
+		{
 			return new EntityMeatball(getPosX(), getPosY(), level);
-		} else if (type.equals("opp") && kind.equals("waitrose")) {
+		}
+		else if (type.equals("opp") && kind.equals("waitrose"))
+		{
 			return new EntityWaitrose(getPosX(), getPosY(), level);
-		} else if (type.equals("opp") && kind.equals("psy")) {
+		}
+		else if (type.equals("opp") && kind.equals("psy"))
+		{
 			return new EntityPsy(getPosX(), getPosY(), level);
-		} else if (type.equals("opp") && kind.equals("pedo")) {
+		}
+		else if (type.equals("opp") && kind.equals("pedo"))
+		{
 			return new EntityPedobaer(getPosX(), getPosY(), level);
-		} else if (type.equals("opp") && kind.equals("spaghetti")) {
+		}
+		else if (type.equals("opp") && kind.equals("spaghetti"))
+		{
 			return new EntitySpaghetti(getPosX(), getPosY(), level);
-		} else if (type.equals("opp") && kind.equals("unicorn")) {
+		}
+		else if (type.equals("opp") && kind.equals("unicorn"))
+		{
 			return new EntityUnicorn(getPosX(), getPosY(), 48, 48, level);
-		} else if (type.equals("opp") && kind.equals("preym")) {
+		}
+		else if (type.equals("opp") && kind.equals("preym"))
+		{
 			return new EntityPreym(getPosX(), getPosY(), level);
-		} else if (type.equals("opp") && kind.equals("hilde")) {
+		}
+		else if (type.equals("opp") && kind.equals("hilde"))
+		{
 			return new EntityHildegard(getPosX(), getPosY(), level);
 		}
-		Out.err("Mob " + type + "_" + kind
-				+ " does not exist. Spawning Meatball instead.");
+		Out.err("Mob " + type + "_" + kind + " does not exist. Spawning Meatball instead.");
 		return new EntityMeatball(getPosX(), getPosY(), level);
 	}
 
 	/**
 	 * Returns the type of entity
+	 * 
 	 * @return The type of entity
 	 */
-	public String getType() {
+	public String getType()
+	{
 		return type;
 	}
 
 	/**
 	 * Returns the kind of entity
+	 * 
 	 * @return The kind of entity
 	 */
-	public String getKind() {
+	public String getKind()
+	{
 		return kind;
 	}
 
-	public Spawn(double posX, double posY, String type, String kind) {
+	public Spawn(double posX, double posY, String type, String kind)
+	{
 		super(posX, posY, 0, 0);
 		this.type = type;
 		this.kind = kind;
 	}
 
-	static {
+	static
+	{
 		Out.inf(Spawn.class, "23.10.12", "Felix", null);
 	}
 }
