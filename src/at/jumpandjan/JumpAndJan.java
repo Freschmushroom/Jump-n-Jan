@@ -57,7 +57,6 @@ import at.jumpandjan.gui.Gui;
 import at.jumpandjan.gui.GuiLoadingScreen;
 import at.jumpandjan.gui.GuiMenu;
 import at.jumpandjan.level.Level;
-import at.zaboing.StringStorage;
 
 /**
  * The main class
@@ -108,8 +107,8 @@ public class JumpAndJan implements Constants.RAMListener
 				{
 					Display.setDisplayMode(new DisplayMode(640, 480));
 					Out.line("Done creating new screen");
-					Display.create();
 					Display.setParent(canvas);
+					Display.create();
 					// Display.setVSyncEnabled(true);
 					// JumpAndJan.parent.requestFocus();
 					glMatrixMode(GL_PROJECTION);

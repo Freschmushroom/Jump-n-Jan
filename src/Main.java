@@ -17,6 +17,7 @@ public class Main
 	public static void main(String[] args)
 	{
 		ServiceProvider.libs();
+		ServiceProvider.resources();
 		Out.surpressAdditionalInformation();
 		JumpAndJan.main(args);
 	}

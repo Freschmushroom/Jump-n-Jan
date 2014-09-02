@@ -1,12 +1,24 @@
 package at.freschmushroom;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -56,90 +68,7 @@ public class ServiceProvider
 			Out.err("FreschMushroom wasn't set up properly. Please try again.");
 			System.exit(1);
 		}
-		System.setProperty("java.library.path", System.getProperty("java.library.path") + ";" + appfolder + "/natives/" + PLATFORM + ";" + "/opt/java/jre/lib/i386" + ";");
 		System.setProperty("org.lwjgl.librarypath", appfolder + "/natives/" + PLATFORM);
-		try
-		{
-			final Field usrPathsField = ClassLoader.class.getDeclaredField("usr_paths");
-			usrPathsField.setAccessible(true);
-
-			java.util.List<String> paths = new java.util.ArrayList<String>(java.util.Arrays.asList((String[]) usrPathsField.get(null)));
-
-			if (paths.contains(appfolder + "/native/" + PLATFORM))
-			{
-				return;
-			}
-
-			paths.add(0, appfolder + "" + "/native/" + PLATFORM);
-
-			usrPathsField.set(null, paths.toArray(new String[paths.size()]));
-		} catch (NoSuchFieldException e1)
-		{
-			Errorhandling.handle(e1);
-		} catch (SecurityException e1)
-		{
-			Errorhandling.handle(e1);
-		} catch (IllegalArgumentException e)
-		{
-			Errorhandling.handle(e);
-		} catch (IllegalAccessException e)
-		{
-			Errorhandling.handle(e);
-		}
-		Out.line("Platform: " + PLATFORM.toUpperCase() + " x86" + (ARCH == 64 ? "_64 bit" : " _32bit"));
-		Out.line(System.getProperty("java.library.path"));
-		try
-		{
-			if (PLATFORM.equals("windows"))
-			{
-				if (ARCH == 64)
-				{
-					System.loadLibrary("lwjgl64");
-					System.loadLibrary("jinput-dx8_64");
-					System.loadLibrary("jinput-raw_64");
-					System.loadLibrary("OpenAL64");
-				}
-				else
-				{
-					System.loadLibrary("lwjgl");
-					System.loadLibrary("jinput-dx8");
-					System.loadLibrary("jinput-raw");
-					System.loadLibrary("OpenAL32");
-				}
-			}
-			else if (PLATFORM.equals("macosx"))
-			{
-				System.loadLibrary("libjinput-osx");
-				System.loadLibrary("liblwjgl");
-				System.loadLibrary("openal");
-			}
-			else if (PLATFORM.equals("linux"))
-			{
-				if (ARCH == 64)
-				{
-					System.load(appfolder + "/natives/linux/libjinput-linux64.so");
-					System.load(appfolder + "/natives/linux/liblwjgl64.so");
-					System.load(appfolder + "/natives/linux/libopenal64.so");
-				}
-				else
-				{
-					System.load(appfolder + "/natives/linux/libjinput-linux.so");
-					System.load(appfolder + "/natives/linux/liblwjgl.so");
-					System.load(appfolder + "/natives/linux/libopenal.so");
-				}
-			}
-		} catch (Error e)
-		{
-			Out.err("Loading not possible. Maybe theres a problem with your OS");
-			if (e instanceof UnsatisfiedLinkError)
-			{
-				Out.err("Loading Libs in alternative way");
-			}
-			else
-			{
-				Errorhandling.handle(e);
-			}
-		}
 	}
 
 	/**
@@ -264,6 +193,134 @@ public class ServiceProvider
 	}
 
 	/**
+	 * Checks the game resources for updates
+	 */
+	public static boolean checkResources()
+	{
+		Out.line("Looking online for res.zip check sums");
+		try
+		{
+			URL u = new URL("https://github.com/Freschmushroom/Jump-n-Jan/blob/master/hashes?raw=true");
+			URLConnection con = u.openConnection();
+			con.connect();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			Properties hashes = new Properties();
+			hashes.load(reader);
+			String imgHash = computeHash("img/");
+			String soundHash = computeHash("sound/");
+			String levelHash = computeHash("level/");
+			String localesHash = computeHash("locales/");
+			String settingsHash = computeHash("settings.xml");
+			reader.close();
+			boolean upToDate = hashes.getProperty("img.md5").equalsIgnoreCase(imgHash) && hashes.getProperty("sound.md5").equalsIgnoreCase(soundHash)
+					&& hashes.getProperty("level.md5").equalsIgnoreCase(levelHash) && hashes.getProperty("settings.md5").equalsIgnoreCase(settingsHash)
+					&& hashes.getProperty("locales.md5").equalsIgnoreCase(localesHash);
+			if (upToDate)
+			{
+				Out.line("Program is up-to-date");
+			}
+			else
+			{
+				Out.line("Program needs updating");
+			}
+			return upToDate;
+		} catch (Exception e)
+		{
+			Out.line("Assuming the program is up-to-date, since no hashes were found");
+		}
+		return true;
+	}
+
+	public static void generateHashes()
+	{
+		try (OutputStream os = Files.newOutputStream(Paths.get("hashes")))
+		{
+			Properties hashes = new Properties();
+			hashes.setProperty("img.md5", computeHash("img/"));
+			hashes.setProperty("sound.md5", computeHash("sound/"));
+			hashes.setProperty("level.md5", computeHash("level/"));
+			hashes.setProperty("locales.md5", computeHash("locales/"));
+			hashes.setProperty("settings.md5", computeHash("settings.xml"));
+			hashes.setProperty("gamejar.md5", computeHash("JumpnJan.jar"));
+			hashes.store(os, "GENERATED RESOURCE HASHES, USED FOR UPDATING");
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	public static void main(String[] args)
+	{
+		generateHashes();
+		// resources();
+	}
+
+	private static String computeHash(String path)
+	{
+		try
+		{
+			File file = new File(path);
+			if (!file.exists())
+			{
+				Out.line("File " + file.getAbsolutePath() + " does not exist");
+				return null;
+			}
+			final MessageDigest md = MessageDigest.getInstance("MD5");
+			if (file.isFile())
+			{
+				try (InputStream is = Files.newInputStream(Paths.get(path)))
+				{
+					DigestInputStream dis = new DigestInputStream(is, md);
+					while (dis.read() != -1)
+						;
+					dis.close();
+				}
+			}
+			else if (file.isDirectory())
+			{
+				FileVisitor<Path> visitor = new FileVisitor<Path>() {
+					public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException
+					{
+						return FileVisitResult.CONTINUE;
+					}
+
+					public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException
+					{
+						return FileVisitResult.CONTINUE;
+					}
+
+					public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException
+					{
+						try (InputStream is = Files.newInputStream(file))
+						{
+							DigestInputStream dis = new DigestInputStream(is, md);
+							while (dis.read() != -1)
+								;
+							dis.close();
+						}
+						return FileVisitResult.CONTINUE;
+					}
+
+					public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException
+					{
+						return FileVisitResult.CONTINUE;
+					}
+				};
+				Files.walkFileTree(Paths.get(path), visitor);
+			}
+			return bytesToHex(md.digest());
+		} catch (NoSuchAlgorithmException e)
+		{
+			e.printStackTrace();
+			return null;
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
 	 * Fetches the game resources (Images and Sounds)
 	 */
 	public static void fetchResources()
@@ -360,8 +417,66 @@ public class ServiceProvider
 		Out.inf(ServiceProvider.class, "19.02.13", "Felix", null);
 	}
 
-	public static void main(String[] args)
+	public static void resources()
 	{
-		fetchResources();
+		if (!checkResources())
+		{
+			fetchResources();
+		}
+	}
+
+	public static boolean checkGameJar()
+	{
+		try
+		{
+			URL u = new URL("https://github.com/Freschmushroom/Jump-n-Jan/blob/master/hashes?raw=true");
+			URLConnection con = u.openConnection();
+			con.connect();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			Properties hashes = new Properties();
+			hashes.load(reader);
+			reader.close();
+			return computeHash("JumpnJan.jar").equalsIgnoreCase(hashes.getProperty("gamejar.md5"));
+		} catch (Exception e)
+		{
+			Out.line("Assuming the jar is up to date due to connection issues");
+			return true;
+		}
+	}
+
+	public static void fetchGameJar()
+	{
+		try
+		{
+			URL u = new URL("https://github.com/Freschmushroom/Jump-n-Jan/blob/master/JumpnJan.jar?raw=true");
+			URLConnection con = u.openConnection();
+			con.connect();
+			Files.copy(con.getInputStream(), Paths.get("JumpnJan.jar"));
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	public static void gameJar()
+	{
+		if (!checkGameJar())
+		{
+			fetchGameJar();
+		}
+	}
+
+	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
+
+	public static String bytesToHex(byte[] bytes)
+	{
+		char[] hexChars = new char[bytes.length * 2];
+		for (int j = 0; j < bytes.length; j++)
+		{
+			int v = bytes[j] & 0xFF;
+			hexChars[j * 2] = hexArray[v >>> 4];
+			hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+		}
+		return new String(hexChars);
 	}
 }
