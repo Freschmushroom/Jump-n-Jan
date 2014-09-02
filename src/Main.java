@@ -21,7 +21,6 @@ public class Main
 		ServiceProvider serviceProvider = new ServiceProvider();
 		serviceProvider.libs();
 		serviceProvider.gameJar();
-		serviceProvider.resources();
 		if (serviceProvider.requiresRestart) {
 			ProcessBuilder processBuilder = new ProcessBuilder("java", "-jar", "JumpnJan.jar");
 			try
@@ -33,6 +32,7 @@ public class Main
 			}
 			System.exit(0);
 		}
+		serviceProvider.resources();
 		Out.surpressAdditionalInformation();
 		JumpAndJan.main(args);
 	}
