@@ -115,7 +115,7 @@ public class Constants
 	 */
 	public static void load()
 	{
-		ServiceProvider.libs();
+		new ServiceProvider().libs();
 		paused = false;
 		running = true;
 		XMLFile f = new XMLFile(new File("settings.xml"));

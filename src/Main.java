@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 import at.freschmushroom.Out;
 import at.freschmushroom.ServiceProvider;
 import at.jumpandjan.JumpAndJan;
@@ -16,8 +18,21 @@ public class Main
 	 */
 	public static void main(String[] args)
 	{
-		ServiceProvider.libs();
-		ServiceProvider.resources();
+		ServiceProvider serviceProvider = new ServiceProvider();
+		serviceProvider.libs();
+		serviceProvider.gameJar();
+		serviceProvider.resources();
+		if (serviceProvider.requiresRestart) {
+			ProcessBuilder processBuilder = new ProcessBuilder("java", "-jar", "JumpnJan.jar");
+			try
+			{
+				processBuilder.inheritIO().start();
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+			System.exit(0);
+		}
 		Out.surpressAdditionalInformation();
 		JumpAndJan.main(args);
 	}

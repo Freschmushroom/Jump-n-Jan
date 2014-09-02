@@ -33,18 +33,20 @@ public class ServiceProvider
 	/**
 	 * The architecture of the system
 	 */
-	public static short ARCH;
+	public short ARCH;
 	/**
 	 * The platform of the system
 	 */
-	public static String PLATFORM;
+	public String PLATFORM;
 
+	public boolean requiresRestart;
+	
 	/**
 	 * Loads the libs from the freschmushroom folder, or, when not set, the
 	 * appdata: Windows: %APPDATA%\.freschmushroom\natives\ Linux:
 	 * /home/user/appdata/.freschmushroom/natives Mac:????
 	 */
-	public static void loadLibs()
+	public void loadLibs()
 	{
 		String appfolder = System.getenv("FRESCHMUSHROOM_HOME");
 		if (appfolder == null)
@@ -74,7 +76,7 @@ public class ServiceProvider
 	/**
 	 * Initializes the Arguments for the lib loading module
 	 */
-	public static void initArgs()
+	public void initArgs()
 	{
 		String os = System.getProperty("os.name");
 		Out.line("PLATFORM short: " + os);
@@ -104,7 +106,7 @@ public class ServiceProvider
 	/**
 	 * Fetches the libs from a online source
 	 */
-	public static void fetchLibs()
+	public void fetchLibs()
 	{
 		String appfolder = System.getenv("FRESCHMUSHROOM_HOME");
 		if (appfolder == null)
@@ -190,12 +192,13 @@ public class ServiceProvider
 			e.printStackTrace();
 			System.exit(1);
 		}
+		requiresRestart = true;
 	}
 
 	/**
 	 * Checks the game resources for updates
 	 */
-	public static boolean checkResources()
+	public boolean checkResources()
 	{
 		Out.line("Looking online for res.zip check sums");
 		try
@@ -323,7 +326,7 @@ public class ServiceProvider
 	/**
 	 * Fetches the game resources (Images and Sounds)
 	 */
-	public static void fetchResources()
+	public void fetchResources()
 	{
 		String appfolder = System.getProperty("user.dir") + "/";
 		try
@@ -372,7 +375,7 @@ public class ServiceProvider
 	/**
 	 * Cares completely about the whole lib stuff
 	 */
-	public static void libs()
+	public void libs()
 	{
 		initArgs();
 		if (!checkLibs())
@@ -390,7 +393,7 @@ public class ServiceProvider
 	 * 
 	 * @return if the libs exist
 	 */
-	public static boolean checkLibs()
+	public boolean checkLibs()
 	{
 		String appfolder = System.getenv("FRESCHMUSHROOM_HOME");
 		if (appfolder == null)
@@ -412,12 +415,11 @@ public class ServiceProvider
 		return f_1.exists() && f_2.exists();
 	}
 
-	static
 	{
 		Out.inf(ServiceProvider.class, "19.02.13", "Felix", null);
 	}
 
-	public static void resources()
+	public void resources()
 	{
 		if (!checkResources())
 		{
@@ -425,7 +427,7 @@ public class ServiceProvider
 		}
 	}
 
-	public static boolean checkGameJar()
+	public boolean checkGameJar()
 	{
 		try
 		{
@@ -444,7 +446,7 @@ public class ServiceProvider
 		}
 	}
 
-	public static void fetchGameJar()
+	public void fetchGameJar()
 	{
 		try
 		{
@@ -452,13 +454,14 @@ public class ServiceProvider
 			URLConnection con = u.openConnection();
 			con.connect();
 			Files.copy(con.getInputStream(), Paths.get("JumpnJan.jar"));
+			requiresRestart = true;
 		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
 	}
 
-	public static void gameJar()
+	public void gameJar()
 	{
 		if (!checkGameJar())
 		{

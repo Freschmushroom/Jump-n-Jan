@@ -48,7 +48,6 @@ import org.lwjgl.openal.AL;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
-import at.freschmushroom.Intro;
 import at.freschmushroom.Out;
 import at.freschmushroom.TextAreaOutputStream;
 import at.freschmushroom.audio.SoundContainer;
@@ -103,27 +102,25 @@ public class JumpAndJan implements Constants.RAMListener
 			try
 			{
 				Display.setTitle("Jump\'n\'Jan");
-				if (!Intro.init)
-				{
-					Display.setDisplayMode(new DisplayMode(640, 480));
-					Out.line("Done creating new screen");
-					Display.setParent(canvas);
-					Display.create();
-					// Display.setVSyncEnabled(true);
-					// JumpAndJan.parent.requestFocus();
-					glMatrixMode(GL_PROJECTION);
-					glLoadIdentity();
-					glOrtho(0, 640, 480, 0, 1, -1);
-					glMatrixMode(GL_MODELVIEW);
-					glLoadIdentity();
+				Display.setDisplayMode(new DisplayMode(640, 480));
+				Out.line("Done creating new screen");
+				Display.setParent(canvas);
+				Display.create();
+				// Display.setVSyncEnabled(true);
+				// JumpAndJan.parent.requestFocus();
+				glMatrixMode(GL_PROJECTION);
+				glLoadIdentity();
+				glOrtho(0, 640, 480, 0, 1, -1);
+				glMatrixMode(GL_MODELVIEW);
+				glLoadIdentity();
 
-					glViewport(0, 0, 640, 480);
+				glViewport(0, 0, 640, 480);
 
-					glEnable(GL_TEXTURE_2D);
-					glEnable(GL_BLEND);
-					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-					glEnable(GL_SCISSOR_TEST);
-				}
+				glEnable(GL_TEXTURE_2D);
+				glEnable(GL_BLEND);
+				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				glEnable(GL_SCISSOR_TEST);
+
 			} catch (LWJGLException e)
 			{
 				Errorhandling.handle(e);
@@ -409,17 +406,15 @@ public class JumpAndJan implements Constants.RAMListener
 		glTranslated(0, 0, 0);
 		glEnable(GL_TEXTURE_2D);
 		TextureManager.instance.bindTexture(TextureManager.instance.getTexture("/Background.png"));
-		float f = 1f / TextureManager.instance.getImage("/Background.png").getWidth();
-		float f1 = 1f / TextureManager.instance.getImage("/Background.png").getHeight();
 		glBegin(GL_QUADS);
 		glTexCoord2f(0, 0);
 		glVertex2f(0, 0);
-		glTexCoord2f(0, (Intro.horiMvmt + 480) * f1);
-		glVertex2f(0, Intro.horiMvmt + 480);
-		glTexCoord2f((Intro.vertMvmt * 2 + 640) * f, (Intro.horiMvmt + 480) * f1);
-		glVertex2f(Intro.vertMvmt * 2 + 640, Intro.horiMvmt + 480);
-		glTexCoord2f((Intro.vertMvmt * 2 + 640) * f, 0);
-		glVertex2f(Intro.vertMvmt * 2 + 640, 0);
+		glTexCoord2f(0, 1);
+		glVertex2f(0, 480);
+		glTexCoord2f(1, 1);
+		glVertex2f(640, 480);
+		glTexCoord2f(1, 0);
+		glVertex2f(640, 0);
 		glEnd();
 		glDisable(GL_TEXTURE_2D);
 		glPopMatrix();

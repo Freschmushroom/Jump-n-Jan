@@ -15,7 +15,6 @@ import static org.lwjgl.opengl.GL11.glVertex2d;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
-import at.freschmushroom.Intro;
 import at.freschmushroom.Out;
 import at.freschmushroom.TextureManager;
 import at.jumpandjan.Body;
@@ -177,7 +176,7 @@ public class Entity extends Body
 			}
 		}
 
-		if (this.bounds.y > 480 || this.bounds.y - Intro.vertMvmt < -500)
+		if (this.bounds.y > 480)
 		{
 			kill(this);
 		}

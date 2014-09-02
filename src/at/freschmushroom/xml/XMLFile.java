@@ -99,7 +99,7 @@ public class XMLFile
 				// f.getAbsoluteFile().getParentFile().mkdirs();
 				// f.createNewFile();
 				// return;
-				ServiceProvider.fetchResources();
+				new ServiceProvider().fetchResources();
 			}
 			BufferedReader br = new BufferedReader(new FileReader(f));
 			String line = null;

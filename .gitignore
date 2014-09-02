@@ -1,1 +1,3 @@
 *.log
+/bin/
+/JumpnJan_lib/
