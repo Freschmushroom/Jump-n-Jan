@@ -20,7 +20,7 @@ public class Main
 	{
 		ServiceProvider serviceProvider = new ServiceProvider();
 		serviceProvider.libs();
-		serviceProvider.gameJar();
+//		serviceProvider.gameJar();
 		if (serviceProvider.requiresRestart) {
 			ProcessBuilder processBuilder = new ProcessBuilder("java", "-jar", "JumpnJan.jar");
 			try
