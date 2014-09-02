@@ -14,6 +14,7 @@ import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
@@ -40,7 +41,7 @@ public class ServiceProvider
 	public String PLATFORM;
 
 	public boolean requiresRestart;
-	
+
 	/**
 	 * Loads the libs from the freschmushroom folder, or, when not set, the
 	 * appdata: Windows: %APPDATA%\.freschmushroom\natives\ Linux:
@@ -453,7 +454,7 @@ public class ServiceProvider
 			URL u = new URL("https://github.com/Freschmushroom/Jump-n-Jan/blob/master/JumpnJan.jar?raw=true");
 			URLConnection con = u.openConnection();
 			con.connect();
-			Files.copy(con.getInputStream(), Paths.get("JumpnJan.jar"));
+			Files.copy(con.getInputStream(), Paths.get("JumpnJan.jar"), StandardCopyOption.REPLACE_EXISTING);
 			requiresRestart = true;
 		} catch (Exception e)
 		{
